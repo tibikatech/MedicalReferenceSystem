@@ -118,37 +118,62 @@ export async function registerRoutes(app: Express): Promise<Server> {
 // Helper function to initialize test data from JSON files
 async function initializeTestData() {
   try {
-    // First check if we already have data
+    // First check if we have a small dataset that should be replaced
     const existingTests = await storage.getAllTests();
-    if (existingTests.length > 0) {
-      console.log(`✅ Database already contains ${existingTests.length} tests`);
+    
+    // Read the revised tests data
+    let testsData;
+    try {
+      testsData = fs.readFileSync(
+        path.resolve(process.cwd(), "attached_assets/tests_revised.json"), 
+        'utf8'
+      );
+    } catch (err) {
+      // If revised tests file doesn't exist, try the original file
+      testsData = fs.readFileSync(
+        path.resolve(process.cwd(), "attached_assets/tests.json"), 
+        'utf8'
+      );
+    }
+
+    // If we already have all the tests, return early
+    const parsedTests = JSON.parse(testsData);
+    const testsArray = Array.isArray(parsedTests) ? parsedTests : (parsedTests.tests || []);
+    
+    if (existingTests.length >= testsArray.length) {
+      console.log(`✅ Database already contains ${existingTests.length} tests (out of ${testsArray.length} available)`);
       return;
     }
     
-    // Read tests.json
-    const testsData = fs.readFileSync(
-      path.resolve(process.cwd(), "attached_assets/tests.json"), 
-      'utf8'
-    );
-    const parsedTests = JSON.parse(testsData);
+    // If we're here, we need to update or insert tests
+    console.log(`🔄 Updating database with new test data. Current: ${existingTests.length}, New: ${testsArray.length}`);
     
-    // Add each test to storage, converting snake_case to camelCase and ensuring valid dates
+    // First clear existing data if we have some but not all
+    if (existingTests.length > 0) {
+      // Delete all existing tests
+      for (const test of existingTests) {
+        await storage.deleteTest(test.id);
+      }
+      console.log(`🗑️ Cleared ${existingTests.length} existing tests for fresh import`);
+    }
+    
+    // Add each test to storage
     let loadedCount = 0;
-    for (const test of parsedTests.tests) {
+    for (const test of testsArray) {
       try {
         const now = new Date();
         await storage.insertTest({
           id: test.id,
           name: test.name,
           category: test.category,
-          subCategory: test.subCategory,
-          cptCode: test.cptCode || null,
-          loincCode: test.loincCode || null,
-          snomedCode: test.snomedCode || null,
+          subCategory: test.sub_category || test.subCategory, // Handle both formats
+          cptCode: test.cpt_code || test.cptCode || null, 
+          loincCode: test.loinc_code || test.loincCode || null,
+          snomedCode: test.snomed_code || test.snomedCode || null,
           description: test.description || null,
           notes: test.notes || "",
-          createdAt: test.createdAt ? new Date(test.createdAt) : now,
-          updatedAt: test.updatedAt ? new Date(test.updatedAt) : now
+          createdAt: new Date(test.created_at || test.createdAt || now),
+          updatedAt: new Date(test.updated_at || test.updatedAt || now)
         });
         loadedCount++;
       } catch (err) {
