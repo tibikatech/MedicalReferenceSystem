@@ -40,10 +40,10 @@ export default function TestCard({ test, onSelect }: TestCardProps) {
       
       <CardContent className="flex-grow border-t border-neutral-200 px-4 py-4 sm:px-6 dark:border-neutral-700">
         <div className="flex flex-wrap gap-2 mb-3">
-          <Badge className={getCategoryBadgeClass(category)}>
+          <Badge variant="category">
             {category}
           </Badge>
-          <Badge className={getSubcategoryBadgeClass(subCategory)}>
+          <Badge variant="subcategory">
             {subCategory}
           </Badge>
         </div>
