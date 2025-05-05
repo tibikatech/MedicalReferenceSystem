@@ -1,0 +1,42 @@
+{
+  "categories": [
+    {
+      "category": "Imaging Studies",
+      "count": "85"
+    },
+    {
+      "category": "Laboratory Tests",
+      "count": "30"
+    }
+  ],
+  "subcategories": [
+    {
+      "sub_category": "Clinical Chemistry",
+      "count": "5"
+    },
+    {
+      "sub_category": "Computed Tomography (CT)",
+      "count": "19"
+    },
+    {
+      "sub_category": "Hematology",
+      "count": "5"
+    },
+    {
+      "sub_category": "Immunology/Serology",
+      "count": "5"
+    },
+    {
+      "sub_category": "Magnetic Resonance Imaging (MRI)",
+      "count": "66"
+    },
+    {
+      "sub_category": "Microbiology",
+      "count": "5"
+    },
+    {
+      "sub_category": "Molecular Diagnostics",
+      "count": "10"
+    }
+  ]
+}
