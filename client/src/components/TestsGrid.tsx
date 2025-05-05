@@ -18,33 +18,33 @@ export default function TestsGrid({ tests, isLoading, isError, onTestSelect }: T
       <div className="flex-1">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {Array(6).fill(0).map((_, index) => (
-            <div key={index} className="bg-white overflow-hidden shadow rounded-lg border border-neutral-200 flex flex-col dark:bg-neutral-800 dark:border-neutral-700">
+            <div key={index} className="bg-gray-800 overflow-hidden shadow rounded-lg border border-gray-700 flex flex-col">
               <div className="px-4 py-5 sm:px-6 flex justify-between">
-                <Skeleton className="h-6 w-3/4" />
-                <Skeleton className="h-6 w-6 rounded-full" />
+                <Skeleton className="h-6 w-3/4 bg-gray-700" />
+                <Skeleton className="h-6 w-6 rounded-full bg-gray-700" />
               </div>
-              <div className="border-t border-neutral-200 px-4 py-4 sm:px-6 dark:border-neutral-700">
+              <div className="border-t border-gray-700 px-4 py-4 sm:px-6">
                 <div className="flex gap-2 mb-3">
-                  <Skeleton className="h-5 w-20 rounded-full" />
-                  <Skeleton className="h-5 w-32 rounded-full" />
+                  <Skeleton className="h-5 w-20 rounded-full bg-gray-700" />
+                  <Skeleton className="h-5 w-32 rounded-full bg-gray-700" />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Skeleton className="h-4 w-16 mb-2" />
-                    <Skeleton className="h-5 w-12" />
+                    <Skeleton className="h-4 w-16 mb-2 bg-gray-700" />
+                    <Skeleton className="h-5 w-12 bg-gray-700" />
                   </div>
                   <div>
-                    <Skeleton className="h-4 w-16 mb-2" />
-                    <Skeleton className="h-5 w-20" />
+                    <Skeleton className="h-4 w-16 mb-2 bg-gray-700" />
+                    <Skeleton className="h-5 w-20 bg-gray-700" />
                   </div>
                 </div>
               </div>
-              <div className="border-t border-neutral-200 px-4 py-3 dark:border-neutral-700">
-                <Skeleton className="h-4 w-full mb-1" />
-                <Skeleton className="h-4 w-2/3" />
+              <div className="border-t border-gray-700 px-4 py-3">
+                <Skeleton className="h-4 w-full mb-1 bg-gray-700" />
+                <Skeleton className="h-4 w-2/3 bg-gray-700" />
               </div>
-              <div className="border-t border-neutral-200 px-4 py-4 sm:px-6 flex justify-end dark:border-neutral-700">
-                <Skeleton className="h-8 w-24 rounded-md" />
+              <div className="border-t border-gray-700 px-4 py-4 sm:px-6 flex justify-end">
+                <Skeleton className="h-8 w-24 rounded-md bg-gray-700" />
               </div>
             </div>
           ))}
@@ -57,10 +57,10 @@ export default function TestsGrid({ tests, isLoading, isError, onTestSelect }: T
   if (isError) {
     return (
       <div className="flex-1">
-        <Alert variant="destructive">
+        <Alert variant="destructive" className="bg-red-900 border-red-800 text-white">
           <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>
+          <AlertTitle className="text-white">Error</AlertTitle>
+          <AlertDescription className="text-gray-200">
             Failed to load test data. Please try again later.
           </AlertDescription>
         </Alert>
@@ -72,10 +72,10 @@ export default function TestsGrid({ tests, isLoading, isError, onTestSelect }: T
   if (!tests || tests.length === 0) {
     return (
       <div className="flex-1">
-        <Alert>
-          <AlertCircle className="h-4 w-4" />
-          <AlertTitle>No results found</AlertTitle>
-          <AlertDescription>
+        <Alert className="bg-gray-800 border-gray-700 text-white">
+          <AlertCircle className="h-4 w-4 text-blue-400" />
+          <AlertTitle className="text-white">No results found</AlertTitle>
+          <AlertDescription className="text-gray-300">
             Try adjusting your search or filters to find what you're looking for.
           </AlertDescription>
         </Alert>
