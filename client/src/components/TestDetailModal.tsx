@@ -98,6 +98,17 @@ export default function TestDetailModal({ test, isOpen, onClose }: TestDetailMod
                     {formatValue(loincCode)}
                   </td>
                 </tr>
+                {/* For other test categories, we might have other specialized codes in the future */}
+                {['Cardiovascular Tests', 'Neurological Tests', 'Pulmonary Tests', 'Gastrointestinal Tests', 'Specialty-Specific Tests', 'Functional Tests'].includes(category) && (
+                  <tr>
+                    <td className="py-2 text-sm font-semibold text-primary-700 dark:text-primary-400">
+                      Specialty Code (Primary)
+                    </td>
+                    <td className="py-2 text-sm font-semibold text-primary-700 dark:text-primary-400">
+                      {formatValue(cptCode || snomedCode || loincCode)}
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>

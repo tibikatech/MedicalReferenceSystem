@@ -5,7 +5,13 @@
 // Valid categories
 export const VALID_CATEGORIES = {
   LABORATORY_TESTS: 'Laboratory Tests',
-  IMAGING_STUDIES: 'Imaging Studies'
+  IMAGING_STUDIES: 'Imaging Studies',
+  CARDIOVASCULAR_TESTS: 'Cardiovascular Tests',
+  NEUROLOGICAL_TESTS: 'Neurological Tests',
+  PULMONARY_TESTS: 'Pulmonary Tests',
+  GASTROINTESTINAL_TESTS: 'Gastrointestinal Tests',
+  SPECIALTY_SPECIFIC_TESTS: 'Specialty-Specific Tests',
+  FUNCTIONAL_TESTS: 'Functional Tests'
 };
 
 // Valid subcategories by category
@@ -13,19 +19,64 @@ export const VALID_SUBCATEGORIES = {
   [VALID_CATEGORIES.LABORATORY_TESTS]: [
     'Clinical Chemistry',
     'Hematology',
+    'Microbiology',
     'Immunology/Serology',
     'Molecular Diagnostics',
-    'Microbiology'
+    'Toxicology',
+    'Urinalysis',
+    'Endocrinology',
+    'Genetic Testing',
+    'Tumor Markers'
   ],
   [VALID_CATEGORIES.IMAGING_STUDIES]: [
+    'Radiography (X-rays)',
     'Computed Tomography (CT)',
     'Magnetic Resonance Imaging (MRI)',
     'Ultrasound',
-    'X-ray',
     'Nuclear Medicine',
     'Positron Emission Tomography (PET)',
     'Fluoroscopy',
-    'Mammography'
+    'Mammography',
+    'Bone Densitometry'
+  ],
+  [VALID_CATEGORIES.CARDIOVASCULAR_TESTS]: [
+    'Electrocardiography',
+    'Echocardiography',
+    'Stress Testing',
+    'Cardiac Catheterization',
+    'Electrophysiology Studies',
+    'Vascular Studies'
+  ],
+  [VALID_CATEGORIES.NEUROLOGICAL_TESTS]: [
+    'Electroencephalography (EEG)',
+    'Electromyography (EMG)',
+    'Nerve Conduction Studies',
+    'Evoked Potentials',
+    'Sleep Studies'
+  ],
+  [VALID_CATEGORIES.PULMONARY_TESTS]: [
+    'Pulmonary Function Tests',
+    'Bronchoscopy',
+    'Sleep Studies',
+    'Arterial Blood Gas Analysis'
+  ],
+  [VALID_CATEGORIES.GASTROINTESTINAL_TESTS]: [
+    'Endoscopic Procedures',
+    'Manometry',
+    'Breath Tests',
+    'Motility Studies'
+  ],
+  [VALID_CATEGORIES.SPECIALTY_SPECIFIC_TESTS]: [
+    'Women\'s Health/OB-GYN',
+    'Ophthalmology',
+    'Audiology',
+    'Dermatology',
+    'Allergology'
+  ],
+  [VALID_CATEGORIES.FUNCTIONAL_TESTS]: [
+    'Exercise Tests',
+    'Swallowing Studies',
+    'Balance Testing'
   ]
 };
 
@@ -66,6 +117,21 @@ export function generateTestId(category: string, subcategory: string, count: num
     catCode = 'LAB';
   } else if (category === VALID_CATEGORIES.IMAGING_STUDIES) {
     catCode = 'IMG';
+  } else if (category === VALID_CATEGORIES.CARDIOVASCULAR_TESTS) {
+    catCode = 'CVS';
+  } else if (category === VALID_CATEGORIES.NEUROLOGICAL_TESTS) {
+    catCode = 'NEU';
+  } else if (category === VALID_CATEGORIES.PULMONARY_TESTS) {
+    catCode = 'PUL';
+  } else if (category === VALID_CATEGORIES.GASTROINTESTINAL_TESTS) {
+    catCode = 'GIT';
+  } else if (category === VALID_CATEGORIES.SPECIALTY_SPECIFIC_TESTS) {
+    catCode = 'SPC';
+  } else if (category === VALID_CATEGORIES.FUNCTIONAL_TESTS) {
+    catCode = 'FNC';
+  } else {
+    // Default code for unknown categories
+    catCode = 'GEN';
   }
   
   // Set subcategory code (first 3 letters, simplified for this example)

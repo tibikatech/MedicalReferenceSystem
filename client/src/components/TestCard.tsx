@@ -5,6 +5,43 @@ import { Bookmark } from "lucide-react";
 import { getCategoryBadgeClass, getSubcategoryBadgeClass, truncateText } from "@/lib/utils";
 import { Test } from "@/types";
 
+// Helper function to determine code type based on category
+function getCodeType(category: string): string {
+  switch (category) {
+    case 'Laboratory Tests':
+      return 'LOINC';
+    case 'Imaging Studies':
+      return 'SNOMED';
+    case 'Cardiovascular Tests':
+      return 'Code';
+    case 'Neurological Tests':
+      return 'Code';
+    case 'Pulmonary Tests':
+      return 'Code';
+    case 'Gastrointestinal Tests':
+      return 'Code';
+    case 'Specialty-Specific Tests':
+      return 'Code';
+    case 'Functional Tests':
+      return 'Code';
+    default:
+      return 'Code';
+  }
+}
+
+// Helper function to get the appropriate code value based on category
+function getCodeValue(category: string, loincCode: string | null | undefined, snomedCode: string | null | undefined, cptCode: string | null | undefined): string {
+  switch (category) {
+    case 'Laboratory Tests':
+      return loincCode || 'N/A';
+    case 'Imaging Studies':
+      return snomedCode || 'N/A';
+    default:
+      // For other categories, show any available code with preference order
+      return loincCode || snomedCode || cptCode || 'N/A';
+  }
+}
+
 interface TestCardProps {
   test: Test;
   onSelect: (test: Test) => void;
@@ -57,12 +94,10 @@ export default function TestCard({ test, onSelect }: TestCardProps) {
           </div>
           <div>
             <span className="block text-neutral-500 dark:text-neutral-400">
-              {category === 'Laboratory Tests' ? 'LOINC' : category === 'Imaging Studies' ? 'SNOMED' : 'Code'}
+              {getCodeType(category)}
             </span>
             <span className="block font-medium text-neutral-900 dark:text-neutral-100">
-              {category === 'Laboratory Tests' ? (loincCode || 'N/A') : 
-               category === 'Imaging Studies' ? (snomedCode || 'N/A') : 
-               (loincCode || snomedCode || 'N/A')}
+              {getCodeValue(category, loincCode, snomedCode, cptCode)}
             </span>
           </div>
         </div>
