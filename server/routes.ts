@@ -141,14 +141,14 @@ async function initializeTestData() {
           id: test.id,
           name: test.name,
           category: test.category,
-          subCategory: test.sub_category,
-          cptCode: test.cpt_code,
-          loincCode: test.loinc_code,
-          snomedCode: test.snomed_code,
-          description: test.description,
+          subCategory: test.subCategory,
+          cptCode: test.cptCode || null,
+          loincCode: test.loincCode || null,
+          snomedCode: test.snomedCode || null,
+          description: test.description || null,
           notes: test.notes || "",
-          createdAt: now,
-          updatedAt: now
+          createdAt: test.createdAt ? new Date(test.createdAt) : now,
+          updatedAt: test.updatedAt ? new Date(test.updatedAt) : now
         });
         loadedCount++;
       } catch (err) {
