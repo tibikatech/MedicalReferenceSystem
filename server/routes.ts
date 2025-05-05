@@ -107,6 +107,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ error: "Failed to fetch test counts by subcategory" });
     }
   });
+  
+  // Get test counts by subcategory filtered by category
+  app.get("/api/test-count-by-subcategory/:category", async (req, res) => {
+    try {
+      const { category } = req.params;
+      if (!category) {
+        return res.status(400).json({ error: "Category parameter is required" });
+      }
+      
+      // Get all subcategories first
+      const allSubcategories = await storage.getTestCountBySubCategory();
+      
+      // Get tests for this category
+      const tests = await storage.getTestsByCategory(category);
+      
+      // Extract unique subcategories from the tests in this category
+      const categorySubcategories = new Set(tests.map(test => test.subCategory));
+      
+      // Filter subcategories that belong to this category
+      const filteredSubcategories = allSubcategories.filter(sub => 
+        categorySubcategories.has(sub.subCategory)
+      );
+      
+      res.json({ subcategories: filteredSubcategories });
+    } catch (error) {
+      console.error(`Error fetching subcategories for category ${req.params.category}:`, error);
+      res.status(500).json({ error: "Failed to fetch subcategories by category" });
+    }
+  });
 
   // Laboratory Tests endpoints
   app.get("/api/laboratory-tests", async (req, res, next) => {

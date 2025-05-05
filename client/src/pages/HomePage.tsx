@@ -40,10 +40,9 @@ export default function HomePage() {
   // Handle subcategory selection
   const handleSubCategorySelect = (subcategory: string | null) => {
     setSelectedSubCategory(subcategory);
-    // Only reset category if it would create an invalid filter combination
-    if (subcategory !== null) {
-      setSelectedCategory(null);
-    }
+    // If deselecting (clearing) a subcategory, keep the current category
+    // If selecting a subcategory, don't modify the category as the UI will show
+    // only subcategories that belong to the selected category
   };
 
   // Handle test selection for detailed view

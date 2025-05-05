@@ -28,7 +28,9 @@ export function useTestData(
   
   // Query subcategory counts
   const subcategoriesQuery = useQuery<{ subcategories: SubcategoryCount[] }>({
-    queryKey: ["/api/test-count-by-subcategory"],
+    queryKey: !selectedCategory 
+      ? ["/api/test-count-by-subcategory"] 
+      : [`/api/test-count-by-subcategory/${encodeURIComponent(selectedCategory)}`],
   });
   
   // Get test data by selected category
