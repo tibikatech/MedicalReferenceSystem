@@ -60,25 +60,25 @@ export default function HomePage() {
     <>
       <Header onSearch={setSearchQuery} />
       
-      <main className="flex-grow">
+      <main className="flex-grow bg-gray-900 text-white min-h-screen">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Hero section */}
-          <div className="hero mb-8">
-            <h1 className="hero-title text-2xl font-bold">
+          <div className="mb-8">
+            <h1 className="text-2xl font-bold text-white">
               Medical Test Reference
             </h1>
-            <span className="tests-count">
+            <span className="inline-block mt-2 px-3 py-1 bg-gray-800 text-white rounded-full text-sm">
               {tests ? tests.length : 0} tests available
             </span>
             
-            <div className="hero-actions mt-4 md:mt-0 flex space-x-2">
-              <button className="hero-btn inline-flex items-center">
+            <div className="mt-4 flex space-x-2">
+              <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium flex items-center">
                 <svg className="mr-2 -ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
                 </svg>
                 Manage Tests
               </button>
-              <button className="hero-btn secondary inline-flex items-center">
+              <button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md font-medium">
                 Database Migration
               </button>
             </div>

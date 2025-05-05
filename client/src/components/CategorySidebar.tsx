@@ -20,19 +20,21 @@ export default function CategorySidebar({
 }: CategorySidebarProps) {
   return (
     <div className="w-full md:w-64 mb-6 md:mb-0 md:mr-8">
-      <h2 className="text-lg font-medium text-neutral-900 dark:text-neutral-100 mb-4">Categories</h2>
+      <h2 className="text-lg font-medium text-white mb-4">Categories</h2>
       
       {/* Main categories */}
-      <div className="category-tabs flex flex-wrap md:flex-col mb-6">
+      <div className="flex flex-col space-y-2 mb-6">
         <button
           onClick={() => onCategorySelect(null)}
           className={cn(
-            "category-tab",
-            !selectedCategory && !selectedSubCategory ? "active" : ""
+            "inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium",
+            !selectedCategory && !selectedSubCategory 
+              ? "bg-blue-600 text-white" 
+              : "bg-gray-700 text-gray-200 hover:bg-gray-600"
           )}
         >
           All
-          <span className="ml-1.5 bg-white bg-opacity-30 px-1.5 py-0.5 rounded-full text-xs font-semibold">
+          <span className="ml-1.5 bg-gray-600 bg-opacity-50 px-1.5 py-0.5 rounded-full text-xs font-semibold">
             {categories.reduce((sum, cat) => sum + cat.count, 0)}
           </span>
         </button>
@@ -42,12 +44,14 @@ export default function CategorySidebar({
             key={category.category}
             onClick={() => onCategorySelect(category.category)}
             className={cn(
-              "category-tab",
-              selectedCategory === category.category ? "active" : ""
+              "inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium",
+              selectedCategory === category.category
+                ? "bg-blue-600 text-white"
+                : "bg-gray-700 text-gray-200 hover:bg-gray-600"
             )}
           >
             {category.category}
-            <span className="ml-1.5 bg-neutral-300 dark:bg-neutral-600 px-1.5 py-0.5 rounded-full text-xs font-semibold">
+            <span className="ml-1.5 bg-gray-600 px-1.5 py-0.5 rounded-full text-xs font-semibold">
               {category.count}
             </span>
           </button>
@@ -55,21 +59,23 @@ export default function CategorySidebar({
       </div>
       
       {/* Subcategories */}
-      <h3 className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-3">
-        Subcategories
+      <h3 className="text-sm font-medium text-gray-300 mb-3">
+        {selectedCategory ? `${selectedCategory} Subcategories` : 'Subcategories'}
       </h3>
-      <div className="category-tabs flex-col space-y-2">
+      <div className="flex flex-col space-y-2">
         {subcategories.map((subcategory) => (
           <button
             key={subcategory.subCategory}
             onClick={() => onSubCategorySelect(subcategory.subCategory)}
             className={cn(
-              "category-tab w-full justify-between",
-              selectedSubCategory === subcategory.subCategory ? "active" : ""
+              "inline-flex items-center justify-between px-3 py-1.5 rounded-full text-sm font-medium",
+              selectedSubCategory === subcategory.subCategory
+                ? "bg-blue-600 text-white"
+                : "bg-gray-700 text-gray-200 hover:bg-gray-600"
             )}
           >
             <span>{subcategory.subCategory}</span>
-            <span className="bg-neutral-200 dark:bg-neutral-700 px-1.5 py-0.5 rounded-full text-xs font-semibold">
+            <span className="ml-1.5 bg-gray-600 px-1.5 py-0.5 rounded-full text-xs font-semibold">
               {subcategory.count}
             </span>
           </button>
