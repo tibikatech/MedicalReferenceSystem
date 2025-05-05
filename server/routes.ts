@@ -106,6 +106,100 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Laboratory Tests endpoints
+  app.get("/api/laboratory-tests", async (req, res) => {
+    try {
+      const tests = await storage.getLaboratoryTests();
+      res.json({ tests });
+    } catch (error) {
+      console.error("Error fetching laboratory tests:", error);
+      res.status(500).json({ error: "Failed to fetch laboratory tests" });
+    }
+  });
+  
+  // Imaging Studies endpoints
+  app.get("/api/imaging-studies", async (req, res) => {
+    try {
+      const tests = await storage.getImagingStudies();
+      res.json({ tests });
+    } catch (error) {
+      console.error("Error fetching imaging studies:", error);
+      res.status(500).json({ error: "Failed to fetch imaging studies" });
+    }
+  });
+  
+  // Get specific laboratory test by ID
+  app.get("/api/laboratory-tests/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const test = await storage.getTestById(id);
+      
+      if (!test) {
+        return res.status(404).json({ error: "Laboratory test not found" });
+      }
+      
+      if (test.category !== 'Laboratory Tests') {
+        return res.status(400).json({ error: "Requested test is not a laboratory test" });
+      }
+      
+      res.json({ test });
+    } catch (error) {
+      console.error(`Error fetching laboratory test ${req.params.id}:`, error);
+      res.status(500).json({ error: "Failed to fetch laboratory test" });
+    }
+  });
+  
+  // Get specific imaging study by ID
+  app.get("/api/imaging-studies/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const test = await storage.getTestById(id);
+      
+      if (!test) {
+        return res.status(404).json({ error: "Imaging study not found" });
+      }
+      
+      if (test.category !== 'Imaging Studies') {
+        return res.status(400).json({ error: "Requested test is not an imaging study" });
+      }
+      
+      res.json({ test });
+    } catch (error) {
+      console.error(`Error fetching imaging study ${req.params.id}:`, error);
+      res.status(500).json({ error: "Failed to fetch imaging study" });
+    }
+  });
+  
+  // Update LOINC codes for laboratory tests
+  app.post("/api/laboratory-tests/update-loinc-codes", async (req, res) => {
+    try {
+      const updatedCount = await storage.updateLoincCodes();
+      res.json({ 
+        success: true, 
+        message: `Updated LOINC codes for ${updatedCount} laboratory tests`,
+        updatedCount 
+      });
+    } catch (error) {
+      console.error("Error updating LOINC codes:", error);
+      res.status(500).json({ error: "Failed to update LOINC codes" });
+    }
+  });
+  
+  // Update SNOMED codes for imaging studies
+  app.post("/api/imaging-studies/update-snomed-codes", async (req, res) => {
+    try {
+      const updatedCount = await storage.updateSnomedCodes();
+      res.json({ 
+        success: true, 
+        message: `Updated SNOMED codes for ${updatedCount} imaging studies`,
+        updatedCount 
+      });
+    } catch (error) {
+      console.error("Error updating SNOMED codes:", error);
+      res.status(500).json({ error: "Failed to update SNOMED codes" });
+    }
+  });
+
   // Health check endpoint
   app.get("/api/health", (req, res) => {
     res.json({ status: "healthy", timestamp: new Date() });

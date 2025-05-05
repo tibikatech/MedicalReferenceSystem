@@ -108,6 +108,95 @@ export class DatabaseStorage implements IStorage {
       count
     }));
   }
+  
+  // Laboratory Tests and Imaging Studies methods
+  async getLaboratoryTests(): Promise<Test[]> {
+    return await db
+      .select()
+      .from(tests)
+      .where(eq(tests.category, 'Laboratory Tests'));
+  }
+  
+  async getImagingStudies(): Promise<Test[]> {
+    return await db
+      .select()
+      .from(tests)
+      .where(eq(tests.category, 'Imaging Studies'));
+  }
+  
+  // Helper function to find LOINC code for a laboratory test
+  private findLoincCode(test: Test): string | null {
+    // This is a simplified implementation - in a real application,
+    // this would likely involve calling an external LOINC API or 
+    // looking up in a more comprehensive local database
+    
+    // For the purpose of this implementation, we'll use a simple mapping based on test name
+    const loincMappings: Record<string, string> = {
+      'Complete Blood Count (CBC)': '58410-2',
+      'Comprehensive Metabolic Panel': '24323-8',
+      'Liver Function Tests': '1991-9',
+      'Kidney Function Tests': '2160-0',
+      'Hemoglobin A1c (HbA1c)': '4544-3'
+      // In a real app, this would be much more extensive
+    };
+    
+    return loincMappings[test.name] || test.loincCode || null;
+  }
+  
+  // Helper function to find SNOMED code for an imaging study
+  private findSnomedCode(test: Test): string | null {
+    // This is a simplified implementation - in a real application,
+    // this would likely involve calling an external SNOMED CT API or
+    // looking up in a more comprehensive local database
+    
+    // For the purpose of this implementation, we'll use a simple mapping based on test name
+    const snomedMappings: Record<string, string> = {
+      'Chest X-ray': '399208008',
+      'Abdominal Ultrasound': '241551004',
+      'CT Scan of Brain': '303653007',
+      'MRI of Knee': '429530000',
+      'PET Scan': '310128004'
+      // In a real app, this would be much more extensive
+    };
+    
+    return snomedMappings[test.name] || test.snomedCode || null;
+  }
+  
+  async updateLoincCodes(): Promise<number> {
+    let updatedCount = 0;
+    const labTests = await this.getLaboratoryTests();
+    
+    for (const test of labTests) {
+      if (!test.loincCode) {
+        const loincCode = this.findLoincCode(test);
+        if (loincCode) {
+          await this.updateTest(test.id, { loincCode });
+          updatedCount++;
+          console.log(`Updated laboratory test "${test.name}" with LOINC code: ${loincCode}`);
+        }
+      }
+    }
+    
+    return updatedCount;
+  }
+  
+  async updateSnomedCodes(): Promise<number> {
+    let updatedCount = 0;
+    const imagingStudies = await this.getImagingStudies();
+    
+    for (const study of imagingStudies) {
+      if (!study.snomedCode) {
+        const snomedCode = this.findSnomedCode(study);
+        if (snomedCode) {
+          await this.updateTest(study.id, { snomedCode });
+          updatedCount++;
+          console.log(`Updated imaging study "${study.name}" with SNOMED code: ${snomedCode}`);
+        }
+      }
+    }
+    
+    return updatedCount;
+  }
 
   // User methods
   async getUser(id: number): Promise<User | undefined> {

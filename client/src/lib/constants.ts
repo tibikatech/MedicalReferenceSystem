@@ -7,6 +7,16 @@ export const API_ENDPOINTS = {
   SEARCH_TESTS: (query: string) => `/api/tests/search?q=${encodeURIComponent(query)}`,
   TEST_COUNT_BY_CATEGORY: '/api/test-count-by-category',
   TEST_COUNT_BY_SUBCATEGORY: '/api/test-count-by-subcategory',
+  
+  // Laboratory Tests endpoints
+  LABORATORY_TESTS: '/api/laboratory-tests',
+  LABORATORY_TEST_BY_ID: (id: string) => `/api/laboratory-tests/${id}`,
+  UPDATE_LOINC_CODES: '/api/laboratory-tests/update-loinc-codes',
+  
+  // Imaging Studies endpoints
+  IMAGING_STUDIES: '/api/imaging-studies',
+  IMAGING_STUDY_BY_ID: (id: string) => `/api/imaging-studies/${id}`,
+  UPDATE_SNOMED_CODES: '/api/imaging-studies/update-snomed-codes',
 };
 
 // Color mapping for categories
