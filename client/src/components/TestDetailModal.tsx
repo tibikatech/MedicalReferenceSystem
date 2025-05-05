@@ -1,0 +1,156 @@
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { getCategoryBadgeClass, getSubcategoryBadgeClass, formatValue } from "@/lib/utils";
+import { Test } from "@/types";
+import { X } from "lucide-react";
+
+interface TestDetailModalProps {
+  test: Test;
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export default function TestDetailModal({ test, isOpen, onClose }: TestDetailModalProps) {
+  const {
+    id,
+    name,
+    category,
+    subCategory,
+    cptCode,
+    loincCode,
+    snomedCode,
+    description,
+    notes,
+  } = test;
+
+  return (
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="sm:max-w-4xl">
+        <DialogHeader className="flex justify-between items-center">
+          <DialogTitle className="text-xl">{name}</DialogTitle>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onClose}
+            className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+          >
+            <X className="h-4 w-4" />
+            <span className="sr-only">Close</span>
+          </Button>
+        </DialogHeader>
+        
+        <div className="mb-4">
+          <div className="flex gap-2 mb-4">
+            <Badge className={getCategoryBadgeClass(category)}>
+              {category}
+            </Badge>
+            <Badge className={getSubcategoryBadgeClass(subCategory)}>
+              {subCategory}
+            </Badge>
+          </div>
+          
+          <DialogDescription className="text-neutral-600 mb-5 dark:text-neutral-300">
+            {description}
+          </DialogDescription>
+        </div>
+        
+        <Separator />
+        
+        <div className="py-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h4 className="text-sm font-medium text-neutral-500 mb-2 dark:text-neutral-400">
+              Test Information
+            </h4>
+            <table className="min-w-full">
+              <tbody>
+                <tr>
+                  <td className="py-2 text-sm text-neutral-500 dark:text-neutral-400">Test ID</td>
+                  <td className="py-2 text-sm font-medium text-neutral-900 dark:text-neutral-100">{id}</td>
+                </tr>
+                <tr>
+                  <td className="py-2 text-sm text-neutral-500 dark:text-neutral-400">CPT Code</td>
+                  <td className="py-2 text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                    {formatValue(cptCode)}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="py-2 text-sm text-neutral-500 dark:text-neutral-400">SNOMED Code</td>
+                  <td className="py-2 text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                    {formatValue(snomedCode)}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="py-2 text-sm text-neutral-500 dark:text-neutral-400">LOINC Code</td>
+                  <td className="py-2 text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                    {formatValue(loincCode)}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div>
+            <h4 className="text-sm font-medium text-neutral-500 mb-2 dark:text-neutral-400">
+              Related Tests
+            </h4>
+            <ul className="space-y-3">
+              <li className="bg-neutral-50 px-4 py-3 rounded-lg dark:bg-neutral-700">
+                <a href="#" className="block hover:text-primary-600 text-sm font-medium dark:hover:text-primary-400">
+                  {subCategory === "Computed Tomography (CT)" 
+                    ? "Non-contrast CT of the Chest" 
+                    : "Complete Blood Count (CBC)"}
+                </a>
+              </li>
+              <li className="bg-neutral-50 px-4 py-3 rounded-lg dark:bg-neutral-700">
+                <a href="#" className="block hover:text-primary-600 text-sm font-medium dark:hover:text-primary-400">
+                  {subCategory === "Computed Tomography (CT)" 
+                    ? "Contrast-enhanced CT of the Chest" 
+                    : "Basic Metabolic Panel (BMP)"}
+                </a>
+              </li>
+              <li className="bg-neutral-50 px-4 py-3 rounded-lg dark:bg-neutral-700">
+                <a href="#" className="block hover:text-primary-600 text-sm font-medium dark:hover:text-primary-400">
+                  {subCategory === "Computed Tomography (CT)" 
+                    ? "CT of the Lungs (HRCT)" 
+                    : "Comprehensive Metabolic Panel (CMP)"}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        {notes && (
+          <>
+            <Separator />
+            <div className="pt-6">
+              <h4 className="text-sm font-medium text-neutral-500 mb-4 dark:text-neutral-400">
+                Additional Information
+              </h4>
+              <div className="bg-neutral-50 p-4 rounded-lg text-sm text-neutral-600 dark:bg-neutral-700 dark:text-neutral-300">
+                <p>{notes}</p>
+              </div>
+            </div>
+          </>
+        )}
+        
+        <DialogFooter className="mt-6">
+          <Button variant="outline" onClick={onClose}>
+            Close
+          </Button>
+          <Button>
+            Add to Bookmarks
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
