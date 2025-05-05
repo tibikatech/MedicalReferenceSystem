@@ -1,3 +1,4 @@
+
 {
   "categories": [
     {
@@ -11,31 +12,31 @@
   ],
   "subcategories": [
     {
-      "sub_category": "Clinical Chemistry",
+      "subCategory": "Clinical Chemistry",
       "count": "5"
     },
     {
-      "sub_category": "Computed Tomography (CT)",
+      "subCategory": "Computed Tomography (CT)",
       "count": "19"
     },
     {
-      "sub_category": "Hematology",
+      "subCategory": "Hematology",
       "count": "5"
     },
     {
-      "sub_category": "Immunology/Serology",
+      "subCategory": "Immunology/Serology",
       "count": "5"
     },
     {
-      "sub_category": "Magnetic Resonance Imaging (MRI)",
+      "subCategory": "Magnetic Resonance Imaging (MRI)",
       "count": "66"
     },
     {
-      "sub_category": "Microbiology",
+      "subCategory": "Microbiology",
       "count": "5"
     },
     {
-      "sub_category": "Molecular Diagnostics",
+      "subCategory": "Molecular Diagnostics",
       "count": "10"
     }
   ]
