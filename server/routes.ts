@@ -1,6 +1,8 @@
-import type { Express } from "express";
+import type { Express, Request, Response, NextFunction } from "express";
 import { createServer, type Server } from "http";
 import { dbStorage as storage } from "./storage-db";
+import { errorHandler, createNotFoundError } from "./utils/error-handler";
+import { VALID_CATEGORIES } from "./utils/medical-constants";
 import fs from 'fs';
 import path from 'path';
 
@@ -107,96 +109,104 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Laboratory Tests endpoints
-  app.get("/api/laboratory-tests", async (req, res) => {
+  app.get("/api/laboratory-tests", async (req, res, next) => {
     try {
       const tests = await storage.getLaboratoryTests();
       res.json({ tests });
     } catch (error) {
-      console.error("Error fetching laboratory tests:", error);
-      res.status(500).json({ error: "Failed to fetch laboratory tests" });
+      next(error);
     }
   });
   
   // Imaging Studies endpoints
-  app.get("/api/imaging-studies", async (req, res) => {
+  app.get("/api/imaging-studies", async (req, res, next) => {
     try {
       const tests = await storage.getImagingStudies();
       res.json({ tests });
     } catch (error) {
-      console.error("Error fetching imaging studies:", error);
-      res.status(500).json({ error: "Failed to fetch imaging studies" });
+      next(error);
     }
   });
   
   // Get specific laboratory test by ID
-  app.get("/api/laboratory-tests/:id", async (req, res) => {
+  app.get("/api/laboratory-tests/:id", async (req, res, next) => {
     try {
       const { id } = req.params;
       const test = await storage.getTestById(id);
       
       if (!test) {
-        return res.status(404).json({ error: "Laboratory test not found" });
+        throw createNotFoundError(`Laboratory test with ID ${id} not found`);
       }
       
-      if (test.category !== 'Laboratory Tests') {
-        return res.status(400).json({ error: "Requested test is not a laboratory test" });
+      if (test.category !== VALID_CATEGORIES.LABORATORY_TESTS) {
+        return res.status(400).json({ 
+          error: {
+            code: 'INVALID_CATEGORY',
+            message: `Requested test with ID ${id} is not a laboratory test, it belongs to ${test.category} category`
+          }
+        });
       }
       
       res.json({ test });
     } catch (error) {
-      console.error(`Error fetching laboratory test ${req.params.id}:`, error);
-      res.status(500).json({ error: "Failed to fetch laboratory test" });
+      next(error);
     }
   });
   
   // Get specific imaging study by ID
-  app.get("/api/imaging-studies/:id", async (req, res) => {
+  app.get("/api/imaging-studies/:id", async (req, res, next) => {
     try {
       const { id } = req.params;
       const test = await storage.getTestById(id);
       
       if (!test) {
-        return res.status(404).json({ error: "Imaging study not found" });
+        throw createNotFoundError(`Imaging study with ID ${id} not found`);
       }
       
-      if (test.category !== 'Imaging Studies') {
-        return res.status(400).json({ error: "Requested test is not an imaging study" });
+      if (test.category !== VALID_CATEGORIES.IMAGING_STUDIES) {
+        return res.status(400).json({ 
+          error: {
+            code: 'INVALID_CATEGORY',
+            message: `Requested test with ID ${id} is not an imaging study, it belongs to ${test.category} category`
+          }
+        });
       }
       
       res.json({ test });
     } catch (error) {
-      console.error(`Error fetching imaging study ${req.params.id}:`, error);
-      res.status(500).json({ error: "Failed to fetch imaging study" });
+      next(error);
     }
   });
   
   // Update LOINC codes for laboratory tests
-  app.post("/api/laboratory-tests/update-loinc-codes", async (req, res) => {
+  app.post("/api/laboratory-tests/update-loinc-codes", async (req, res, next) => {
     try {
       const updatedCount = await storage.updateLoincCodes();
+      
       res.json({ 
         success: true, 
         message: `Updated LOINC codes for ${updatedCount} laboratory tests`,
-        updatedCount 
+        updatedCount,
+        timestamp: new Date()
       });
     } catch (error) {
-      console.error("Error updating LOINC codes:", error);
-      res.status(500).json({ error: "Failed to update LOINC codes" });
+      next(error);
     }
   });
   
   // Update SNOMED codes for imaging studies
-  app.post("/api/imaging-studies/update-snomed-codes", async (req, res) => {
+  app.post("/api/imaging-studies/update-snomed-codes", async (req, res, next) => {
     try {
       const updatedCount = await storage.updateSnomedCodes();
+      
       res.json({ 
         success: true, 
         message: `Updated SNOMED codes for ${updatedCount} imaging studies`,
-        updatedCount 
+        updatedCount,
+        timestamp: new Date()
       });
     } catch (error) {
-      console.error("Error updating SNOMED codes:", error);
-      res.status(500).json({ error: "Failed to update SNOMED codes" });
+      next(error);
     }
   });
 

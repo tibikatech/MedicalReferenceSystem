@@ -178,42 +178,28 @@ export class MemStorage implements IStorage {
     );
   }
   
-  // Helper function to find LOINC code for a laboratory test
+  // Using centralized utilities for code lookup
   private findLoincCode(test: Test): string | null {
-    // This is a simplified implementation - in a real application,
-    // this would likely involve calling an external LOINC API or 
-    // looking up in a more comprehensive local database
-    
-    // For the purpose of this implementation, we'll use a simple mapping based on test name
-    const loincMappings: Record<string, string> = {
-      'Complete Blood Count (CBC)': '58410-2',
-      'Comprehensive Metabolic Panel': '24323-8',
-      'Liver Function Tests': '1991-9',
-      'Kidney Function Tests': '2160-0',
-      'Hemoglobin A1c (HbA1c)': '4544-3'
-      // In a real app, this would be much more extensive
-    };
-    
-    return loincMappings[test.name] || test.loincCode || null;
+    try {
+      // Import at runtime to avoid circular dependencies
+      const { findLoincCode } = require('./utils/code-utils');
+      return findLoincCode(test);
+    } catch (error) {
+      console.error(`Error finding LOINC code for test ${test.id}:`, error);
+      return null;
+    }
   }
   
   // Helper function to find SNOMED code for an imaging study
   private findSnomedCode(test: Test): string | null {
-    // This is a simplified implementation - in a real application,
-    // this would likely involve calling an external SNOMED CT API or
-    // looking up in a more comprehensive local database
-    
-    // For the purpose of this implementation, we'll use a simple mapping based on test name
-    const snomedMappings: Record<string, string> = {
-      'Chest X-ray': '399208008',
-      'Abdominal Ultrasound': '241551004',
-      'CT Scan of Brain': '303653007',
-      'MRI of Knee': '429530000',
-      'PET Scan': '310128004'
-      // In a real app, this would be much more extensive
-    };
-    
-    return snomedMappings[test.name] || test.snomedCode || null;
+    try {
+      // Import at runtime to avoid circular dependencies
+      const { findSnomedCode } = require('./utils/code-utils');
+      return findSnomedCode(test);
+    } catch (error) {
+      console.error(`Error finding SNOMED code for test ${test.id}:`, error);
+      return null;
+    }
   }
   
   async updateLoincCodes(): Promise<number> {
