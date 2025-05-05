@@ -17,11 +17,11 @@ export interface IStorage {
   insertTest(test: InsertTest): Promise<Test>;
   updateTest(id: string, test: Partial<Test>): Promise<Test | undefined>;
   deleteTest(id: string): Promise<boolean>;
-  
+
   // Category and SubCategory counts
   getTestCountByCategory(): Promise<{ category: string; count: number }[]>;
   getTestCountBySubCategory(): Promise<{ subCategory: string; count: number }[]>;
-  
+
   // User methods (from template)
   getUser(id: number): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
@@ -37,7 +37,7 @@ export class MemStorage implements IStorage {
     this.tests = new Map();
     this.users = new Map();
     this.currentUserId = 1;
-    
+
     // Initialize with pre-loaded test data if needed
   }
 
@@ -78,7 +78,7 @@ export class MemStorage implements IStorage {
     if (!test.id) {
       throw new Error("Test ID is required");
     }
-    
+
     const newTest: Test = {
       id: test.id,
       name: test.name,
@@ -92,18 +92,18 @@ export class MemStorage implements IStorage {
       createdAt: new Date(),
       updatedAt: new Date()
     };
-    
+
     this.tests.set(test.id, newTest);
     return newTest;
   }
 
   async updateTest(id: string, testUpdate: Partial<Test>): Promise<Test | undefined> {
     const existingTest = this.tests.get(id);
-    
+
     if (!existingTest) {
       return undefined;
     }
-    
+
     // Ensure all nullable fields are properly typed
     const updatedTest: Test = {
       id: existingTest.id,
@@ -118,7 +118,7 @@ export class MemStorage implements IStorage {
       createdAt: existingTest.createdAt,
       updatedAt: new Date()
     };
-    
+
     this.tests.set(id, updatedTest);
     return updatedTest;
   }
@@ -129,12 +129,12 @@ export class MemStorage implements IStorage {
 
   async getTestCountByCategory(): Promise<{ category: string; count: number }[]> {
     const categoryCounts = new Map<string, number>();
-    
+
     Array.from(this.tests.values()).forEach(test => {
       const currentCount = categoryCounts.get(test.category) || 0;
       categoryCounts.set(test.category, currentCount + 1);
     });
-    
+
     return Array.from(categoryCounts.entries()).map(([category, count]) => ({
       category,
       count
@@ -143,14 +143,14 @@ export class MemStorage implements IStorage {
 
   async getTestCountBySubCategory(): Promise<{ subCategory: string; count: number }[]> {
     const subCategoryCounts = new Map<string, number>();
-    
+
     Array.from(this.tests.values()).forEach(test => {
       if (test.subCategory) {
         const currentCount = subCategoryCounts.get(test.subCategory) || 0;
         subCategoryCounts.set(test.subCategory, currentCount + 1);
       }
     });
-    
+
     return Array.from(subCategoryCounts.entries()).map(([subCategory, count]) => ({
       subCategory,
       count
@@ -177,3 +177,35 @@ export class MemStorage implements IStorage {
 }
 
 export const storage = new MemStorage();
+
+async function initializeTestData() {
+  try {
+    // Read tests.json
+    const testsData = fs.readFileSync(
+      path.resolve(process.cwd(), "attached_assets/tests.json"), 
+      'utf8'
+    );
+    const parsedTests = JSON.parse(testsData);
+
+    // Add each test to storage
+    for (const test of parsedTests.tests) {
+      await storage.insertTest({
+        id: test.id,
+        name: test.name,
+        category: test.category,
+        subCategory: test.subCategory,
+        cptCode: test.cptCode,
+        loincCode: test.loincCode,
+        snomedCode: test.snomedCode,
+        description: test.description,
+        notes: test.notes,
+        createdAt: new Date(test.createdAt),
+        updatedAt: new Date(test.updatedAt)
+      });
+    }
+
+    console.log(`✅ Loaded ${parsedTests.tests.length} tests into storage`);
+  } catch (error) {
+    console.error("Failed to initialize test data:", error);
+  }
+}
