@@ -145,8 +145,10 @@ export class MemStorage implements IStorage {
     const subCategoryCounts = new Map<string, number>();
     
     Array.from(this.tests.values()).forEach(test => {
-      const currentCount = subCategoryCounts.get(test.subCategory) || 0;
-      subCategoryCounts.set(test.subCategory, currentCount + 1);
+      if (test.subCategory) {
+        const currentCount = subCategoryCounts.get(test.subCategory) || 0;
+        subCategoryCounts.set(test.subCategory, currentCount + 1);
+      }
     });
     
     return Array.from(subCategoryCounts.entries()).map(([subCategory, count]) => ({

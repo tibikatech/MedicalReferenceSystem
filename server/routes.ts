@@ -19,7 +19,55 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get test by ID
+  // Search tests - This must come BEFORE the wildcard routes to avoid conflicts
+  app.get("/api/tests/search", async (req, res) => {
+    try {
+      const { q } = req.query;
+      
+      if (!q || typeof q !== 'string') {
+        return res.status(400).json({ error: "Search query is required" });
+      }
+      
+      const tests = await storage.searchTests(q);
+      
+      if (tests.length === 0) {
+        console.log(`No tests found for search query: ${q}`);
+      } else {
+        console.log(`Found ${tests.length} tests for search query: ${q}`);
+      }
+      
+      res.json({ tests });
+    } catch (error) {
+      console.error(`Error searching tests:`, error);
+      res.status(500).json({ error: "Failed to search tests" });
+    }
+  });
+
+  // Get tests by category - This must come BEFORE the :id wildcard route
+  app.get("/api/tests/category/:category", async (req, res) => {
+    try {
+      const { category } = req.params;
+      const tests = await storage.getTestsByCategory(category);
+      res.json({ tests });
+    } catch (error) {
+      console.error(`Error fetching tests for category ${req.params.category}:`, error);
+      res.status(500).json({ error: "Failed to fetch tests by category" });
+    }
+  });
+
+  // Get tests by subcategory - This must come BEFORE the :id wildcard route
+  app.get("/api/tests/subcategory/:subcategory", async (req, res) => {
+    try {
+      const { subcategory } = req.params;
+      const tests = await storage.getTestsBySubCategory(subcategory);
+      res.json({ tests });
+    } catch (error) {
+      console.error(`Error fetching tests for subcategory ${req.params.subcategory}:`, error);
+      res.status(500).json({ error: "Failed to fetch tests by subcategory" });
+    }
+  });
+
+  // Get test by ID - Most specific route should come LAST
   app.get("/api/tests/:id", async (req, res) => {
     try {
       const { id } = req.params;
@@ -33,47 +81,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error(`Error fetching test ${req.params.id}:`, error);
       res.status(500).json({ error: "Failed to fetch test" });
-    }
-  });
-
-  // Get tests by category
-  app.get("/api/tests/category/:category", async (req, res) => {
-    try {
-      const { category } = req.params;
-      const tests = await storage.getTestsByCategory(category);
-      res.json({ tests });
-    } catch (error) {
-      console.error(`Error fetching tests for category ${req.params.category}:`, error);
-      res.status(500).json({ error: "Failed to fetch tests by category" });
-    }
-  });
-
-  // Get tests by subcategory
-  app.get("/api/tests/subcategory/:subcategory", async (req, res) => {
-    try {
-      const { subcategory } = req.params;
-      const tests = await storage.getTestsBySubCategory(subcategory);
-      res.json({ tests });
-    } catch (error) {
-      console.error(`Error fetching tests for subcategory ${req.params.subcategory}:`, error);
-      res.status(500).json({ error: "Failed to fetch tests by subcategory" });
-    }
-  });
-
-  // Search tests
-  app.get("/api/tests/search", async (req, res) => {
-    try {
-      const { q } = req.query;
-      
-      if (!q || typeof q !== 'string') {
-        return res.status(400).json({ error: "Search query is required" });
-      }
-      
-      const tests = await storage.searchTests(q);
-      res.json({ tests });
-    } catch (error) {
-      console.error(`Error searching tests:`, error);
-      res.status(500).json({ error: "Failed to search tests" });
     }
   });
 
@@ -118,9 +125,21 @@ async function initializeTestData() {
     );
     const parsedTests = JSON.parse(testsData);
     
-    // Add each test to storage
+    // Add each test to storage, converting snake_case to camelCase
     for (const test of parsedTests.tests) {
-      await storage.insertTest(test);
+      await storage.insertTest({
+        id: test.id,
+        name: test.name,
+        category: test.category,
+        subCategory: test.sub_category,
+        cptCode: test.cpt_code,
+        loincCode: test.loinc_code,
+        snomedCode: test.snomed_code,
+        description: test.description,
+        notes: test.notes,
+        createdAt: new Date(test.created_at),
+        updatedAt: new Date(test.updated_at)
+      });
     }
     
     console.log(`✅ Loaded ${parsedTests.tests.length} tests into storage`);
