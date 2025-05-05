@@ -34,14 +34,14 @@ export default function TestDetailModal({ test, isOpen, onClose }: TestDetailMod
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-4xl">
+      <DialogContent className="sm:max-w-4xl bg-gray-800 border-gray-700 text-white">
         <DialogHeader className="flex justify-between items-center">
-          <DialogTitle className="text-xl">{name}</DialogTitle>
+          <DialogTitle className="text-xl text-white">{name}</DialogTitle>
           <Button
             variant="ghost"
             size="icon"
             onClick={onClose}
-            className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+            className="absolute right-4 top-4 rounded-sm text-gray-400 hover:text-white focus:outline-none"
           >
             <X className="h-4 w-4" />
             <span className="sr-only">Close</span>
@@ -50,61 +50,61 @@ export default function TestDetailModal({ test, isOpen, onClose }: TestDetailMod
         
         <div className="mb-4">
           <div className="flex gap-2 mb-4">
-            <Badge className={getCategoryBadgeClass(category)}>
+            <Badge className="bg-blue-600 text-white px-3 py-1 text-xs font-medium rounded-full">
               {category}
             </Badge>
-            <Badge className={getSubcategoryBadgeClass(subCategory)}>
+            <Badge className="bg-gray-700 text-white px-3 py-1 text-xs font-medium rounded-full">
               {subCategory}
             </Badge>
           </div>
           
-          <DialogDescription className="text-neutral-600 mb-5 dark:text-neutral-300">
+          <DialogDescription className="text-gray-400 mb-5">
             {description}
           </DialogDescription>
         </div>
         
-        <Separator />
+        <Separator className="bg-gray-700" />
         
         <div className="py-6 grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <h4 className="text-sm font-medium text-neutral-500 mb-2 dark:text-neutral-400">
+            <h4 className="text-sm font-medium text-gray-400 mb-2">
               Test Information
             </h4>
             <table className="min-w-full">
               <tbody>
                 <tr>
-                  <td className="py-2 text-sm text-neutral-500 dark:text-neutral-400">Test ID</td>
-                  <td className="py-2 text-sm font-medium text-neutral-900 dark:text-neutral-100">{id}</td>
+                  <td className="py-2 text-sm text-gray-400">Test ID</td>
+                  <td className="py-2 text-sm text-white bg-gray-700 px-2 rounded">{id}</td>
                 </tr>
                 <tr>
-                  <td className="py-2 text-sm text-neutral-500 dark:text-neutral-400">CPT Code</td>
-                  <td className="py-2 text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                  <td className="py-2 text-sm text-gray-400">CPT Code</td>
+                  <td className="py-2 text-sm text-white bg-gray-700 px-2 rounded">
                     {formatValue(cptCode)}
                   </td>
                 </tr>
                 <tr>
-                  <td className={`py-2 text-sm ${category === 'Imaging Studies' ? 'font-semibold text-primary-700 dark:text-primary-400' : 'text-neutral-500 dark:text-neutral-400'}`}>
+                  <td className={`py-2 text-sm ${category === 'Imaging Studies' ? 'font-semibold text-blue-400' : 'text-gray-400'}`}>
                     SNOMED Code {category === 'Imaging Studies' && '(Primary)'}
                   </td>
-                  <td className={`py-2 text-sm ${category === 'Imaging Studies' ? 'font-semibold text-primary-700 dark:text-primary-400' : 'font-medium text-neutral-900 dark:text-neutral-100'}`}>
+                  <td className={`py-2 text-sm ${category === 'Imaging Studies' ? 'text-white bg-blue-800' : 'text-white bg-gray-700'} px-2 rounded`}>
                     {formatValue(snomedCode)}
                   </td>
                 </tr>
                 <tr>
-                  <td className={`py-2 text-sm ${category === 'Laboratory Tests' ? 'font-semibold text-primary-700 dark:text-primary-400' : 'text-neutral-500 dark:text-neutral-400'}`}>
+                  <td className={`py-2 text-sm ${category === 'Laboratory Tests' ? 'font-semibold text-blue-400' : 'text-gray-400'}`}>
                     LOINC Code {category === 'Laboratory Tests' && '(Primary)'}
                   </td>
-                  <td className={`py-2 text-sm ${category === 'Laboratory Tests' ? 'font-semibold text-primary-700 dark:text-primary-400' : 'font-medium text-neutral-900 dark:text-neutral-100'}`}>
+                  <td className={`py-2 text-sm ${category === 'Laboratory Tests' ? 'text-white bg-blue-800' : 'text-white bg-gray-700'} px-2 rounded`}>
                     {formatValue(loincCode)}
                   </td>
                 </tr>
                 {/* For other test categories, we might have other specialized codes in the future */}
                 {['Cardiovascular Tests', 'Neurological Tests', 'Pulmonary Tests', 'Gastrointestinal Tests', 'Specialty-Specific Tests', 'Functional Tests'].includes(category) && (
                   <tr>
-                    <td className="py-2 text-sm font-semibold text-primary-700 dark:text-primary-400">
+                    <td className="py-2 text-sm font-semibold text-blue-400">
                       Specialty Code (Primary)
                     </td>
-                    <td className="py-2 text-sm font-semibold text-primary-700 dark:text-primary-400">
+                    <td className="py-2 text-sm text-white bg-blue-800 px-2 rounded">
                       {formatValue(cptCode || snomedCode || loincCode)}
                     </td>
                   </tr>
@@ -114,26 +114,26 @@ export default function TestDetailModal({ test, isOpen, onClose }: TestDetailMod
           </div>
           
           <div>
-            <h4 className="text-sm font-medium text-neutral-500 mb-2 dark:text-neutral-400">
+            <h4 className="text-sm font-medium text-gray-400 mb-2">
               Related Tests
             </h4>
             <ul className="space-y-3">
-              <li className="bg-neutral-50 px-4 py-3 rounded-lg dark:bg-neutral-700">
-                <a href="#" className="block hover:text-primary-600 text-sm font-medium dark:hover:text-primary-400">
+              <li className="bg-gray-700 px-4 py-3 rounded-lg">
+                <a href="#" className="block hover:text-blue-400 text-sm font-medium text-white">
                   {subCategory === "Computed Tomography (CT)" 
                     ? "Non-contrast CT of the Chest" 
                     : "Complete Blood Count (CBC)"}
                 </a>
               </li>
-              <li className="bg-neutral-50 px-4 py-3 rounded-lg dark:bg-neutral-700">
-                <a href="#" className="block hover:text-primary-600 text-sm font-medium dark:hover:text-primary-400">
+              <li className="bg-gray-700 px-4 py-3 rounded-lg">
+                <a href="#" className="block hover:text-blue-400 text-sm font-medium text-white">
                   {subCategory === "Computed Tomography (CT)" 
                     ? "Contrast-enhanced CT of the Chest" 
                     : "Basic Metabolic Panel (BMP)"}
                 </a>
               </li>
-              <li className="bg-neutral-50 px-4 py-3 rounded-lg dark:bg-neutral-700">
-                <a href="#" className="block hover:text-primary-600 text-sm font-medium dark:hover:text-primary-400">
+              <li className="bg-gray-700 px-4 py-3 rounded-lg">
+                <a href="#" className="block hover:text-blue-400 text-sm font-medium text-white">
                   {subCategory === "Computed Tomography (CT)" 
                     ? "CT of the Lungs (HRCT)" 
                     : "Comprehensive Metabolic Panel (CMP)"}
@@ -145,12 +145,12 @@ export default function TestDetailModal({ test, isOpen, onClose }: TestDetailMod
         
         {notes && (
           <>
-            <Separator />
+            <Separator className="bg-gray-700" />
             <div className="pt-6">
-              <h4 className="text-sm font-medium text-neutral-500 mb-4 dark:text-neutral-400">
+              <h4 className="text-sm font-medium text-gray-400 mb-4">
                 Additional Information
               </h4>
-              <div className="bg-neutral-50 p-4 rounded-lg text-sm text-neutral-600 dark:bg-neutral-700 dark:text-neutral-300">
+              <div className="bg-gray-700 p-4 rounded-lg text-sm text-gray-300">
                 <p>{notes}</p>
               </div>
             </div>
@@ -158,10 +158,10 @@ export default function TestDetailModal({ test, isOpen, onClose }: TestDetailMod
         )}
         
         <DialogFooter className="mt-6">
-          <Button variant="outline" onClick={onClose}>
+          <Button variant="outline" onClick={onClose} className="bg-gray-700 text-white hover:bg-gray-600 border-gray-600">
             Close
           </Button>
-          <Button>
+          <Button className="bg-blue-600 hover:bg-blue-700 text-white">
             Add to Bookmarks
           </Button>
         </DialogFooter>
