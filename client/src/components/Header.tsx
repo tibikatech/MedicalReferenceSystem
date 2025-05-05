@@ -17,10 +17,10 @@ export default function Header({ onSearch }: HeaderProps) {
   };
 
   return (
-    <header className="bg-white dark:bg-neutral-800 shadow border-b border-neutral-200 dark:border-neutral-700">
+    <header className="bg-white shadow-sm border-b border-gray-100">
       <div className="container mx-auto px-4">
         <div className="flex justify-between h-16">
-          <div className="flex items-center">
+          <div className="flex items-center flex-1">
             <div className="flex-shrink-0 flex items-center">
               <svg 
                 className="h-8 w-8 text-primary" 
@@ -47,12 +47,12 @@ export default function Header({ onSearch }: HeaderProps) {
           </div>
           
           <div className="hidden md:flex items-center">
-            <div className="actions">
+            <div className="flex items-center space-x-2">
               <Button
                 variant="ghost"
                 size="icon"
                 aria-label="Bookmarks"
-                className="action-btn"
+                className="rounded-full hover:bg-accent hover:text-primary"
               >
                 <BookmarkIcon className="h-5 w-5" />
               </Button>
@@ -62,7 +62,7 @@ export default function Header({ onSearch }: HeaderProps) {
                 size="icon"
                 aria-label="Toggle dark mode"
                 onClick={toggleTheme}
-                className="action-btn"
+                className="rounded-full hover:bg-accent hover:text-primary"
               >
                 {theme === "dark" ? (
                   <SunIcon className="h-5 w-5" />
@@ -72,21 +72,23 @@ export default function Header({ onSearch }: HeaderProps) {
               </Button>
             </div>
             
-            <Button
-              variant="default"
-              size="sm"
-              className="login-btn ml-4"
-              onClick={() => setIsLoggedIn(!isLoggedIn)}
-            >
-              {isLoggedIn ? "Sign out" : "Sign in"}
-            </Button>
+            <div className="ml-4">
+              <Button
+                variant="default"
+                size="sm"
+                className="bg-primary hover:opacity-90 text-white px-4 py-2 rounded"
+                onClick={() => setIsLoggedIn(!isLoggedIn)}
+              >
+                {isLoggedIn ? "Sign out" : "Sign in"}
+              </Button>
+            </div>
           </div>
           
           <div className="md:hidden flex items-center">
             <Button
               variant="ghost"
               size="icon"
-              className="action-btn"
+              className="rounded-full hover:bg-accent hover:text-primary"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
