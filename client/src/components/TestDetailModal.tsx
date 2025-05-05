@@ -34,14 +34,14 @@ export default function TestDetailModal({ test, isOpen, onClose }: TestDetailMod
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-4xl">
-        <DialogHeader className="flex justify-between items-center">
-          <DialogTitle className="text-xl">{name}</DialogTitle>
+      <DialogContent className="dialog sm:max-w-4xl">
+        <DialogHeader className="dialog-header flex justify-between items-center">
+          <DialogTitle className="dialog-title text-xl">{name}</DialogTitle>
           <Button
             variant="ghost"
             size="icon"
             onClick={onClose}
-            className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+            className="dialog-close absolute right-4 top-4"
           >
             <X className="h-4 w-4" />
             <span className="sr-only">Close</span>
@@ -49,11 +49,11 @@ export default function TestDetailModal({ test, isOpen, onClose }: TestDetailMod
         </DialogHeader>
         
         <div className="mb-4">
-          <div className="flex gap-2 mb-4">
-            <Badge className={getCategoryBadgeClass(category)}>
+          <div className="test-categories flex gap-2 mb-4">
+            <Badge className={`category-tag ${getCategoryBadgeClass(category)}`}>
               {category}
             </Badge>
-            <Badge className={getSubcategoryBadgeClass(subCategory)}>
+            <Badge className={`category-tag ${getSubcategoryBadgeClass(subCategory)}`}>
               {subCategory}
             </Badge>
           </div>
@@ -158,10 +158,10 @@ export default function TestDetailModal({ test, isOpen, onClose }: TestDetailMod
         )}
         
         <DialogFooter className="mt-6">
-          <Button variant="outline" onClick={onClose}>
+          <Button variant="outline" onClick={onClose} className="btn">
             Close
           </Button>
-          <Button>
+          <Button className="hero-btn">
             Add to Bookmarks
           </Button>
         </DialogFooter>

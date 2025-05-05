@@ -20,8 +20,8 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
   };
 
   return (
-    <div className="relative">
-      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+    <div className="search-container relative">
+      <div className="search-icon absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
         <svg 
           className="h-5 w-5 text-neutral-400" 
           xmlns="http://www.w3.org/2000/svg" 
@@ -39,7 +39,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
       <Input
         id="search"
         name="search"
-        className="block w-full pl-10 pr-3 py-2 border border-neutral-300 rounded-md leading-5 bg-white placeholder-neutral-500 focus:outline-none focus:placeholder-neutral-400 focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm dark:bg-neutral-700 dark:border-neutral-600 dark:placeholder-neutral-400"
+        className="search-input block w-full pl-10 pr-3"
         placeholder="Search tests..."
         type="search"
         value={searchTerm}
