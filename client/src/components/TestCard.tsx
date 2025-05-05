@@ -57,10 +57,12 @@ export default function TestCard({ test, onSelect }: TestCardProps) {
           </div>
           <div>
             <span className="block text-neutral-500 dark:text-neutral-400">
-              {snomedCode ? "SNOMED" : loincCode ? "LOINC" : "Code"}
+              {category === 'Laboratory Tests' ? 'LOINC' : category === 'Imaging Studies' ? 'SNOMED' : 'Code'}
             </span>
             <span className="block font-medium text-neutral-900 dark:text-neutral-100">
-              {snomedCode || loincCode || "N/A"}
+              {category === 'Laboratory Tests' ? (loincCode || 'N/A') : 
+               category === 'Imaging Studies' ? (snomedCode || 'N/A') : 
+               (loincCode || snomedCode || 'N/A')}
             </span>
           </div>
         </div>

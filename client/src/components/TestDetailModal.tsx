@@ -83,14 +83,18 @@ export default function TestDetailModal({ test, isOpen, onClose }: TestDetailMod
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-2 text-sm text-neutral-500 dark:text-neutral-400">SNOMED Code</td>
-                  <td className="py-2 text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                  <td className={`py-2 text-sm ${category === 'Imaging Studies' ? 'font-semibold text-primary-700 dark:text-primary-400' : 'text-neutral-500 dark:text-neutral-400'}`}>
+                    SNOMED Code {category === 'Imaging Studies' && '(Primary)'}
+                  </td>
+                  <td className={`py-2 text-sm ${category === 'Imaging Studies' ? 'font-semibold text-primary-700 dark:text-primary-400' : 'font-medium text-neutral-900 dark:text-neutral-100'}`}>
                     {formatValue(snomedCode)}
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-2 text-sm text-neutral-500 dark:text-neutral-400">LOINC Code</td>
-                  <td className="py-2 text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                  <td className={`py-2 text-sm ${category === 'Laboratory Tests' ? 'font-semibold text-primary-700 dark:text-primary-400' : 'text-neutral-500 dark:text-neutral-400'}`}>
+                    LOINC Code {category === 'Laboratory Tests' && '(Primary)'}
+                  </td>
+                  <td className={`py-2 text-sm ${category === 'Laboratory Tests' ? 'font-semibold text-primary-700 dark:text-primary-400' : 'font-medium text-neutral-900 dark:text-neutral-100'}`}>
                     {formatValue(loincCode)}
                   </td>
                 </tr>
