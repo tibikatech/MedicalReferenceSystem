@@ -60,61 +60,61 @@ export default function TestCard({ test, onSelect }: TestCardProps) {
   } = test;
 
   return (
-    <Card className="test-card flex flex-col bg-white overflow-hidden border border-gray-100 hover:shadow-md transition-all">
-      <CardHeader className="test-header px-4 py-3 flex justify-between bg-white">
-        <h3 className="test-name text-lg font-medium truncate text-primary">
+    <Card className="test-card flex flex-col bg-white overflow-hidden border border-neutral-200 dark:bg-neutral-800 dark:border-neutral-700">
+      <CardHeader className="test-header px-4 py-5 sm:px-6 flex justify-between">
+        <h3 className="test-name text-lg font-medium truncate">
           {name}
         </h3>
         <Button
           variant="ghost"
           size="icon"
-          className="bookmark-btn text-gray-400 hover:text-primary hover:bg-accent"
+          className="bookmark-btn"
           aria-label="Bookmark test"
         >
           <Bookmark className="h-5 w-5" />
         </Button>
       </CardHeader>
       
-      <CardContent className="flex-grow border-t border-gray-100 px-4 py-3">
+      <CardContent className="flex-grow border-t border-neutral-200 px-4 py-4 sm:px-6 dark:border-neutral-700">
         <div className="test-categories flex flex-wrap gap-2 mb-3">
-          <Badge className="category-tag bg-accent text-primary">
+          <Badge variant="category" className="category-tag">
             {category}
           </Badge>
-          <Badge className="category-tag bg-accent text-primary">
+          <Badge variant="subcategory" className="category-tag">
             {subCategory}
           </Badge>
         </div>
         
         <div className="test-codes grid grid-cols-2 gap-4 text-sm">
           <div className="test-code">
-            <span className="code-label text-gray-600 font-medium block mb-1">CPT Code</span>
-            <span className="code-value bg-gray-100 px-2 py-1 rounded text-gray-800 font-mono text-xs block w-fit">
+            <span className="code-label block">CPT Code</span>
+            <span className="code-value block">
               {cptCode || "N/A"}
             </span>
           </div>
           <div className="test-code">
-            <span className="code-label text-gray-600 font-medium block mb-1">
+            <span className="code-label block">
               {getCodeType(category)}
             </span>
-            <span className="code-value bg-gray-100 px-2 py-1 rounded text-gray-800 font-mono text-xs block w-fit">
+            <span className="code-value block">
               {getCodeValue(category, loincCode, snomedCode, cptCode)}
             </span>
           </div>
         </div>
       </CardContent>
       
-      <div className="description border-t border-gray-100 px-4 py-3 text-gray-600">
+      <div className="description border-t border-neutral-200 px-4 py-3 dark:border-neutral-700">
         <p className="text-sm line-clamp-2">
           {truncateText(description, 120)}
         </p>
       </div>
       
-      <CardFooter className="border-t border-gray-100 px-4 py-3 flex justify-end">
+      <CardFooter className="border-t border-neutral-200 px-4 py-4 sm:px-6 flex justify-end dark:border-neutral-700">
         <Button
-          variant="default"
+          variant="outline"
           size="sm"
           onClick={() => onSelect(test)}
-          className="bg-primary hover:bg-primary hover:opacity-90 text-white px-4 py-2 text-xs font-medium rounded"
+          className="hero-btn inline-flex items-center px-3 py-1.5 text-xs font-medium"
         >
           View Details
         </Button>
