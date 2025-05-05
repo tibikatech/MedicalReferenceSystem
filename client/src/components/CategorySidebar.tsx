@@ -23,38 +23,34 @@ export default function CategorySidebar({
       <h2 className="text-lg font-medium text-neutral-900 dark:text-neutral-100 mb-4">Categories</h2>
       
       {/* Main categories */}
-      <div className="space-y-2 mb-6">
-        <Button
+      <div className="category-tabs flex flex-wrap md:flex-col mb-6">
+        <button
           onClick={() => onCategorySelect(null)}
           className={cn(
-            "inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary",
-            !selectedCategory && !selectedSubCategory 
-              ? "bg-primary text-white" 
-              : "bg-neutral-200 hover:bg-neutral-300 text-neutral-800 dark:bg-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-600"
+            "category-tab",
+            !selectedCategory && !selectedSubCategory ? "active" : ""
           )}
         >
           All
           <span className="ml-1.5 bg-white bg-opacity-30 px-1.5 py-0.5 rounded-full text-xs font-semibold">
             {categories.reduce((sum, cat) => sum + cat.count, 0)}
           </span>
-        </Button>
+        </button>
         
         {categories.map((category) => (
-          <Button
+          <button
             key={category.category}
             onClick={() => onCategorySelect(category.category)}
             className={cn(
-              "inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary",
-              selectedCategory === category.category
-                ? "bg-primary text-white"
-                : "bg-neutral-200 hover:bg-neutral-300 text-neutral-800 dark:bg-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-600"
+              "category-tab",
+              selectedCategory === category.category ? "active" : ""
             )}
           >
             {category.category}
             <span className="ml-1.5 bg-neutral-300 dark:bg-neutral-600 px-1.5 py-0.5 rounded-full text-xs font-semibold">
               {category.count}
             </span>
-          </Button>
+          </button>
         ))}
       </div>
       
@@ -62,22 +58,21 @@ export default function CategorySidebar({
       <h3 className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-3">
         Subcategories
       </h3>
-      <div className="space-y-2">
+      <div className="category-tabs flex-col space-y-2">
         {subcategories.map((subcategory) => (
-          <Button
+          <button
             key={subcategory.subCategory}
             onClick={() => onSubCategorySelect(subcategory.subCategory)}
             className={cn(
-              "inline-flex items-center px-3 py-1.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-800 rounded-full text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 w-full justify-between dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700",
-              selectedSubCategory === subcategory.subCategory &&
-                "bg-primary/10 text-primary dark:bg-primary/20"
+              "category-tab w-full justify-between",
+              selectedSubCategory === subcategory.subCategory ? "active" : ""
             )}
           >
             <span>{subcategory.subCategory}</span>
             <span className="bg-neutral-200 dark:bg-neutral-700 px-1.5 py-0.5 rounded-full text-xs font-semibold">
               {subcategory.count}
             </span>
-          </Button>
+          </button>
         ))}
       </div>
     </div>

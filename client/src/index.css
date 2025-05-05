@@ -1,3 +1,6 @@
+/* Import MediRefs UI styles */
+@import './styles/medirefs-ui.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
