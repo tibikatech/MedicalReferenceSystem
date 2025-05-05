@@ -1,6 +1,6 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { storage } from "./storage";
+import { dbStorage as storage } from "./storage-db";
 import fs from 'fs';
 import path from 'path';
 
@@ -118,6 +118,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
 // Helper function to initialize test data from JSON files
 async function initializeTestData() {
   try {
+    // First check if we already have data
+    const existingTests = await storage.getAllTests();
+    if (existingTests.length > 0) {
+      console.log(`✅ Database already contains ${existingTests.length} tests`);
+      return;
+    }
+    
     // Read tests.json
     const testsData = fs.readFileSync(
       path.resolve(process.cwd(), "attached_assets/tests.json"), 
@@ -125,24 +132,31 @@ async function initializeTestData() {
     );
     const parsedTests = JSON.parse(testsData);
     
-    // Add each test to storage, converting snake_case to camelCase
+    // Add each test to storage, converting snake_case to camelCase and ensuring valid dates
+    let loadedCount = 0;
     for (const test of parsedTests.tests) {
-      await storage.insertTest({
-        id: test.id,
-        name: test.name,
-        category: test.category,
-        subCategory: test.sub_category,
-        cptCode: test.cpt_code,
-        loincCode: test.loinc_code,
-        snomedCode: test.snomed_code,
-        description: test.description,
-        notes: test.notes,
-        createdAt: new Date(test.created_at),
-        updatedAt: new Date(test.updated_at)
-      });
+      try {
+        const now = new Date();
+        await storage.insertTest({
+          id: test.id,
+          name: test.name,
+          category: test.category,
+          subCategory: test.sub_category,
+          cptCode: test.cpt_code,
+          loincCode: test.loinc_code,
+          snomedCode: test.snomed_code,
+          description: test.description,
+          notes: test.notes || "",
+          createdAt: now,
+          updatedAt: now
+        });
+        loadedCount++;
+      } catch (err) {
+        console.error(`Error loading test ${test.id}:`, err);
+      }
     }
     
-    console.log(`✅ Loaded ${parsedTests.tests.length} tests into storage`);
+    console.log(`✅ Loaded ${loadedCount} tests into database`);
   } catch (error) {
     console.error("Failed to initialize test data:", error);
   }
