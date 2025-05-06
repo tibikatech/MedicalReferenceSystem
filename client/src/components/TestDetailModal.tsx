@@ -3,9 +3,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Test } from "@/types";
+import { Test } from "@shared/schema";
 import { X, Edit, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
+import TestEditModal from "./TestEditModal";
 
 interface TestDetailModalProps {
   test: Test;
@@ -22,7 +24,15 @@ export default function TestDetailModal({
   onEdit,
   isDarkMode = true 
 }: TestDetailModalProps) {
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [currentTest, setCurrentTest] = useState<Test | null>(null);
+
   if (!isOpen || !test) return null;
+
+  // When a test is received or updated, set it as the current test
+  if (test !== currentTest) {
+    setCurrentTest(test);
+  }
 
   const {
     id,
@@ -34,10 +44,21 @@ export default function TestDetailModal({
     snomedCode,
     description,
     notes,
-  } = test;
+  } = currentTest || test;
 
   const showLoinc = category === "Laboratory Tests";
   const showSnomed = category === "Imaging Studies";
+
+  const handleEdit = () => {
+    setIsEditModalOpen(true);
+  };
+
+  const handleEditSave = (updatedTest: Test) => {
+    setCurrentTest(updatedTest);
+    if (onEdit) {
+      onEdit(updatedTest);
+    }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -60,17 +81,15 @@ export default function TestDetailModal({
             </div>
           </div>
           <div className="flex items-center gap-2">
-            {onEdit && (
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => onEdit(test)}
-                className="text-gray-400 hover:text-white hover:bg-gray-700"
-              >
-                <Edit className="h-4 w-4" />
-                <span className="sr-only">Edit</span>
-              </Button>
-            )}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleEdit}
+              className="text-gray-400 hover:text-white hover:bg-gray-700"
+            >
+              <Edit className="h-4 w-4" />
+              <span className="sr-only">Edit</span>
+            </Button>
             <Button
               variant="ghost"
               size="icon"

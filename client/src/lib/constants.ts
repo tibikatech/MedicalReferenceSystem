@@ -109,3 +109,84 @@ export const SUBCATEGORY_COLORS = {
   // Default for any other subcategories
   'default': 'bg-slate-100 text-slate-800 border-slate-300'
 };
+
+/**
+ * Valid categories for form validation
+ */
+export const VALID_CATEGORIES = {
+  'Laboratory Tests': 'Laboratory Tests',
+  'Imaging Studies': 'Imaging Studies',
+  'Cardiovascular Tests': 'Cardiovascular Tests',
+  'Neurological Tests': 'Neurological Tests',
+  'Pulmonary Tests': 'Pulmonary Tests',
+  'Gastrointestinal Tests': 'Gastrointestinal Tests',
+  'Specialty-Specific Tests': 'Specialty-Specific Tests',
+  'Functional Tests': 'Functional Tests',
+};
+
+/**
+ * Valid subcategories for each category for form validation
+ */
+export const VALID_SUBCATEGORIES: Record<string, string[]> = {
+  'Laboratory Tests': [
+    'Clinical Chemistry',
+    'Hematology',
+    'Immunology/Serology',
+    'Molecular Diagnostics',
+    'Microbiology',
+    'Toxicology',
+    'Urinalysis',
+    'Endocrinology',
+    'Genetic Testing',
+    'Tumor Markers'
+  ],
+  'Imaging Studies': [
+    'Radiography (X-rays)',
+    'Computed Tomography (CT)',
+    'Magnetic Resonance Imaging (MRI)',
+    'Ultrasound',
+    'Nuclear Medicine',
+    'Positron Emission Tomography (PET)',
+    'Fluoroscopy',
+    'Mammography',
+    'Bone Densitometry'
+  ],
+  'Cardiovascular Tests': [
+    'Electrocardiography',
+    'Echocardiography',
+    'Stress Testing',
+    'Cardiac Catheterization',
+    'Electrophysiology Studies',
+    'Vascular Studies'
+  ],
+  'Neurological Tests': [
+    'Electroencephalography (EEG)',
+    'Electromyography (EMG)',
+    'Nerve Conduction Studies',
+    'Evoked Potentials',
+    'Sleep Studies'
+  ],
+  'Pulmonary Tests': [
+    'Pulmonary Function Tests',
+    'Bronchoscopy',
+    'Arterial Blood Gas Analysis'
+  ],
+  'Gastrointestinal Tests': [
+    'Endoscopic Procedures',
+    'Manometry',
+    'Breath Tests',
+    'Motility Studies'
+  ],
+  'Specialty-Specific Tests': [
+    'Women\'s Health/OB-GYN',
+    'Ophthalmology',
+    'Audiology',
+    'Dermatology',
+    'Allergology'
+  ],
+  'Functional Tests': [
+    'Exercise Tests',
+    'Swallowing Studies',
+    'Balance Testing'
+  ]
+};

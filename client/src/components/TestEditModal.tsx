@@ -2,10 +2,9 @@ import React, { useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Test } from "@/types";
+import { Test } from "@shared/schema";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useForm } from "react-hook-form";
@@ -85,14 +84,18 @@ export default function TestEditModal({
       );
 
       // Send update to the server
-      const response = await apiRequest<{ success: boolean; test: Test }>({
-        url: `/api/tests/${test.id}`,
-        method: "PATCH",
-        body: JSON.stringify(formattedData),
-      });
+      const response = await apiRequest(
+        "PATCH",
+        `/api/tests/${test.id}`,
+        formattedData
+      );
+      
+      // Parse the response JSON
+      const responseData = await response.json();
 
-      if (response.success && response.test) {
-        onSave(response.test);
+      // Check if response is valid and contains the updated test
+      if (responseData && responseData.success && responseData.test) {
+        onSave(responseData.test as Test);
         onClose();
       }
     } catch (error) {
@@ -239,7 +242,7 @@ export default function TestEditModal({
                             : "bg-white text-gray-900"
                         )}
                       >
-                        {subcategories.map((subcategory) => (
+                        {subcategories.map((subcategory: string) => (
                           <SelectItem key={subcategory} value={subcategory}>
                             {subcategory}
                           </SelectItem>
