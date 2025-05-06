@@ -84,16 +84,16 @@ export default function TestDetailModal({
         </DialogHeader>
 
         <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h4 className="text-sm font-medium text-gray-400 mb-4">Test Information</h4>
+
+          <Separator className="bg-gray-700/50" />
+
           <div className="bg-gray-800/50 rounded-lg p-4">
             <h4 className="text-sm font-medium text-gray-400 mb-2">Description</h4>
             <p className="text-gray-200">{description}</p>
           </div>
-
-          <Separator className="bg-gray-700/50" />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <h4 className="text-sm font-medium text-gray-400 mb-4">Test Information</h4>
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-400">Reference ID</span>
