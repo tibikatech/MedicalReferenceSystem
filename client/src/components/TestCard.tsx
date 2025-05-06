@@ -60,7 +60,17 @@ export default function TestCard({ test, onSelect }: TestCardProps) {
   } = test;
 
   return (
-    <Card className="test-card flex flex-col bg-gray-800 overflow-hidden border border-gray-700 text-white">
+    <Card 
+      className="test-card flex flex-col bg-gray-800 overflow-hidden border border-gray-700 text-white cursor-pointer hover:bg-gray-700 hover:border-blue-500 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-200"
+      onClick={() => onSelect(test)}
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onSelect(test);
+        }
+      }}
+    >
       <CardHeader className="test-header px-4 py-5 sm:px-6 flex justify-between">
         <h3 className="test-name text-lg font-medium truncate text-white">
           {name}
@@ -70,6 +80,9 @@ export default function TestCard({ test, onSelect }: TestCardProps) {
           size="icon"
           className="text-gray-400 hover:text-white"
           aria-label="Bookmark test"
+          onClick={(e) => {
+            e.stopPropagation(); // Prevent card click
+          }}
         >
           <Bookmark className="h-5 w-5" />
         </Button>
@@ -108,17 +121,6 @@ export default function TestCard({ test, onSelect }: TestCardProps) {
           {truncateText(description, 120)}
         </p>
       </div>
-      
-      <CardFooter className="border-t border-gray-700 px-4 py-4 sm:px-6 flex justify-end">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => onSelect(test)}
-          className="bg-blue-600 hover:bg-blue-700 text-white border-none inline-flex items-center px-3 py-1.5 text-xs font-medium"
-        >
-          View Details
-        </Button>
-      </CardFooter>
     </Card>
   );
 }
