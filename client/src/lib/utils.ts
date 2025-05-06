@@ -63,7 +63,7 @@ export function formatValue(value?: string | null, fallback = "Not available"): 
 }
 
 // Truncate text with ellipsis
-export function truncateText(text?: string, maxLength = 100): string {
+export function truncateText(text?: string | null, maxLength = 100): string {
   if (!text) return "";
   return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
 }

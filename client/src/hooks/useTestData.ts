@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Test } from "@/types";
+import { Test } from "@shared/schema";
 
 interface CategoryCount {
   category: string;
@@ -82,6 +82,14 @@ export function useTestData(
     categories: categoriesQuery.data?.categories || [],
     subcategories: subcategoriesQuery.data?.subcategories || [],
     isLoading,
-    isError
+    isError,
+    refetch: () => {
+      testsQuery.refetch();
+      categoriesQuery.refetch();
+      subcategoriesQuery.refetch();
+      if (selectedCategory) categoryQuery.refetch();
+      if (selectedSubCategory) subcategoryQuery.refetch();
+      if (searchQuery) searchTestsQuery.refetch();
+    }
   };
 }

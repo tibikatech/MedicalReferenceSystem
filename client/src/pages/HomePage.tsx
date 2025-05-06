@@ -14,13 +14,15 @@ export default function HomePage() {
   const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null);
   const [selectedTest, setSelectedTest] = useState<Test | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { toast } = useToast();
 
   const { 
     tests, 
     categories, 
     subcategories, 
     isLoading, 
-    isError 
+    isError,
+    refetch
   } = useTestData(selectedCategory, selectedSubCategory, searchQuery);
 
   // Effect to handle search query parameter updates
@@ -55,6 +57,22 @@ export default function HomePage() {
   // Close the test detail modal
   const handleCloseModal = () => {
     setIsModalOpen(false);
+  };
+
+  // Handle test updates
+  const handleTestEdit = (updatedTest: Test) => {
+    // Update the selected test
+    setSelectedTest(updatedTest);
+    
+    // Refresh the test list data
+    refetch();
+    
+    // Show success toast
+    toast({
+      title: "Test updated successfully",
+      description: `${updatedTest.name} has been updated.`,
+      variant: "default",
+    });
   };
 
   return (
@@ -125,6 +143,8 @@ export default function HomePage() {
           test={selectedTest}
           isOpen={isModalOpen}
           onClose={handleCloseModal}
+          onEdit={handleTestEdit}
+          isDarkMode={true}
         />
       )}
     </>

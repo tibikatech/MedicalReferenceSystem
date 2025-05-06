@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Bookmark } from "lucide-react";
 import { getCategoryBadgeClass, getSubcategoryBadgeClass, truncateText } from "@/lib/utils";
-import { Test } from "@/types";
+import { Test } from "@shared/schema";
 
 // Helper function to determine code type based on category
 function getCodeType(category: string): string {
