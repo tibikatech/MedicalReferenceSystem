@@ -87,42 +87,41 @@ export default function TestDetailModal({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <h4 className="text-sm font-medium text-gray-400 mb-4">Test Information</h4>
-
-          <Separator className="bg-gray-700/50" />
-
-          <div className="bg-gray-800/50 rounded-lg p-4">
-            <h4 className="text-sm font-medium text-gray-400 mb-2">Description</h4>
-            <p className="text-gray-200">{description}</p>
-          </div>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-400">Reference ID</span>
-                  <code className="px-2 py-1 rounded bg-gray-800 text-blue-400 text-sm">
-                    {id}
-                  </code>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-400">CPT Code</span>
-                  <code className="px-2 py-1 rounded bg-gray-800 text-emerald-400 text-sm">
-                    {cptCode || 'N/A'}
-                  </code>
-                </div>
-                {showLoinc && (
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-blue-400">LOINC Code (Primary)</span>
-                    <code className="px-2 py-1 rounded bg-blue-900/30 text-blue-400 text-sm border border-blue-800/30">
-                      {loincCode || 'N/A'}
+              <div className="bg-gray-800/50 rounded-lg p-4 mb-4">
+                <h4 className="text-sm font-medium text-gray-400 mb-2">Description</h4>
+                <p className="text-gray-200">{description}</p>
+              </div>
+              <div className="bg-gray-800/50 rounded-lg p-4">
+                <div className="space-y-4">
+                <div>
+                    <span className="text-sm text-gray-400 block mb-1">Reference ID</span>
+                    <code className="block w-full px-3 py-2 rounded bg-gray-900/50 text-blue-400 text-sm font-mono">
+                      {id}
                     </code>
                   </div>
-                )}
-                {showSnomed && (
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-blue-400">SNOMED Code (Primary)</span>
-                    <code className="px-2 py-1 rounded bg-blue-900/30 text-blue-400 text-sm border border-blue-800/30">
-                      {snomedCode || 'N/A'}
+                  <div>
+                    <span className="text-sm text-gray-400 block mb-1">CPT Code</span>
+                    <code className="block w-full px-3 py-2 rounded bg-gray-900/50 text-emerald-400 text-sm font-mono">
+                      {cptCode || 'N/A'}
                     </code>
                   </div>
-                )}
+                  {showLoinc && (
+                    <div>
+                      <span className="text-sm text-blue-400 block mb-1 font-medium">LOINC Code (Primary)</span>
+                      <code className="block w-full px-3 py-2 rounded bg-blue-900/30 text-blue-400 text-sm font-mono border border-blue-800/30">
+                        {loincCode || 'N/A'}
+                      </code>
+                    </div>
+                  )}
+                  {showSnomed && (
+                    <div>
+                      <span className="text-sm text-blue-400 block mb-1 font-medium">SNOMED Code (Primary)</span>
+                      <code className="block w-full px-3 py-2 rounded bg-blue-900/30 text-blue-400 text-sm font-mono border border-blue-800/30">
+                        {snomedCode || 'N/A'}
+                      </code>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 
