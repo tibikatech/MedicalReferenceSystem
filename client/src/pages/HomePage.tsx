@@ -5,7 +5,8 @@ import TestsGrid from "@/components/TestsGrid";
 import Footer from "@/components/Footer";
 import TestDetailModal from "@/components/TestDetailModal";
 import { useTestData } from "@/hooks/useTestData";
-import { Test } from "@/types";
+import { Test } from "@shared/schema";
+import { useToast } from "@/hooks/use-toast";
 
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState("");

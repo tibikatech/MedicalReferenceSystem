@@ -1,4 +1,4 @@
-import { Test } from "@/types";
+import { Test } from "@shared/schema";
 import TestCard from "./TestCard";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
