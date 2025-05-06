@@ -87,10 +87,6 @@ export default function TestDetailModal({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <h4 className="text-sm font-medium text-gray-400 mb-4">Test Information</h4>
-              <div className="bg-gray-800/50 rounded-lg p-4 mb-4">
-                <h4 className="text-sm font-medium text-gray-400 mb-2">Description</h4>
-                <p className="text-gray-200">{description}</p>
-              </div>
               <div className="bg-gray-800/50 rounded-lg p-4">
                 <div className="space-y-4">
                 <div>
@@ -122,6 +118,10 @@ export default function TestDetailModal({
                     </div>
                   )}
                 </div>
+              </div>
+              <div className="bg-gray-800/50 rounded-lg p-4 mb-4">
+                <h4 className="text-sm font-medium text-gray-400 mb-2">Description</h4>
+                <p className="text-gray-200">{description}</p>
               </div>
             </div>
 
