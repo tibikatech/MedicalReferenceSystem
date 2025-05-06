@@ -1,25 +1,29 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { getCategoryBadgeClass, getSubcategoryBadgeClass, formatValue } from "@/lib/utils";
 import { Test } from "@/types";
-import { X } from "lucide-react";
+import { X, Edit, ExternalLink } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface TestDetailModalProps {
   test: Test;
   isOpen: boolean;
   onClose: () => void;
+  onEdit?: (test: Test) => void;
+  isDarkMode?: boolean;
 }
 
-export default function TestDetailModal({ test, isOpen, onClose }: TestDetailModalProps) {
+export default function TestDetailModal({ 
+  test, 
+  isOpen, 
+  onClose,
+  onEdit,
+  isDarkMode = true 
+}: TestDetailModalProps) {
+  if (!isOpen || !test) return null;
+
   const {
     id,
     name,
@@ -32,139 +36,140 @@ export default function TestDetailModal({ test, isOpen, onClose }: TestDetailMod
     notes,
   } = test;
 
+  const showLoinc = category === "Laboratory Tests";
+  const showSnomed = category === "Imaging Studies";
+
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-4xl bg-gray-800 border-gray-700 text-white">
-        <DialogHeader className="flex justify-between items-center">
-          <DialogTitle className="text-xl text-white">{name}</DialogTitle>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onClose}
-            className="absolute right-4 top-4 rounded-sm text-gray-400 hover:text-white focus:outline-none"
-          >
-            <X className="h-4 w-4" />
-            <span className="sr-only">Close</span>
-          </Button>
+      <DialogContent className={cn(
+        "sm:max-w-4xl border-gray-700 text-white",
+        isDarkMode ? "bg-gradient-to-b from-gray-800 to-gray-900" : "bg-white"
+      )}>
+        <DialogHeader className="flex justify-between items-center gap-4">
+          <div className="flex-1">
+            <DialogTitle className="text-xl font-semibold text-white">
+              {name}
+            </DialogTitle>
+            <div className="flex items-center gap-2 mt-2">
+              <Badge className="bg-blue-600/20 text-blue-400 border border-blue-500/30">
+                {category}
+              </Badge>
+              <Badge className="bg-gray-700/40 text-gray-300 border border-gray-600/30">
+                {subCategory}
+              </Badge>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            {onEdit && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => onEdit(test)}
+                className="text-gray-400 hover:text-white hover:bg-gray-700"
+              >
+                <Edit className="h-4 w-4" />
+                <span className="sr-only">Edit</span>
+              </Button>
+            )}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onClose}
+              className="text-gray-400 hover:text-white hover:bg-gray-700"
+            >
+              <X className="h-4 w-4" />
+              <span className="sr-only">Close</span>
+            </Button>
+          </div>
         </DialogHeader>
-        
-        <div className="mb-4">
-          <div className="flex gap-2 mb-4">
-            <Badge className="bg-blue-600 text-white px-3 py-1 text-xs font-medium rounded-full">
-              {category}
-            </Badge>
-            <Badge className="bg-gray-700 text-white px-3 py-1 text-xs font-medium rounded-full">
-              {subCategory}
-            </Badge>
+
+        <div className="space-y-6">
+          <div className="bg-gray-800/50 rounded-lg p-4">
+            <h4 className="text-sm font-medium text-gray-400 mb-2">Description</h4>
+            <p className="text-gray-200">{description}</p>
           </div>
-          
-          <DialogDescription className="text-gray-400 mb-5">
-            {description}
-          </DialogDescription>
-        </div>
-        
-        <Separator className="bg-gray-700" />
-        
-        <div className="py-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <h4 className="text-sm font-medium text-gray-400 mb-2">
-              Test Information
-            </h4>
-            <table className="min-w-full">
-              <tbody>
-                <tr>
-                  <td className="py-2 text-sm text-gray-400">Test ID</td>
-                  <td className="py-2 text-sm text-white bg-gray-700 px-2 rounded">{id}</td>
-                </tr>
-                <tr>
-                  <td className="py-2 text-sm text-gray-400">CPT Code</td>
-                  <td className="py-2 text-sm text-white bg-gray-700 px-2 rounded">
-                    {formatValue(cptCode)}
-                  </td>
-                </tr>
-                <tr>
-                  <td className={`py-2 text-sm ${category === 'Imaging Studies' ? 'font-semibold text-blue-400' : 'text-gray-400'}`}>
-                    SNOMED Code {category === 'Imaging Studies' && '(Primary)'}
-                  </td>
-                  <td className={`py-2 text-sm ${category === 'Imaging Studies' ? 'text-white bg-blue-800' : 'text-white bg-gray-700'} px-2 rounded`}>
-                    {formatValue(snomedCode)}
-                  </td>
-                </tr>
-                <tr>
-                  <td className={`py-2 text-sm ${category === 'Laboratory Tests' ? 'font-semibold text-blue-400' : 'text-gray-400'}`}>
-                    LOINC Code {category === 'Laboratory Tests' && '(Primary)'}
-                  </td>
-                  <td className={`py-2 text-sm ${category === 'Laboratory Tests' ? 'text-white bg-blue-800' : 'text-white bg-gray-700'} px-2 rounded`}>
-                    {formatValue(loincCode)}
-                  </td>
-                </tr>
-                {/* For other test categories, we might have other specialized codes in the future */}
-                {['Cardiovascular Tests', 'Neurological Tests', 'Pulmonary Tests', 'Gastrointestinal Tests', 'Specialty-Specific Tests', 'Functional Tests'].includes(category) && (
-                  <tr>
-                    <td className="py-2 text-sm font-semibold text-blue-400">
-                      Specialty Code (Primary)
-                    </td>
-                    <td className="py-2 text-sm text-white bg-blue-800 px-2 rounded">
-                      {formatValue(cptCode || snomedCode || loincCode)}
-                    </td>
-                  </tr>
+
+          <Separator className="bg-gray-700/50" />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h4 className="text-sm font-medium text-gray-400 mb-4">Test Information</h4>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-400">Reference ID</span>
+                  <code className="px-2 py-1 rounded bg-gray-800 text-blue-400 text-sm">
+                    {id}
+                  </code>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-400">CPT Code</span>
+                  <code className="px-2 py-1 rounded bg-gray-800 text-emerald-400 text-sm">
+                    {cptCode || 'N/A'}
+                  </code>
+                </div>
+                {showLoinc && (
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium text-blue-400">LOINC Code (Primary)</span>
+                    <code className="px-2 py-1 rounded bg-blue-900/30 text-blue-400 text-sm border border-blue-800/30">
+                      {loincCode || 'N/A'}
+                    </code>
+                  </div>
                 )}
-              </tbody>
-            </table>
-          </div>
-          
-          <div>
-            <h4 className="text-sm font-medium text-gray-400 mb-2">
-              Related Tests
-            </h4>
-            <ul className="space-y-3">
-              <li className="bg-gray-700 px-4 py-3 rounded-lg">
-                <a href="#" className="block hover:text-blue-400 text-sm font-medium text-white">
-                  {subCategory === "Computed Tomography (CT)" 
-                    ? "Non-contrast CT of the Chest" 
-                    : "Complete Blood Count (CBC)"}
-                </a>
-              </li>
-              <li className="bg-gray-700 px-4 py-3 rounded-lg">
-                <a href="#" className="block hover:text-blue-400 text-sm font-medium text-white">
-                  {subCategory === "Computed Tomography (CT)" 
-                    ? "Contrast-enhanced CT of the Chest" 
-                    : "Basic Metabolic Panel (BMP)"}
-                </a>
-              </li>
-              <li className="bg-gray-700 px-4 py-3 rounded-lg">
-                <a href="#" className="block hover:text-blue-400 text-sm font-medium text-white">
-                  {subCategory === "Computed Tomography (CT)" 
-                    ? "CT of the Lungs (HRCT)" 
-                    : "Comprehensive Metabolic Panel (CMP)"}
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        
-        {notes && (
-          <>
-            <Separator className="bg-gray-700" />
-            <div className="pt-6">
-              <h4 className="text-sm font-medium text-gray-400 mb-4">
-                Additional Information
-              </h4>
-              <div className="bg-gray-700 p-4 rounded-lg text-sm text-gray-300">
-                <p>{notes}</p>
+                {showSnomed && (
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium text-blue-400">SNOMED Code (Primary)</span>
+                    <code className="px-2 py-1 rounded bg-blue-900/30 text-blue-400 text-sm border border-blue-800/30">
+                      {snomedCode || 'N/A'}
+                    </code>
+                  </div>
+                )}
               </div>
             </div>
-          </>
-        )}
-        
-        <DialogFooter className="mt-6">
-          <Button variant="outline" onClick={onClose} className="bg-gray-700 text-white hover:bg-gray-600 border-gray-600">
-            Close
-          </Button>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-            Add to Bookmarks
-          </Button>
-        </DialogFooter>
+
+            <div>
+              <h4 className="text-sm font-medium text-gray-400 mb-4">Related Resources</h4>
+              <div className="space-y-3">
+                <Button 
+                  variant="ghost" 
+                  className="w-full justify-between text-gray-300 hover:text-white hover:bg-gray-700"
+                >
+                  Clinical Guidelines
+                  <ExternalLink className="h-4 w-4 ml-2" />
+                </Button>
+                <Button 
+                  variant="ghost"
+                  className="w-full justify-between text-gray-300 hover:text-white hover:bg-gray-700"
+                >
+                  Medicare Coverage
+                  <ExternalLink className="h-4 w-4 ml-2" />
+                </Button>
+                <Button 
+                  variant="ghost"
+                  className="w-full justify-between text-gray-300 hover:text-white hover:bg-gray-700"
+                >
+                  Test Specifications
+                  <ExternalLink className="h-4 w-4 ml-2" />
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          {notes && (
+            <>
+              <Separator className="bg-gray-700/50" />
+              <div>
+                <h4 className="text-sm font-medium text-gray-400 mb-4">Additional Notes</h4>
+                <div className="bg-gray-800/50 rounded-lg p-4">
+                  <p className="text-sm text-gray-300">{notes}</p>
+                </div>
+              </div>
+            </>
+          )}
+
+          <div className="mt-6 text-xs text-gray-500">
+            Note: This information is provided for reference purposes only and should be verified with the latest medical coding guidelines.
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   );
