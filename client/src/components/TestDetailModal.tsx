@@ -87,14 +87,10 @@ export default function TestDetailModal({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <h4 className="text-sm font-medium text-gray-400 mb-4">Test Information</h4>
-              <div className="bg-gray-800/50 rounded-lg p-4 mb-4">
-                <h4 className="text-sm font-medium text-gray-400 mb-2">Description</h4>
-                <p className="text-gray-200">{description}</p>
-              </div>
               <div className="bg-gray-800/50 rounded-lg p-4">
                 <div className="space-y-4">
                 <div>
-                    <span className="text-sm text-gray-400 block mb-1">Reference ID</span>
+                    <span className="text-sm text-gray-400 block mb-1">Test Reference</span>
                     <code className="block w-full px-3 py-2 rounded bg-gray-900/50 text-blue-400 text-sm font-mono">
                       {id}
                     </code>
@@ -123,9 +119,17 @@ export default function TestDetailModal({
                   )}
                 </div>
               </div>
+              <div className="bg-gray-800/50 rounded-lg p-4 mb-4">
+                <h4 className="text-sm font-medium text-gray-400 mb-2">Description</h4>
+                <p className="text-gray-200">{description}</p>
+              </div>
             </div>
 
             <div>
+              <h4 className="text-sm font-medium text-gray-400 mb-4">Related Tests</h4>
+              <div className="space-y-3">
+                *add relate tests here 3No.*
+              </div>
               <h4 className="text-sm font-medium text-gray-400 mb-4">Related Resources</h4>
               <div className="space-y-3">
                 <Button 
