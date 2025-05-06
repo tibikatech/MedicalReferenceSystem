@@ -32,11 +32,22 @@ import {
   CheckSquare,
   Square,
   Search,
-  ArrowRight
+  ArrowRight,
+  FileCode
 } from "lucide-react";
 import { useToast } from '@/hooks/use-toast';
 import { queryClient } from "@/lib/queryClient";
 import { useQuery, useMutation } from "@tanstack/react-query";
+import TestMappingWizard from "@/components/TestMappingWizard";
+import DuplicateTestModal from "@/components/DuplicateTestModal";
+import FhirExportTool from "@/components/FhirExportTool";
+import { 
+  parseCSV, 
+  readCSVFile, 
+  previewCSV, 
+  exportTestsToCSV 
+} from "@/utils/csvImportExport";
+import { downloadFhirExport } from "@/utils/fhirExporter";
 
 export default function TestManagementPage() {
   const { toast } = useToast();
@@ -46,6 +57,23 @@ export default function TestManagementPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // CSV import related state
+  const [csvFile, setCsvFile] = useState<File | null>(null);
+  const [csvHeaders, setCsvHeaders] = useState<string[]>([]);
+  const [csvPreviewRows, setCsvPreviewRows] = useState<string[][]>([]);
+  const [showMappingWizard, setShowMappingWizard] = useState(false);
+  const [duplicateTests, setDuplicateTests] = useState<{
+    duplicatesById: Test[],
+    duplicatesByCptCode: Test[]
+  }>({
+    duplicatesById: [],
+    duplicatesByCptCode: []
+  });
+  const [showDuplicatesModal, setShowDuplicatesModal] = useState(false);
+  
+  // FHIR export state
+  const [showFhirExportTool, setShowFhirExportTool] = useState(false);
 
   // Get all tests
   const { data: tests, isLoading: testsLoading, isError: testsError } = useQuery({
@@ -205,18 +233,212 @@ export default function TestManagementPage() {
   };
 
   // Process the uploaded CSV file
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    // Here we would handle the CSV file
-    toast({
-      title: "CSV Uploaded",
-      description: `File ${file.name} uploaded. Mapping window would open here.`,
-    });
+    try {
+      // Preview the CSV file
+      const { headers, previewRows } = await previewCSV(file, 5);
+      
+      // Store the data for the mapping wizard
+      setCsvFile(file);
+      setCsvHeaders(headers);
+      setCsvPreviewRows(previewRows);
+      
+      // Show the mapping wizard
+      setShowMappingWizard(true);
+      
+      toast({
+        title: "CSV Uploaded",
+        description: `File ${file.name} uploaded. Please map the columns.`,
+      });
+    } catch (error) {
+      console.error('Error previewing CSV:', error);
+      toast({
+        title: "CSV Error",
+        description: `Failed to read the file: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        variant: "destructive",
+      });
+    }
     
     // Reset the file input
     event.target.value = '';
+  };
+  
+  // Handle mapping completion
+  const handleMappingComplete = async (mapping: Record<string, string>) => {
+    // Close the mapping wizard
+    setShowMappingWizard(false);
+    
+    if (!csvFile) return;
+    
+    try {
+      // Read the CSV file
+      const csvContent = await readCSVFile(csvFile);
+      const parsedData = parseCSV(csvContent);
+      
+      // Map CSV data to tests based on the mapping
+      const importedTests = parsedData.map(row => {
+        const test: Test = {
+          id: mapping['id'] ? row[mapping['id']] : crypto.randomUUID(),
+          name: mapping['name'] ? row[mapping['name']] : '',
+          category: mapping['category'] ? row[mapping['category']] : '',
+          subCategory: mapping['subCategory'] ? row[mapping['subCategory']] : null,
+          cptCode: mapping['cptCode'] ? row[mapping['cptCode']] : null,
+          loincCode: mapping['loincCode'] ? row[mapping['loincCode']] : null,
+          snomedCode: mapping['snomedCode'] ? row[mapping['snomedCode']] : null,
+          description: mapping['description'] ? row[mapping['description']] : null,
+          notes: mapping['notes'] ? row[mapping['notes']] : null,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        };
+        return test;
+      });
+      
+      // Check for duplicates
+      const duplicatesById: Test[] = [];
+      const duplicatesByCptCode: Test[] = [];
+      
+      // Get all existing tests
+      const allTests = (tests as any)?.tests || [];
+      
+      // Check each imported test for duplicates
+      importedTests.forEach(test => {
+        // Check for ID duplication
+        if (allTests.some((existingTest: Test) => existingTest.id === test.id)) {
+          duplicatesById.push(test);
+        }
+        
+        // Check for CPT code duplication (only if CPT code is present)
+        if (test.cptCode && allTests.some(
+          (existingTest: Test) => existingTest.cptCode === test.cptCode && existingTest.id !== test.id
+        )) {
+          duplicatesByCptCode.push(test);
+        }
+      });
+      
+      // Show duplicates modal if there are any duplicates
+      if (duplicatesById.length > 0 || duplicatesByCptCode.length > 0) {
+        setDuplicateTests({
+          duplicatesById,
+          duplicatesByCptCode
+        });
+        setShowDuplicatesModal(true);
+      } else {
+        // If no duplicates, proceed with import
+        await importTests(importedTests);
+      }
+    } catch (error) {
+      console.error('Error importing CSV:', error);
+      toast({
+        title: "Import Error",
+        description: `Failed to import the file: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        variant: "destructive",
+      });
+    }
+  };
+  
+  // Handle duplicates resolution
+  const handleSkipAllDuplicates = async () => {
+    setShowDuplicatesModal(false);
+    // Skip all duplicates by filtering them out
+    if (!csvFile) return;
+    
+    try {
+      // Read the CSV file
+      const csvContent = await readCSVFile(csvFile);
+      const parsedData = parseCSV(csvContent);
+      
+      // Get all test IDs to skip
+      const skipIds = new Set([
+        ...duplicateTests.duplicatesById.map(test => test.id),
+        ...duplicateTests.duplicatesByCptCode.map(test => test.id)
+      ]);
+      
+      // Filter out duplicates
+      const testsToImport = parsedData
+        .map(row => {
+          const test: Test = {
+            id: row.id || crypto.randomUUID(),
+            name: row.name || '',
+            category: row.category || '',
+            subCategory: row.subCategory || null,
+            cptCode: row.cptCode || null,
+            loincCode: row.loincCode || null,
+            snomedCode: row.snomedCode || null,
+            description: row.description || null,
+            notes: row.notes || null,
+            createdAt: new Date(),
+            updatedAt: new Date()
+          };
+          return test;
+        })
+        .filter(test => !skipIds.has(test.id));
+      
+      // Import the remaining tests
+      await importTests(testsToImport);
+    } catch (error) {
+      console.error('Error importing CSV:', error);
+      toast({
+        title: "Import Error",
+        description: `Failed to import the file: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        variant: "destructive",
+      });
+    }
+  };
+  
+  // Handle update all duplicates
+  const handleUpdateAllDuplicates = async () => {
+    setShowDuplicatesModal(false);
+    
+    if (!csvFile) return;
+    
+    try {
+      // Read the CSV file
+      const csvContent = await readCSVFile(csvFile);
+      const parsedData = parseCSV(csvContent);
+      
+      // Convert to tests
+      const testsToImport = parsedData.map(row => {
+        const test: Test = {
+          id: row.id || crypto.randomUUID(),
+          name: row.name || '',
+          category: row.category || '',
+          subCategory: row.subCategory || null,
+          cptCode: row.cptCode || null,
+          loincCode: row.loincCode || null,
+          snomedCode: row.snomedCode || null,
+          description: row.description || null,
+          notes: row.notes || null,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        };
+        return test;
+      });
+      
+      // Import all tests (will update duplicates)
+      await importTests(testsToImport);
+    } catch (error) {
+      console.error('Error importing CSV:', error);
+      toast({
+        title: "Import Error",
+        description: `Failed to import the file: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        variant: "destructive",
+      });
+    }
+  };
+  
+  // Mock import function (would be an API call in a real app)
+  const importTests = async (testsToImport: Test[]) => {
+    // In a real app, this would be an API call
+    toast({
+      title: "CSV Import Complete",
+      description: `Successfully imported ${testsToImport.length} tests.`,
+    });
+    
+    // Refresh the test list
+    queryClient.invalidateQueries({ queryKey: ['/api/tests'] });
   };
 
   // Download CSV template
@@ -302,79 +524,16 @@ export default function TestManagementPage() {
       return;
     }
     
-    // FHIR export logic would go here
-    // Basic FHIR ServiceRequest structure
-    const fhirResources = testsToExport.map((test: Test) => {
-      const resource = {
-        resourceType: "ServiceRequest",
-        id: test.id,
-        status: "active",
-        intent: "order",
-        category: [
-          {
-            coding: [
-              {
-                system: "http://terminology.hl7.org/CodeSystem/service-category",
-                code: test.category === "Laboratory Tests" ? "LAB" : "RAD",
-                display: test.category
-              }
-            ]
-          }
-        ],
-        code: {
-          coding: [
-            {
-              system: "http://www.ama-assn.org/go/cpt",
-              code: test.cptCode || "",
-              display: test.name
-            }
-          ],
-          text: test.name
-        }
-      };
-      
-      // Add LOINC code if present
-      if (test.loincCode) {
-        resource.code.coding.push({
-          system: "http://loinc.org",
-          code: test.loincCode,
-          display: test.name
-        });
-      }
-      
-      // Add SNOMED code if present
-      if (test.snomedCode) {
-        resource.code.coding.push({
-          system: "http://snomed.info/sct",
-          code: test.snomedCode,
-          display: test.name
-        });
-      }
-      
-      return resource;
-    });
-    
-    // Create a FHIR Bundle
-    const fhirBundle = {
-      resourceType: "Bundle",
-      type: "collection",
-      entry: fhirResources.map((resource: any) => ({ resource }))
-    };
-    
-    // Export as JSON file
-    const jsonContent = JSON.stringify(fhirBundle, null, 2);
-    const blob = new Blob([jsonContent], { type: 'application/json;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'medirefs_fhir_export.json');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    
+    // Open the FHIR export tool
+    setShowFhirExportTool(true);
+  };
+  
+  // Handle individual decisions for duplicates
+  const handleDecideEachDuplicate = () => {
+    setShowDuplicatesModal(false);
     toast({
-      title: "FHIR Export Complete",
-      description: `Successfully exported ${testsToExport.length} tests to FHIR format.`,
+      title: "Not Implemented",
+      description: "This feature would open a modal to decide each duplicate individually.",
     });
   };
 
@@ -746,6 +905,45 @@ export default function TestManagementPage() {
       </main>
       
       <Footer />
+      
+      {/* Mapping Wizard Modal */}
+      {showMappingWizard && (
+        <TestMappingWizard
+          isOpen={showMappingWizard}
+          onClose={() => setShowMappingWizard(false)}
+          csvHeaders={csvHeaders}
+          csvPreviewRows={csvPreviewRows}
+          onComplete={handleMappingComplete}
+          isDarkMode={true}
+        />
+      )}
+      
+      {/* Duplicates Modal */}
+      {showDuplicatesModal && (
+        <DuplicateTestModal
+          isOpen={showDuplicatesModal}
+          onClose={() => setShowDuplicatesModal(false)}
+          duplicatesById={duplicateTests.duplicatesById}
+          duplicatesByCptCode={duplicateTests.duplicatesByCptCode}
+          onSkipAll={handleSkipAllDuplicates}
+          onUpdateAll={handleUpdateAllDuplicates}
+          onDecideEach={handleDecideEachDuplicate}
+          isDarkMode={true}
+        />
+      )}
+      
+      {/* FHIR Export Tool */}
+      {showFhirExportTool && (
+        <FhirExportTool
+          isOpen={showFhirExportTool}
+          onClose={() => setShowFhirExportTool(false)}
+          tests={selectedTests.size > 0 
+            ? filteredTests.filter((test: Test) => selectedTests.has(test.id))
+            : filteredTests
+          }
+          isDarkMode={true}
+        />
+      )}
     </>
   );
 }
