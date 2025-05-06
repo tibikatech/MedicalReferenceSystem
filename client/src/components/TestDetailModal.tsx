@@ -128,7 +128,24 @@ export default function TestDetailModal({
             <div>
               <h4 className="text-sm font-medium text-gray-400 mb-4">Related Tests</h4>
               <div className="space-y-3">
-                *add relate tests here 3No.*
+                {tests
+                  ?.filter(t => 
+                    t.subCategory === test.subCategory && 
+                    t.id !== test.id
+                  )
+                  .slice(0, 3)
+                  .map(relatedTest => (
+                    <Button 
+                      key={relatedTest.id}
+                      variant="ghost"
+                      className="w-full justify-between text-gray-300 hover:text-white hover:bg-gray-700"
+                      onClick={() => onEdit?.(relatedTest)}
+                    >
+                      {relatedTest.name}
+                      <ExternalLink className="h-4 w-4 ml-2" />
+                    </Button>
+                  ))
+                }
               </div>
               <h4 className="text-sm font-medium text-gray-400 mb-4">Related Resources</h4>
               <div className="space-y-3">
