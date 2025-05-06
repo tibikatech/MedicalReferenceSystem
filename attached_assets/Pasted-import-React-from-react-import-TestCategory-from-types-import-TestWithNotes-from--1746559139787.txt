@@ -1,0 +1,256 @@
+import React from 'react';
+import { TestCategory } from '../types';
+import { TestWithNotes } from '../db/db';
+import { X, Edit } from 'lucide-react';
+
+interface TestDetailModalProps {
+  test: TestWithNotes | null;
+  isOpen: boolean;
+  onClose: () => void;
+  onEdit?: (test: TestWithNotes) => void;
+  isDarkMode: boolean;
+}
+
+const TestDetailModal: React.FC<TestDetailModalProps> = ({ 
+  test, 
+  isOpen, 
+  onClose,
+  onEdit,
+  isDarkMode
+}) => {
+  if (!isOpen || !test) return null;
+
+  // Debug logging - examining raw test data in the browser console
+  console.log("Raw test detail data:", test);
+  
+  // Direct access to fields - use the camelCase API conventions
+  // Provide fallbacks only if fields are completely missing
+  const cptCode = test.cptCode || 'N/A';
+  const loincCode = test.loincCode || null;
+  const snomedCode = test.snomedCode || null;
+  const subCategory = test.subCategory || null;
+
+  const modalClasses = `fixed inset-0 z-50 flex items-center justify-center p-4 ${
+    isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+  } transition-opacity duration-300`;
+
+  const backdropClasses = `fixed inset-0 bg-black ${
+    isDarkMode ? 'opacity-70' : 'opacity-50'
+  } transition-opacity duration-300`;
+
+  const contentClasses = `relative w-full max-w-2xl max-h-[90vh] overflow-auto rounded-lg shadow-xl transform transition-transform duration-300 ${
+    isOpen ? 'translate-y-0' : 'translate-y-4'
+  } ${
+    isDarkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-800'
+  }`;
+  
+  const getCategoryBadgeClass = (category: string) => {
+    if (category === TestCategory.LABORATORY || category === 'Laboratory' || category === 'Laboratory Tests') {
+      return isDarkMode 
+        ? 'bg-teal-900 text-teal-200' 
+        : 'bg-teal-100 text-teal-800';
+    }
+    return isDarkMode ? 'bg-blue-900 text-blue-200' : 'bg-blue-100 text-blue-800';
+  };
+  
+  const getSubCategoryBadgeClass = (subCategory: string) => {
+    switch (subCategory) {
+      case "Hematology":
+        return isDarkMode ? 'bg-red-900 text-red-200' : 'bg-red-100 text-red-800';
+      case "Clinical Chemistry":
+        return isDarkMode ? 'bg-green-900 text-green-200' : 'bg-green-100 text-green-800';
+      case "Microbiology":
+        return isDarkMode ? 'bg-violet-900 text-violet-200' : 'bg-violet-100 text-violet-800';
+      case "Immunology/Serology":
+        return isDarkMode ? 'bg-orange-900 text-orange-200' : 'bg-orange-100 text-orange-800';
+      case "Molecular Diagnostics":
+        return isDarkMode ? 'bg-cyan-900 text-cyan-200' : 'bg-cyan-100 text-cyan-800';
+      case "Toxicology":
+        return isDarkMode ? 'bg-rose-900 text-rose-200' : 'bg-rose-100 text-rose-800';
+      case "Urinalysis":
+        return isDarkMode ? 'bg-yellow-900 text-yellow-200' : 'bg-yellow-100 text-yellow-800';
+      case "Endocrinology":
+        return isDarkMode ? 'bg-indigo-900 text-indigo-200' : 'bg-indigo-100 text-indigo-800';
+      case "Genetic Testing":
+        return isDarkMode ? 'bg-emerald-900 text-emerald-200' : 'bg-emerald-100 text-emerald-800';
+      case "Tumor Markers":
+        return isDarkMode ? 'bg-pink-900 text-pink-200' : 'bg-pink-100 text-pink-800';
+      // Add imaging subcategories
+      case "Radiography":
+      case "Radiography (X-rays)":
+      case "Computed Tomography (CT)":
+      case "Magnetic Resonance Imaging (MRI)":
+      case "Ultrasound":
+      case "Mammography":
+      case "Nuclear Medicine":
+      case "Fluoroscopy":
+      case "Bone Densitometry":
+      case "Angiography":
+      case "Positron Emission Tomography (PET)":
+        return isDarkMode ? 'bg-sky-900 text-sky-200' : 'bg-sky-100 text-sky-800';
+      default:
+        return isDarkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-700';
+    }
+  };
+
+  const handleEdit = () => {
+    if (onEdit && test) {
+      onEdit(test);
+      onClose();
+    }
+  };
+
+  // Check if this is an imaging category test
+  const isImagingTest = test.category === TestCategory.IMAGING || 
+                        test.category === 'Imaging Studies' || 
+                        test.category === 'Imaging';
+
+  return (
+    <div className={modalClasses} aria-modal="true" role="dialog">
+      <div className={backdropClasses} onClick={onClose}></div>
+      
+      <div className={contentClasses}>
+        <div className="p-6">
+          <div className="flex justify-between items-start mb-4">
+            <h2 className="text-xl font-bold text-blue-600 dark:text-blue-400">{test.name}</h2>
+            <div className="flex gap-2">
+              {onEdit && (
+                <button
+                  onClick={handleEdit}
+                  className={`p-1.5 rounded-md flex items-center text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors`}
+                  aria-label="Edit test"
+                >
+                  <Edit size={18} className="mr-1" />
+                  <span className="text-sm">Edit</span>
+                </button>
+              )}
+              <button
+                onClick={onClose}
+                className={`p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors`}
+                aria-label="Close"
+              >
+                <X size={20} />
+              </button>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <h3 className={`text-sm font-semibold uppercase mb-2 ${
+                isDarkMode ? 'text-gray-400' : 'text-gray-500'
+              }`}>Test Information</h3>
+              
+              <div className="space-y-4">
+                <div>
+                  <p className={`text-sm font-medium ${
+                    isDarkMode ? 'text-gray-400' : 'text-gray-600'
+                  }`}>Test Ref:</p>
+                  <div className="flex items-center">
+                    <span className="font-mono bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-2 py-1 rounded">{test.id}</span>
+                    <span className={`ml-2 text-sm ${
+                      isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                    }`}></span>
+                  </div>
+                </div>
+              
+                <div>
+                  <p className={`text-sm font-medium ${
+                    isDarkMode ? 'text-gray-400' : 'text-gray-600'
+                  }`}>Category</p>
+                  
+                  <div className="flex flex-wrap gap-2 mt-1">
+                    <span className={`inline-block px-2 py-1 text-sm rounded-md ${getCategoryBadgeClass(test.category)}`}>
+                      {test.category}
+                    </span>
+                    
+                    {subCategory && (
+                      <span className={`inline-block px-2 py-1 text-sm rounded-md ${getSubCategoryBadgeClass(subCategory)}`}>
+                        {subCategory}
+                      </span>
+                    )}
+                  </div>
+                </div>
+                
+                {test.description && (
+                  <div>
+                    <p className={`text-sm font-medium ${
+                      isDarkMode ? 'text-gray-400' : 'text-gray-600'
+                    }`}>Description</p>
+                    <p>{test.description}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+            
+            <div>
+              <h3 className={`text-sm font-semibold uppercase mb-2 ${
+                isDarkMode ? 'text-gray-400' : 'text-gray-500'
+              }`}>Coding Information</h3>
+              
+              <div className="space-y-4">
+                <div>
+                  <p className={`text-sm font-medium ${
+                    isDarkMode ? 'text-gray-400' : 'text-gray-600'
+                  }`}>CPT Code</p>
+                  <div className="flex items-center">
+                    <span className="font-mono bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded">{cptCode}</span>
+                    <span className={`ml-2 text-sm ${
+                      isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                    }`}>Current Procedural Terminology</span>
+                  </div>
+                </div>
+                
+                {isImagingTest && snomedCode ? (
+                  <div>
+                    <p className={`text-sm font-medium ${
+                      isDarkMode ? 'text-gray-400' : 'text-gray-600'
+                    }`}>SNOMED CT Code</p>
+                    <div className="flex items-center">
+                      <span className="font-mono bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 px-2 py-1 rounded">{snomedCode}</span>
+                      <span className={`ml-2 text-sm ${
+                        isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                      }`}>Systematized Nomenclature of Medicine</span>
+                    </div>
+                  </div>
+                ) : loincCode && (
+                  <div>
+                    <p className={`text-sm font-medium ${
+                      isDarkMode ? 'text-gray-400' : 'text-gray-600'
+                    }`}>LOINC Code</p>
+                    <div className="flex items-center">
+                      <span className="font-mono bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-2 py-1 rounded">{loincCode}</span>
+                      <span className={`ml-2 text-sm ${
+                        isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                      }`}>Logical Observation Identifiers Names and Codes</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          
+          {test.notes && (
+            <div className="mb-6">
+              <h3 className={`text-sm font-semibold uppercase mb-2 ${
+                isDarkMode ? 'text-gray-400' : 'text-gray-500'
+              }`}>Additional Notes</h3>
+              <div className={`p-4 rounded-md ${
+                isDarkMode ? 'bg-gray-800' : 'bg-gray-50'
+              }`}>
+                <p className="whitespace-pre-wrap">{test.notes}</p>
+              </div>
+            </div>
+          )}
+          
+          <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+            <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+              Note: This information is provided for reference purposes only and should be verified with the latest medical coding guidelines.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default TestDetailModal;
