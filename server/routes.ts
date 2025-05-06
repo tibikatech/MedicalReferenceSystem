@@ -239,6 +239,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Update a test by ID
+  app.patch("/api/tests/:id", async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const updateData = req.body;
+      
+      // Fetch the current test to verify it exists
+      const existingTest = await storage.getTestById(id);
+      if (!existingTest) {
+        return res.status(404).json({ 
+          error: {
+            code: 'NOT_FOUND',
+            message: `Test with ID ${id} not found`
+          }
+        });
+      }
+      
+      // Update the test
+      const updatedTest = await storage.updateTest(id, updateData);
+      if (!updatedTest) {
+        return res.status(500).json({ 
+          error: {
+            code: 'UPDATE_FAILED',
+            message: `Failed to update test with ID ${id}`
+          }
+        });
+      }
+      
+      res.json({ 
+        success: true,
+        test: updatedTest
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
+
   // Health check endpoint
   app.get("/api/health", (req, res) => {
     res.json({ status: "healthy", timestamp: new Date() });
