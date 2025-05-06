@@ -1,14 +1,15 @@
-import React from 'react';
-import { Test } from '@shared/schema';
-import { AlertTriangle, X } from 'lucide-react';
+import { Test } from "@shared/schema";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { AlertCircle, ArrowLeft, ArrowRight, Check, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 interface DuplicateTestModalProps {
@@ -22,7 +23,7 @@ interface DuplicateTestModalProps {
   isDarkMode?: boolean;
 }
 
-const DuplicateTestModal: React.FC<DuplicateTestModalProps> = ({
+export default function DuplicateTestModal({
   isOpen,
   onClose,
   duplicatesById,
@@ -30,135 +31,178 @@ const DuplicateTestModal: React.FC<DuplicateTestModalProps> = ({
   onSkipAll,
   onUpdateAll,
   onDecideEach,
-  isDarkMode = true
-}) => {
-  const totalDuplicates = duplicatesById.length + duplicatesByCptCode.length;
-
+  isDarkMode = false
+}: DuplicateTestModalProps) {
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="bg-gray-900 text-white border-gray-700 max-w-2xl">
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className={`max-w-4xl ${isDarkMode ? 'bg-gray-800 text-white' : ''}`}>
         <DialogHeader>
-          <DialogTitle className="flex items-center text-xl font-semibold">
-            <AlertTriangle className="mr-2 text-yellow-500" size={20} />
-            Duplicate Tests Detected
+          <DialogTitle className={isDarkMode ? 'text-white' : ''}>
+            <div className="flex items-center gap-2">
+              <AlertCircle className="h-5 w-5 text-yellow-500" />
+              Duplicate Tests Detected
+            </div>
           </DialogTitle>
-          <DialogDescription className="text-gray-400">
-            We found potential duplicates in your import file. Please choose how to proceed.
+          <DialogDescription className={isDarkMode ? 'text-gray-400' : ''}>
+            {duplicatesById.length > 0 && (
+              <span className="block">
+                {duplicatesById.length} test(s) with duplicate IDs found.
+              </span>
+            )}
+            {duplicatesByCptCode.length > 0 && (
+              <span className="block">
+                {duplicatesByCptCode.length} test(s) with duplicate CPT codes found.
+              </span>
+            )}
+            Please choose how to handle these duplicates.
           </DialogDescription>
         </DialogHeader>
         
-        <div className="mt-4">
-          <p className="mb-4">
-            Found {totalDuplicates} potential duplicate tests in your import file:
-            <span className="block mt-2 ml-4">
-              • {duplicatesById.length} tests with IDs that already exist in the database
-            </span>
-            <span className="block ml-4">
-              • {duplicatesByCptCode.length} tests with CPT codes that match existing tests
-            </span>
-          </p>
-
-          <p className="mb-4 font-semibold">How would you like to handle these duplicates?</p>
-
-          <div className="flex flex-wrap gap-3 mb-6">
-            <Button 
-              onClick={onSkipAll} 
-              variant="outline"
-              className="bg-gray-700 hover:bg-gray-600 text-white"
-            >
-              Skip All Duplicates
-            </Button>
-            <Button 
-              onClick={onUpdateAll} 
-              className="bg-blue-600 hover:bg-blue-500 text-white"
-            >
-              Update All Duplicates
-            </Button>
-            <Button 
-              onClick={onDecideEach}
-              variant="destructive"
-            >
-              Decide For Each
-            </Button>
-          </div>
-
+        <div className="space-y-6">
           {duplicatesById.length > 0 && (
-            <div className="mb-6">
-              <h3 className="text-lg font-medium mb-3 text-yellow-400">ID Duplicates</h3>
-              <div className="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
-                <table className="w-full">
-                  <thead className="bg-gray-800">
-                    <tr className="border-b border-gray-700">
-                      <th className="px-4 py-2 text-left text-sm text-gray-400">ID</th>
-                      <th className="px-4 py-2 text-left text-sm text-gray-400">Name</th>
-                      <th className="px-4 py-2 text-left text-sm text-gray-400">Category</th>
-                      <th className="px-4 py-2 text-left text-sm text-gray-400">CPT Code</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {duplicatesById.slice(0, 5).map((test) => (
-                      <tr key={test.id} className="border-b border-gray-700">
-                        <td className="px-4 py-2 text-sm">{test.id}</td>
-                        <td className="px-4 py-2 text-sm">{test.name}</td>
-                        <td className="px-4 py-2 text-sm">
-                          <Badge className="bg-blue-600">{test.category}</Badge>
-                        </td>
-                        <td className="px-4 py-2 text-sm font-mono">{test.cptCode || "—"}</td>
-                      </tr>
+            <div>
+              <h3 className={`text-lg font-semibold mb-2 ${isDarkMode ? 'text-white' : ''}`}>
+                Duplicate IDs
+              </h3>
+              <div className={`rounded-md border ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} p-2 max-h-40 overflow-auto`}>
+                <Table>
+                  <TableHeader className={isDarkMode ? 'bg-gray-900' : 'bg-gray-50'}>
+                    <TableRow>
+                      <TableHead className={isDarkMode ? 'text-gray-300' : ''}>ID</TableHead>
+                      <TableHead className={isDarkMode ? 'text-gray-300' : ''}>Name</TableHead>
+                      <TableHead className={isDarkMode ? 'text-gray-300' : ''}>Category</TableHead>
+                      <TableHead className={isDarkMode ? 'text-gray-300' : ''}>CPT Code</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {duplicatesById.map((test) => (
+                      <TableRow key={test.id} className={isDarkMode ? 'border-gray-700' : 'border-gray-200'}>
+                        <TableCell className={isDarkMode ? 'font-medium text-white' : 'font-medium'}>
+                          {test.id}
+                        </TableCell>
+                        <TableCell className={isDarkMode ? 'text-gray-300' : ''}>
+                          {test.name}
+                        </TableCell>
+                        <TableCell>
+                          <Badge className={`${isDarkMode ? 'bg-gray-700 text-white' : ''}`}>
+                            {test.category}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className={isDarkMode ? 'text-gray-300' : ''}>
+                          {test.cptCode || '—'}
+                        </TableCell>
+                      </TableRow>
                     ))}
-                    {duplicatesById.length > 5 && (
-                      <tr>
-                        <td colSpan={4} className="px-4 py-2 text-sm text-gray-500 text-center">
-                          And {duplicatesById.length - 5} more duplicate IDs...
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               </div>
             </div>
           )}
-
+          
           {duplicatesByCptCode.length > 0 && (
             <div>
-              <h3 className="text-lg font-medium mb-3 text-yellow-400">CPT Code Duplicates</h3>
-              <div className="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
-                <table className="w-full">
-                  <thead className="bg-gray-800">
-                    <tr className="border-b border-gray-700">
-                      <th className="px-4 py-2 text-left text-sm text-gray-400">ID</th>
-                      <th className="px-4 py-2 text-left text-sm text-gray-400">Name</th>
-                      <th className="px-4 py-2 text-left text-sm text-gray-400">Category</th>
-                      <th className="px-4 py-2 text-left text-sm text-gray-400">CPT Code</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {duplicatesByCptCode.slice(0, 5).map((test) => (
-                      <tr key={test.id} className="border-b border-gray-700">
-                        <td className="px-4 py-2 text-sm">{test.id}</td>
-                        <td className="px-4 py-2 text-sm">{test.name}</td>
-                        <td className="px-4 py-2 text-sm">
-                          <Badge className="bg-blue-600">{test.category}</Badge>
-                        </td>
-                        <td className="px-4 py-2 text-sm font-mono">{test.cptCode}</td>
-                      </tr>
+              <h3 className={`text-lg font-semibold mb-2 ${isDarkMode ? 'text-white' : ''}`}>
+                Duplicate CPT Codes
+              </h3>
+              <div className={`rounded-md border ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} p-2 max-h-40 overflow-auto`}>
+                <Table>
+                  <TableHeader className={isDarkMode ? 'bg-gray-900' : 'bg-gray-50'}>
+                    <TableRow>
+                      <TableHead className={isDarkMode ? 'text-gray-300' : ''}>ID</TableHead>
+                      <TableHead className={isDarkMode ? 'text-gray-300' : ''}>Name</TableHead>
+                      <TableHead className={isDarkMode ? 'text-gray-300' : ''}>Category</TableHead>
+                      <TableHead className={isDarkMode ? 'text-gray-300' : ''}>CPT Code</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {duplicatesByCptCode.map((test) => (
+                      <TableRow key={test.id} className={isDarkMode ? 'border-gray-700' : 'border-gray-200'}>
+                        <TableCell className={isDarkMode ? 'font-medium text-white' : 'font-medium'}>
+                          {test.id}
+                        </TableCell>
+                        <TableCell className={isDarkMode ? 'text-gray-300' : ''}>
+                          {test.name}
+                        </TableCell>
+                        <TableCell>
+                          <Badge className={`${isDarkMode ? 'bg-gray-700 text-white' : ''}`}>
+                            {test.category}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className={isDarkMode ? 'text-gray-300' : ''}>
+                          {test.cptCode || '—'}
+                        </TableCell>
+                      </TableRow>
                     ))}
-                    {duplicatesByCptCode.length > 5 && (
-                      <tr>
-                        <td colSpan={4} className="px-4 py-2 text-sm text-gray-500 text-center">
-                          And {duplicatesByCptCode.length - 5} more duplicate CPT codes...
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               </div>
             </div>
           )}
+          
+          <div className={`p-4 rounded-md ${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
+            <h3 className={`text-lg font-semibold mb-4 ${isDarkMode ? 'text-white' : ''}`}>
+              How would you like to handle these duplicates?
+            </h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className={`p-4 rounded-md border ${isDarkMode ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-white'} flex flex-col items-center text-center`}>
+                <X className="h-8 w-8 text-red-500 mb-2" />
+                <h4 className={`text-base font-semibold mb-2 ${isDarkMode ? 'text-white' : ''}`}>Skip All</h4>
+                <p className={`text-sm mb-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                  Don't import any of the duplicate tests. Keep the existing ones in the database.
+                </p>
+                <Button 
+                  variant="outline" 
+                  className={`w-full ${isDarkMode ? 'bg-gray-700 text-white hover:bg-gray-600' : ''}`}
+                  onClick={onSkipAll}
+                >
+                  Skip Duplicates
+                </Button>
+              </div>
+              
+              <div className={`p-4 rounded-md border ${isDarkMode ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-white'} flex flex-col items-center text-center`}>
+                <Check className="h-8 w-8 text-green-500 mb-2" />
+                <h4 className={`text-base font-semibold mb-2 ${isDarkMode ? 'text-white' : ''}`}>Update All</h4>
+                <p className={`text-sm mb-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                  Replace all existing tests with the new versions being imported.
+                </p>
+                <Button 
+                  variant="outline" 
+                  className={`w-full ${isDarkMode ? 'bg-green-600 text-white hover:bg-green-700' : 'bg-green-50 text-green-700 hover:bg-green-100'}`}
+                  onClick={onUpdateAll}
+                >
+                  Update All
+                </Button>
+              </div>
+              
+              <div className={`p-4 rounded-md border ${isDarkMode ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-white'} flex flex-col items-center text-center`}>
+                <ArrowRight className="h-8 w-8 text-blue-500 mb-2" />
+                <h4 className={`text-base font-semibold mb-2 ${isDarkMode ? 'text-white' : ''}`}>Decide Individually</h4>
+                <p className={`text-sm mb-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                  Go through each duplicate and decide whether to skip or update.
+                </p>
+                <Button 
+                  variant="outline" 
+                  className={`w-full ${isDarkMode ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-50 text-blue-700 hover:bg-blue-100'}`}
+                  onClick={onDecideEach}
+                >
+                  Review Each
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
+        
+        <DialogFooter>
+          <Button 
+            variant="outline" 
+            onClick={onClose}
+            className={isDarkMode ? 'bg-gray-700 text-white hover:bg-gray-600' : ''}
+          >
+            Cancel Import
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
-};
-
-export default DuplicateTestModal;
+}

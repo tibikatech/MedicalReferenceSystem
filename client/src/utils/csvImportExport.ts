@@ -1,140 +1,71 @@
 import { Test } from '@shared/schema';
 
 /**
- * Converts tests to CSV format
- * @param tests Array of tests to convert
- * @returns CSV string
- */
-export function testsToCSV(tests: Test[]): string {
-  // Define headers based on test properties
-  const headers = [
-    'id',
-    'name',
-    'category',
-    'subCategory',
-    'cptCode',
-    'loincCode',
-    'snomedCode',
-    'description',
-    'notes'
-  ];
-  
-  // Create CSV header row
-  let csv = headers.join(',') + '\n';
-  
-  // Add each test as a row
-  tests.forEach(test => {
-    const row = headers.map(header => {
-      // Get the value for this header
-      const value = test[header as keyof Test];
-      
-      // Format the value properly for CSV
-      if (value === null || value === undefined) {
-        return '';
-      }
-      
-      // Handle strings with commas by enclosing in quotes
-      if (typeof value === 'string' && (value.includes(',') || value.includes('"') || value.includes('\n'))) {
-        // Escape quotes by doubling them and enclose in quotes
-        return `"${value.replace(/"/g, '""')}"`;
-      }
-      
-      return value;
-    });
-    
-    // Add the row to the CSV
-    csv += row.join(',') + '\n';
-  });
-  
-  return csv;
-}
-
-/**
  * Parse a CSV string into an array of objects
  * @param csvString CSV content as string
  * @returns Array of objects where keys are column headers
  */
 export function parseCSV(csvString: string): Record<string, string>[] {
-  // Split the CSV into rows
-  const rows = csvString.split('\n');
+  // Split by newline and handle different newline characters
+  const lines = csvString.split(/\r\n|\n|\r/).filter(line => line.trim() !== '');
   
-  // Extract headers from the first row
-  const headers = rows[0].split(',');
+  // Get headers from first line
+  const headers = lines[0].split(',').map(header => header.trim());
   
-  // Initialize result array
-  const result: Record<string, string>[] = [];
-  
-  // Process each row (skip header row)
-  for (let i = 1; i < rows.length; i++) {
-    // Skip empty rows
-    if (!rows[i].trim()) continue;
-    
-    const row = rows[i];
+  // Parse each line into an object
+  return lines.slice(1).map(line => {
+    // Handle commas within quoted fields
     const values: string[] = [];
-    let inQuotes = false;
     let currentValue = '';
+    let inQuotes = false;
     
-    // Parse the CSV row considering quoted values
-    for (let j = 0; j < row.length; j++) {
-      const char = row[j];
+    for (let i = 0; i < line.length; i++) {
+      const char = line[i];
       
       if (char === '"') {
-        // Handle quotes - if we see double quotes inside quoted string, it's an escaped quote
-        if (j + 1 < row.length && row[j + 1] === '"') {
-          currentValue += '"';
-          j++; // Skip the next quote
-        } else {
-          // Toggle quote state
-          inQuotes = !inQuotes;
-        }
+        inQuotes = !inQuotes;
       } else if (char === ',' && !inQuotes) {
-        // End of value
         values.push(currentValue);
         currentValue = '';
       } else {
-        // Add character to current value
         currentValue += char;
       }
     }
     
-    // Add the last value
+    // Don't forget the last value
     values.push(currentValue);
     
-    // Create object with header keys
-    const obj: Record<string, string> = {};
-    for (let j = 0; j < headers.length; j++) {
-      obj[headers[j]] = values[j] || '';
-    }
-    
-    result.push(obj);
-  }
-  
-  return result;
+    // Create an object with the headers as keys
+    return headers.reduce((obj, header, index) => {
+      obj[header] = values[index] || '';
+      return obj;
+    }, {} as Record<string, string>);
+  });
 }
 
 /**
- * Converts CSV data to test objects
- * @param csvData Array of objects parsed from CSV
- * @returns Array of Test objects
+ * Preview the first n rows of a CSV file
+ * @param file CSV file to preview
+ * @param maxRows Maximum number of rows to preview
  */
-export function csvToTests(csvData: Record<string, string>[]): Test[] {
-  return csvData.map(row => {
-    const test: Test = {
-      id: row.id || crypto.randomUUID(),
-      name: row.name || '',
-      category: row.category || '',
-      cptCode: row.cptCode || null,
-      description: row.description || null,
-      notes: row.notes || null,
-      loincCode: row.loincCode || null,
-      snomedCode: row.snomedCode || null,
-      subCategory: row.subCategory || null,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
-    
-    return test;
-  });
+export async function previewCSV(file: File, maxRows: number = 5): Promise<{
+  headers: string[];
+  previewRows: string[][];
+}> {
+  const text = await readCSVFile(file);
+  const lines = text.split(/\r\n|\n|\r/).filter(line => line.trim() !== '');
+  
+  if (lines.length === 0) {
+    throw new Error('CSV file is empty');
+  }
+  
+  // Simple split for preview purposes
+  const headers = lines[0].split(',').map(header => header.trim());
+  const previewRows = lines
+    .slice(1, maxRows + 1)
+    .map(line => line.split(',').map(cell => cell.trim()));
+  
+  return { headers, previewRows };
 }
 
 /**
@@ -147,15 +78,13 @@ export function readCSVFile(file: File): Promise<string> {
     const reader = new FileReader();
     
     reader.onload = (event) => {
-      if (event.target?.result) {
+      if (event.target) {
         resolve(event.target.result as string);
-      } else {
-        reject(new Error('Failed to read file'));
       }
     };
     
-    reader.onerror = () => {
-      reject(reader.error);
+    reader.onerror = (error) => {
+      reject(error);
     };
     
     reader.readAsText(file);
@@ -163,126 +92,54 @@ export function readCSVFile(file: File): Promise<string> {
 }
 
 /**
- * Imports tests from a CSV file
- * @param file CSV file to import
- * @returns Promise resolving to array of imported tests
+ * Convert array of objects to CSV format
+ * @param data Array of objects to convert
+ * @returns CSV string
  */
-export async function importTestsFromCSV(file: File): Promise<Test[]> {
-  try {
-    const csvContent = await readCSVFile(file);
-    const parsedData = parseCSV(csvContent);
-    return csvToTests(parsedData);
-  } catch (error) {
-    console.error('Error importing tests from CSV:', error);
-    throw error;
-  }
-}
-
-/**
- * Extracts CSV headers and a preview of rows from a CSV file
- * @param file CSV file to preview
- * @param previewRowCount Number of rows to preview
- * @returns Promise resolving to headers and preview rows
- */
-export async function previewCSV(file: File, previewRowCount = 5): Promise<{
-  headers: string[],
-  previewRows: string[][]
-}> {
-  try {
-    const csvContent = await readCSVFile(file);
-    const rows = csvContent.split('\n');
-    
-    if (rows.length === 0) {
-      throw new Error('CSV file is empty');
-    }
-    
-    const headers = rows[0].split(',');
-    const previewRows: string[][] = [];
-    
-    // Extract preview rows (skip header row)
-    for (let i = 1; i < Math.min(rows.length, previewRowCount + 1); i++) {
-      if (!rows[i].trim()) continue;
-      
-      const values: string[] = [];
-      let inQuotes = false;
-      let currentValue = '';
-      
-      // Parse the CSV row considering quoted values
-      for (let j = 0; j < rows[i].length; j++) {
-        const char = rows[i][j];
-        
-        if (char === '"') {
-          // Handle quotes - if we see double quotes inside quoted string, it's an escaped quote
-          if (j + 1 < rows[i].length && rows[i][j + 1] === '"') {
-            currentValue += '"';
-            j++; // Skip the next quote
-          } else {
-            // Toggle quote state
-            inQuotes = !inQuotes;
-          }
-        } else if (char === ',' && !inQuotes) {
-          // End of value
-          values.push(currentValue);
-          currentValue = '';
-        } else {
-          // Add character to current value
-          currentValue += char;
-        }
+export function objectsToCSV(data: Record<string, any>[]): string {
+  if (data.length === 0) return '';
+  
+  const headers = Object.keys(data[0]);
+  const headerRow = headers.join(',');
+  
+  const rows = data.map(obj => {
+    return headers.map(header => {
+      const value = obj[header] === null || obj[header] === undefined ? '' : obj[header];
+      // Quote values that contain commas or quotes
+      if (typeof value === 'string' && (value.includes(',') || value.includes('"'))) {
+        return `"${value.replace(/"/g, '""')}"`;
       }
-      
-      // Add the last value
-      values.push(currentValue);
-      previewRows.push(values);
-    }
-    
-    return { headers, previewRows };
-  } catch (error) {
-    console.error('Error previewing CSV:', error);
-    throw error;
-  }
+      return value;
+    }).join(',');
+  });
+  
+  return [headerRow, ...rows].join('\n');
 }
 
 /**
- * Check if a test is duplicated in the existing tests
- * @param test Test to check
- * @param existingTests Array of existing tests
- * @returns Object containing duplication status
+ * Convert tests to CSV format
+ * @param tests Array of tests to convert
+ * @returns CSV string
  */
-export function checkForDuplicateTest(test: Test, existingTests: Test[]): {
-  isDuplicate: boolean;
-  duplicateById: boolean;
-  duplicateByCptCode: boolean;
-  existingTest: Test | null;
-} {
-  // Check for ID duplication
-  const duplicateById = existingTests.some(existingTest => existingTest.id === test.id);
+export function testsToCSV(tests: Test[]): string {
+  // Convert tests to plain objects
+  const data = tests.map(test => ({
+    id: test.id,
+    name: test.name,
+    category: test.category,
+    subCategory: test.subCategory,
+    cptCode: test.cptCode,
+    loincCode: test.loincCode,
+    snomedCode: test.snomedCode,
+    description: test.description,
+    notes: test.notes
+  }));
   
-  // Check for CPT code duplication (only if CPT code is present)
-  const duplicateByCptCode = test.cptCode 
-    ? existingTests.some(existingTest => 
-        existingTest.cptCode === test.cptCode && existingTest.id !== test.id
-      )
-    : false;
-  
-  const isDuplicate = duplicateById || duplicateByCptCode;
-  
-  // Find the existing test that this duplicates
-  const existingTest = isDuplicate 
-    ? existingTests.find(existing => 
-        existing.id === test.id || (test.cptCode && existing.cptCode === test.cptCode)
-      ) || null
-    : null;
-  
-  return {
-    isDuplicate,
-    duplicateById,
-    duplicateByCptCode,
-    existingTest
-  };
+  return objectsToCSV(data);
 }
 
 /**
- * Downloads a CSV file
+ * Download data as CSV file
  * @param csvContent CSV content as string
  * @param fileName Name for the downloaded file
  */
@@ -296,4 +153,14 @@ export function downloadCSV(csvContent: string, fileName: string): void {
   link.click();
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
+}
+
+/**
+ * Export tests to a downloadable CSV file
+ * @param tests Array of tests to export
+ * @param fileName Name for the downloaded file
+ */
+export function exportTestsToCSV(tests: Test[], fileName: string = 'medirefs_tests.csv'): void {
+  const csvContent = testsToCSV(tests);
+  downloadCSV(csvContent, fileName);
 }
