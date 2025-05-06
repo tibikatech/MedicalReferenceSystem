@@ -9,7 +9,6 @@ import { cn } from "@/lib/utils";
 
 interface TestDetailModalProps {
   test: Test;
-  tests?: Test[];
   isOpen: boolean;
   onClose: () => void;
   onEdit?: (test: Test) => void;

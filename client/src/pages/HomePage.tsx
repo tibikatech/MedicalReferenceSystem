@@ -59,7 +59,7 @@ export default function HomePage() {
   return (
     <>
       <Header onSearch={setSearchQuery} />
-
+      
       <main className="flex-grow bg-gray-900 text-white min-h-screen">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Hero section */}
@@ -70,7 +70,7 @@ export default function HomePage() {
             <span className="inline-block mt-2 px-3 py-1 bg-gray-800 text-white rounded-full text-sm">
               {tests ? tests.length : 0} tests available
             </span>
-
+            
             <div className="mt-4 flex space-x-2">
               <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium flex items-center">
                 <svg className="mr-2 -ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -106,7 +106,7 @@ export default function HomePage() {
               onCategorySelect={handleCategorySelect}
               onSubCategorySelect={handleSubCategorySelect}
             />
-
+            
             <TestsGrid 
               tests={tests}
               isLoading={isLoading}
@@ -116,16 +116,14 @@ export default function HomePage() {
           </div>
         </div>
       </main>
-
+      
       <Footer />
-
+      
       {selectedTest && (
         <TestDetailModal 
           test={selectedTest}
-          tests={tests}
           isOpen={isModalOpen}
           onClose={handleCloseModal}
-          onEdit={handleTestSelect}
         />
       )}
     </>
