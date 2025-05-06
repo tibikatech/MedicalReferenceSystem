@@ -1,29 +1,24 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
+  DialogDescription,
+  DialogFooter
 } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ArrowRight, HelpCircle } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { ArrowRight, Check, X } from "lucide-react";
 
 interface TestMappingWizardProps {
   isOpen: boolean;
@@ -34,19 +29,6 @@ interface TestMappingWizardProps {
   isDarkMode?: boolean;
 }
 
-const REQUIRED_FIELDS = ['name', 'category'];
-const FIELD_OPTIONS = [
-  { value: 'id', label: 'ID', description: 'Unique identifier for the test' },
-  { value: 'name', label: 'Name', description: 'Full name of the test' },
-  { value: 'category', label: 'Category', description: 'Main category (Laboratory Tests or Imaging Studies)' },
-  { value: 'subCategory', label: 'Subcategory', description: 'Specialized subcategory' },
-  { value: 'cptCode', label: 'CPT Code', description: 'Current Procedural Terminology code' },
-  { value: 'loincCode', label: 'LOINC Code', description: 'Logical Observation Identifiers Names and Codes' },
-  { value: 'snomedCode', label: 'SNOMED Code', description: 'SNOMED CT code for the test' },
-  { value: 'description', label: 'Description', description: 'Detailed description of the test' },
-  { value: 'notes', label: 'Notes', description: 'Additional notes or comments' }
-];
-
 export default function TestMappingWizard({
   isOpen,
   onClose,
@@ -55,190 +37,120 @@ export default function TestMappingWizard({
   onComplete,
   isDarkMode = false
 }: TestMappingWizardProps) {
+  // Required fields in our application
+  const requiredFields = ['name', 'category'];
+  
+  // All available fields in our app
+  const appFields = [
+    { id: 'id', label: 'ID', description: 'Unique identifier for the test' },
+    { id: 'name', label: 'Name', description: 'Test name', required: true },
+    { id: 'category', label: 'Category', description: 'Main category (Lab Tests or Imaging Studies)', required: true },
+    { id: 'subCategory', label: 'Subcategory', description: 'Specific subcategory' },
+    { id: 'cptCode', label: 'CPT Code', description: 'Current Procedural Terminology code' },
+    { id: 'loincCode', label: 'LOINC Code', description: 'Logical Observation Identifiers Names and Codes' },
+    { id: 'snomedCode', label: 'SNOMED Code', description: 'Systematized Nomenclature of Medicine code' },
+    { id: 'description', label: 'Description', description: 'Full test description' },
+    { id: 'notes', label: 'Notes', description: 'Additional notes about the test' }
+  ];
+  
+  // State for field mapping
   const [mapping, setMapping] = useState<Record<string, string>>({});
   
-  // Initialize possible matches based on similar field names
-  const initialMapping = () => {
-    const result: Record<string, string> = {};
+  // Automatic mapping if CSV headers match our field names
+  useEffect(() => {
+    const initialMapping: Record<string, string> = {};
     
-    // Try to match headers to our fields based on similarity
     csvHeaders.forEach(header => {
-      const lowerHeader = header.toLowerCase();
+      // Check if header matches any app field directly or with case insensitive matching
+      const headerLower = header.toLowerCase();
       
-      // Exact matches
-      if (lowerHeader === 'id' || lowerHeader === 'test_id' || lowerHeader === 'testid') {
-        result[header] = 'id';
-      } 
-      else if (lowerHeader === 'name' || lowerHeader === 'test_name' || lowerHeader === 'testname') {
-        result[header] = 'name';
-      } 
-      else if (lowerHeader === 'category' || lowerHeader === 'test_category') {
-        result[header] = 'category';
+      // First try exact match
+      const exactMatch = appFields.find(field => field.id === header);
+      if (exactMatch) {
+        initialMapping[exactMatch.id] = header;
+        return;
       }
-      else if (lowerHeader === 'subcategory' || lowerHeader === 'sub_category' || lowerHeader === 'test_subcategory') {
-        result[header] = 'subCategory';
+      
+      // Then try case-insensitive, whitespace-free match
+      const lowerCaseMatch = appFields.find(
+        field => field.id.toLowerCase() === headerLower ||
+                field.id.toLowerCase().replace(/[_\s]/g, '') === headerLower.replace(/[_\s]/g, '')
+      );
+      
+      if (lowerCaseMatch) {
+        initialMapping[lowerCaseMatch.id] = header;
+        return;
       }
-      else if (lowerHeader === 'cpt' || lowerHeader === 'cptcode' || lowerHeader === 'cpt_code') {
-        result[header] = 'cptCode';
-      }
-      else if (lowerHeader === 'loinc' || lowerHeader === 'loinccode' || lowerHeader === 'loinc_code') {
-        result[header] = 'loincCode';
-      }
-      else if (lowerHeader === 'snomed' || lowerHeader === 'snomedcode' || lowerHeader === 'snomed_code') {
-        result[header] = 'snomedCode';
-      }
-      else if (lowerHeader === 'description' || lowerHeader === 'test_description') {
-        result[header] = 'description';
-      }
-      else if (lowerHeader === 'notes' || lowerHeader === 'test_notes' || lowerHeader === 'comments') {
-        result[header] = 'notes';
-      }
-      else {
-        // No match
-        result[header] = '';
+      
+      // Try fuzzy matching
+      const fuzzyMatch = appFields.find(
+        field => headerLower.includes(field.id.toLowerCase()) ||
+                field.id.toLowerCase().includes(headerLower)
+      );
+      
+      if (fuzzyMatch && !initialMapping[fuzzyMatch.id]) {
+        initialMapping[fuzzyMatch.id] = header;
       }
     });
     
-    return result;
-  };
-  
-  // Initialize mapping on first render
-  useEffect(() => {
-    setMapping(initialMapping());
+    setMapping(initialMapping);
   }, [csvHeaders]);
   
-  // Handle field mapping change
-  const handleMappingChange = (header: string, value: string) => {
-    setMapping(prev => ({ ...prev, [header]: value }));
-  };
-  
   // Check if all required fields are mapped
-  const isValidMapping = () => {
-    return REQUIRED_FIELDS.every(field => 
-      Object.values(mapping).includes(field)
-    );
+  const areRequiredFieldsMapped = requiredFields.every(field => mapping[field]);
+  
+  // Handle field mapping change
+  const handleFieldMappingChange = (appField: string, csvHeader: string) => {
+    setMapping(prev => ({
+      ...prev,
+      [appField]: csvHeader
+    }));
   };
   
-  // Handle completion
-  const handleComplete = () => {
-    // Filter out empty mappings
-    const finalMapping = Object.entries(mapping)
-      .filter(([_, value]) => value !== '')
-      .reduce((obj, [key, value]) => {
-        obj[key] = value;
-        return obj;
-      }, {} as Record<string, string>);
-    
-    onComplete(finalMapping);
+  // Handle form submission
+  const handleSubmit = () => {
+    onComplete(mapping);
   };
   
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className={`max-w-4xl ${isDarkMode ? 'bg-gray-800 text-white' : ''}`}>
+      <DialogContent 
+        className={`max-w-4xl ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-white'}`}
+      >
         <DialogHeader>
-          <DialogTitle className={isDarkMode ? 'text-white' : ''}>
+          <DialogTitle className={`text-xl ${isDarkMode ? 'text-white' : ''}`}>
             Map CSV Columns to Test Fields
           </DialogTitle>
           <DialogDescription className={isDarkMode ? 'text-gray-400' : ''}>
-            Match your CSV columns to the corresponding test fields.
+            Please map each field from your CSV file to the corresponding field in our system.
             Fields marked with * are required.
           </DialogDescription>
         </DialogHeader>
         
-        <div className="grid gap-6 py-4">
-          <div className={`rounded-md border ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} p-4 max-h-96 overflow-auto`}>
-            <Table>
-              <TableHeader className={isDarkMode ? 'bg-gray-900' : 'bg-gray-50'}>
-                <TableRow>
-                  <TableHead className={isDarkMode ? 'text-gray-300' : ''}>CSV Column</TableHead>
-                  <TableHead className="w-6"></TableHead>
-                  <TableHead className={isDarkMode ? 'text-gray-300' : ''}>Test Field</TableHead>
-                  <TableHead className={isDarkMode ? 'text-gray-300' : ''}>Sample Data</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {csvHeaders.map((header, index) => (
-                  <TableRow key={header} className={isDarkMode ? 'border-gray-700' : 'border-gray-200'}>
-                    <TableCell className={isDarkMode ? 'font-medium text-white' : 'font-medium'}>
-                      {header}
-                    </TableCell>
-                    <TableCell>
-                      <ArrowRight className={`h-4 w-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`} />
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <Select 
-                          value={mapping[header] || ''} 
-                          onValueChange={(value) => handleMappingChange(header, value)}
-                        >
-                          <SelectTrigger className={`w-[180px] ${isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : ''}`}>
-                            <SelectValue placeholder="Select field" />
-                          </SelectTrigger>
-                          <SelectContent className={isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : ''}>
-                            <SelectItem value="">Ignore this column</SelectItem>
-                            {FIELD_OPTIONS.map(option => (
-                              <SelectItem 
-                                key={option.value} 
-                                value={option.value}
-                                className={REQUIRED_FIELDS.includes(option.value) ? 'font-semibold' : ''}
-                              >
-                                {option.label}{REQUIRED_FIELDS.includes(option.value) ? ' *' : ''}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Button variant="ghost" size="icon" className="h-8 w-8 p-0">
-                                <HelpCircle className="h-4 w-4" />
-                                <span className="sr-only">Field description</span>
-                              </Button>
-                            </TooltipTrigger>
-                            <TooltipContent className="max-w-xs">
-                              {mapping[header] 
-                                ? FIELD_OPTIONS.find(opt => opt.value === mapping[header])?.description 
-                                : 'This column will not be imported.'}
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      </div>
-                    </TableCell>
-                    <TableCell className={isDarkMode ? 'text-gray-300' : 'text-gray-600'}>
-                      {csvPreviewRows.length > 0 ? csvPreviewRows[0][index] : ''}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-          
-          {/* Preview section */}
-          <div>
-            <Label className={`text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-              Data Preview (showing up to 5 rows)
-            </Label>
-            <div className={`mt-2 rounded-md border ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} p-2 max-h-40 overflow-auto`}>
-              <Table>
-                <TableHeader className={isDarkMode ? 'bg-gray-900' : 'bg-gray-50'}>
+        <div className="space-y-6 py-4">
+          {/* Preview of CSV data */}
+          <Card className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-gray-50'} p-4 rounded-lg`}>
+            <h3 className={`text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+              CSV Preview (First {csvPreviewRows.length} rows)
+            </h3>
+            <div className="overflow-auto max-h-40">
+              <Table className={isDarkMode ? 'bg-gray-800' : ''}>
+                <TableHeader className={isDarkMode ? 'bg-gray-700' : ''}>
                   <TableRow>
-                    {csvHeaders.map(header => (
-                      <TableHead 
-                        key={header} 
-                        className={isDarkMode ? 'text-gray-300 text-xs' : 'text-gray-700 text-xs'}
-                      >
-                        {header} {mapping[header] ? `→ ${mapping[header]}` : ''}
+                    {csvHeaders.map((header, index) => (
+                      <TableHead key={index} className={isDarkMode ? 'text-gray-300 border-gray-700' : ''}>
+                        {header}
                       </TableHead>
                     ))}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {csvPreviewRows.map((row, rowIndex) => (
-                    <TableRow key={rowIndex} className={isDarkMode ? 'border-gray-700' : 'border-gray-200'}>
+                    <TableRow key={rowIndex} className={isDarkMode ? 'border-gray-700' : ''}>
                       {row.map((cell, cellIndex) => (
                         <TableCell 
-                          key={cellIndex} 
-                          className={`py-1 px-2 text-xs truncate max-w-[200px] ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}
+                          key={cellIndex}
+                          className={isDarkMode ? 'text-gray-300 border-gray-700' : ''}
                         >
                           {cell}
                         </TableCell>
@@ -248,20 +160,84 @@ export default function TestMappingWizard({
                 </TableBody>
               </Table>
             </div>
+          </Card>
+          
+          {/* Field mapping section */}
+          <div className="space-y-4">
+            <h3 className={`text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+              Field Mapping
+            </h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {appFields.map(field => (
+                <div key={field.id} className="space-y-2">
+                  <div className="flex items-center">
+                    <label 
+                      htmlFor={`field-${field.id}`} 
+                      className={`text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}
+                    >
+                      {field.label}
+                      {field.required && <span className="text-red-500 ml-1">*</span>}
+                    </label>
+                    {mapping[field.id] ? (
+                      <Badge className={`ml-2 ${isDarkMode ? 'bg-green-900 text-green-300' : 'bg-green-100 text-green-800'}`}>
+                        <Check className="h-3 w-3 mr-1" />
+                        Mapped
+                      </Badge>
+                    ) : field.required ? (
+                      <Badge className={`ml-2 ${isDarkMode ? 'bg-red-900 text-red-300' : 'bg-red-100 text-red-800'}`}>
+                        <X className="h-3 w-3 mr-1" />
+                        Required
+                      </Badge>
+                    ) : (
+                      <Badge className={`ml-2 ${isDarkMode ? 'bg-gray-800 text-gray-300' : 'bg-gray-100 text-gray-800'}`}>
+                        Optional
+                      </Badge>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Select
+                      value={mapping[field.id] || ''}
+                      onValueChange={(value) => handleFieldMappingChange(field.id, value)}
+                    >
+                      <SelectTrigger 
+                        id={`field-${field.id}`}
+                        className={isDarkMode ? 'bg-gray-800 border-gray-700 text-white' : ''}
+                      >
+                        <SelectValue placeholder="Select a column" />
+                      </SelectTrigger>
+                      <SelectContent className={isDarkMode ? 'bg-gray-800 border-gray-700 text-white' : ''}>
+                        <SelectItem value="">-- Don't map --</SelectItem>
+                        {csvHeaders.map(header => (
+                          <SelectItem key={header} value={header}>
+                            {header}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <ArrowRight className={`h-4 w-4 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`} />
+                    <div className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                      {field.description}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-        
-        <DialogFooter>
-          <div className="flex-1 text-sm text-red-500">
-            {!isValidMapping() && 'Please map all required fields (marked with *).'}
-          </div>
-          <Button variant="outline" onClick={onClose} className={isDarkMode ? 'bg-gray-700 text-white hover:bg-gray-600' : ''}>
+
+        <DialogFooter className="flex flex-col sm:flex-row gap-2">
+          <Button
+            variant="outline"
+            onClick={onClose}
+            className={isDarkMode ? 'bg-gray-800 text-white hover:bg-gray-700' : ''}
+          >
             Cancel
           </Button>
-          <Button 
-            onClick={handleComplete} 
-            disabled={!isValidMapping()}
-            className={isDarkMode ? 'bg-blue-600 text-white hover:bg-blue-700' : ''}
+          <Button
+            onClick={handleSubmit}
+            disabled={!areRequiredFieldsMapped}
+            className={`${isDarkMode ? 'bg-blue-600 hover:bg-blue-700' : ''} ${!areRequiredFieldsMapped ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             Complete Mapping
           </Button>
