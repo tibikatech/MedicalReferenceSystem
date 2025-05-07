@@ -80,6 +80,24 @@ export default function TestManagementPage() {
   });
   const [showDuplicatesModal, setShowDuplicatesModal] = useState(false);
   
+  // Upload progress state
+  const [uploadStatus, setUploadStatus] = useState<{
+    state: 'idle' | 'processing' | 'validating' | 'uploading' | 'complete' | 'error';
+    processed: number;
+    total: number;
+    successCount: number;
+    errorCount: number;
+    errors: string[];
+  }>({
+    state: 'idle',
+    processed: 0,
+    total: 0,
+    successCount: 0,
+    errorCount: 0,
+    errors: []
+  });
+  const [showUploadProgress, setShowUploadProgress] = useState(false);
+  
   // FHIR export state
   const [showFhirExportTool, setShowFhirExportTool] = useState(false);
   
@@ -444,16 +462,48 @@ export default function TestManagementPage() {
     }
   };
   
-  // Import tests to database
+  // Import tests to database with progress tracking
   const importTests = async (testsToImport: Test[]) => {
     try {
+      // Reset upload status
+      setUploadStatus({
+        state: 'processing',
+        processed: 0,
+        total: testsToImport.length,
+        successCount: 0,
+        errorCount: 0,
+        errors: []
+      });
+      
+      // Show upload progress modal
+      setShowUploadProgress(true);
+      
+      // Process data delay to show initial processing state
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Update status to validating
+      setUploadStatus(prev => ({
+        ...prev,
+        state: 'validating',
+      }));
+      
+      // Process validation delay to show validating state
+      await new Promise(resolve => setTimeout(resolve, 800));
+      
       // Track successful and failed imports
       let successCount = 0;
       let errorCount = 0;
       const errors: string[] = [];
       
+      // Update status to uploading
+      setUploadStatus(prev => ({
+        ...prev,
+        state: 'uploading',
+      }));
+      
       // Import each test individually to handle errors better
-      for (const test of testsToImport) {
+      for (let i = 0; i < testsToImport.length; i++) {
+        const test = testsToImport[i];
         try {
           // Check if test exists (update) or is new (insert)
           const exists = (tests as any)?.tests.some((t: Test) => t.id === test.id);
@@ -497,7 +547,33 @@ export default function TestManagementPage() {
           errorCount++;
           errors.push(`Error processing test ${test.id}: ${error instanceof Error ? error.message : String(error)}`);
         }
+        
+        // Update processed count (with small async delay to show progress)
+        setUploadStatus(prev => ({
+          ...prev,
+          processed: i + 1,
+          successCount,
+          errorCount,
+          errors
+        }));
+        
+        // Add a small delay between operations to show progress
+        if (i < testsToImport.length - 1) {
+          await new Promise(resolve => setTimeout(resolve, 50));
+        }
       }
+      
+      // Update final status
+      setUploadStatus(prev => ({
+        ...prev,
+        state: 'complete',
+        successCount,
+        errorCount,
+        errors
+      }));
+      
+      // Add a small delay before showing toast
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Show toast with results
       if (errorCount > 0) {
@@ -516,12 +592,34 @@ export default function TestManagementPage() {
         });
       }
       
+      // Keep the progress dialog open for a moment
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Hide upload progress modal
+      setShowUploadProgress(false);
+      
       // Refresh the test list
       queryClient.invalidateQueries({ queryKey: ['/api/tests'] });
       // Also refresh categories and subcategories counts
       queryClient.invalidateQueries({ queryKey: ['/api/test-count-by-category'] });
       queryClient.invalidateQueries({ queryKey: ['/api/test-count-by-subcategory'] });
     } catch (error) {
+      // Handle overall import error
+      setUploadStatus({
+        state: 'error',
+        processed: 0,
+        total: testsToImport.length,
+        successCount: 0,
+        errorCount: 1,
+        errors: [`${error instanceof Error ? error.message : String(error)}`]
+      });
+      
+      // Keep error displayed for a moment
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      
+      // Hide upload progress modal
+      setShowUploadProgress(false);
+      
       toast({
         title: "Import Failed",
         description: `Error: ${error instanceof Error ? error.message : String(error)}`,
