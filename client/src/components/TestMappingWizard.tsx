@@ -19,6 +19,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, Check, X } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 
 interface TestMappingWizardProps {
   isOpen: boolean;
@@ -55,6 +56,17 @@ export default function TestMappingWizard({
   
   // State for field mapping
   const [mapping, setMapping] = useState<Record<string, string>>({});
+
+  // Get categories and subcategories for mapping alignment
+  const { data: categoriesData } = useQuery<{ categories: Array<{ category: string, count: number }> }>({
+    queryKey: ['/api/test-count-by-category'],
+    enabled: isOpen,
+  });
+
+  const { data: subcategoriesData } = useQuery<{ subcategories: Array<{ subCategory: string, count: number }> }>({
+    queryKey: ['/api/test-count-by-subcategory'],
+    enabled: isOpen,
+  });
   
   // Automatic mapping if CSV headers match our field names
   useEffect(() => {
@@ -93,8 +105,36 @@ export default function TestMappingWizard({
       }
     });
     
+    // Apply smarter initial mapping
+    if (csvPreviewRows.length > 0) {
+      // Look at the first row of data to make better guesses about category and subcategory
+      const firstRow = csvPreviewRows[0];
+      csvHeaders.forEach((header, index) => {
+        const value = firstRow[index];
+        if (value) {
+          const valueLower = value.toLowerCase();
+          
+          // Check for known categories in our system
+          if (categoriesData?.categories && !initialMapping['category']) {
+            const categories = categoriesData.categories.map((c) => c.category.toLowerCase());
+            if (categories.includes(valueLower)) {
+              initialMapping['category'] = header;
+            }
+          }
+          
+          // Check for known subcategories in our system
+          if (subcategoriesData?.subcategories && !initialMapping['subCategory']) {
+            const subcategories = subcategoriesData.subcategories.map((sc) => sc.subCategory.toLowerCase());
+            if (subcategories.includes(valueLower)) {
+              initialMapping['subCategory'] = header;
+            }
+          }
+        }
+      });
+    }
+    
     setMapping(initialMapping);
-  }, [csvHeaders]);
+  }, [csvHeaders, csvPreviewRows, categoriesData, subcategoriesData]);
   
   // Check if all required fields are mapped
   const areRequiredFieldsMapped = requiredFields.every(field => mapping[field]);
@@ -137,16 +177,19 @@ export default function TestMappingWizard({
         
         <div className="space-y-6 py-4">
           {/* Preview of CSV data */}
-          <Card className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-gray-50'} p-4 rounded-lg`}>
+          <Card className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-gray-50'} p-3 rounded-lg`}>
             <h3 className={`text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
               CSV Preview (First {csvPreviewRows.length} rows)
             </h3>
-            <div className="overflow-auto max-h-40">
-              <Table className={isDarkMode ? 'bg-gray-800' : ''}>
+            <div className="overflow-x-auto max-h-32 scrollbar-thin">
+              <Table className={`${isDarkMode ? 'bg-gray-800' : ''} w-full table-fixed`}>
                 <TableHeader className={isDarkMode ? 'bg-gray-700' : ''}>
                   <TableRow>
                     {csvHeaders.map((header, index) => (
-                      <TableHead key={index} className={isDarkMode ? 'text-gray-300 border-gray-700' : ''}>
+                      <TableHead 
+                        key={index} 
+                        className={`${isDarkMode ? 'text-gray-300 border-gray-700' : ''} py-1 text-xs whitespace-nowrap`}
+                      >
                         {header}
                       </TableHead>
                     ))}
@@ -158,7 +201,7 @@ export default function TestMappingWizard({
                       {row.map((cell, cellIndex) => (
                         <TableCell 
                           key={cellIndex}
-                          className={isDarkMode ? 'text-gray-300 border-gray-700' : ''}
+                          className={`${isDarkMode ? 'text-gray-300 border-gray-700' : ''} py-1 text-xs truncate`}
                         >
                           {cell}
                         </TableCell>
@@ -176,41 +219,46 @@ export default function TestMappingWizard({
               Field Mapping
             </h3>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-3 max-h-[400px] overflow-y-auto pr-2">
               {appFields.map(field => (
-                <div key={field.id} className="space-y-2">
-                  <div className="flex items-center">
-                    <label 
-                      htmlFor={`field-${field.id}`} 
-                      className={`text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}
-                    >
-                      {field.label}
-                      {field.required && <span className="text-red-500 ml-1">*</span>}
-                    </label>
-                    {mapping[field.id] ? (
-                      <Badge className={`ml-2 ${isDarkMode ? 'bg-green-900 text-green-300' : 'bg-green-100 text-green-800'}`}>
-                        <Check className="h-3 w-3 mr-1" />
-                        Mapped
-                      </Badge>
-                    ) : field.required ? (
-                      <Badge className={`ml-2 ${isDarkMode ? 'bg-red-900 text-red-300' : 'bg-red-100 text-red-800'}`}>
-                        <X className="h-3 w-3 mr-1" />
-                        Required
-                      </Badge>
-                    ) : (
-                      <Badge className={`ml-2 ${isDarkMode ? 'bg-gray-800 text-gray-300' : 'bg-gray-100 text-gray-800'}`}>
-                        Optional
-                      </Badge>
-                    )}
+                <div key={field.id} className="space-y-1">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <label 
+                        htmlFor={`field-${field.id}`} 
+                        className={`text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}
+                      >
+                        {field.label}
+                        {field.required && <span className="text-red-500 ml-1">*</span>}
+                      </label>
+                      {mapping[field.id] ? (
+                        <Badge className={`ml-2 ${isDarkMode ? 'bg-green-900 text-green-300' : 'bg-green-100 text-green-800'}`}>
+                          <Check className="h-3 w-3 mr-1" />
+                          Mapped
+                        </Badge>
+                      ) : field.required ? (
+                        <Badge className={`ml-2 ${isDarkMode ? 'bg-red-900 text-red-300' : 'bg-red-100 text-red-800'}`}>
+                          <X className="h-3 w-3 mr-1" />
+                          Required
+                        </Badge>
+                      ) : (
+                        <Badge className={`ml-2 ${isDarkMode ? 'bg-gray-800 text-gray-300' : 'bg-gray-100 text-gray-800'}`}>
+                          Optional
+                        </Badge>
+                      )}
+                    </div>
+                    <div className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                      {field.description}
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center">
                     <Select
                       value={mapping[field.id] || '__none__'}
                       onValueChange={(value) => handleFieldMappingChange(field.id, value)}
                     >
                       <SelectTrigger 
                         id={`field-${field.id}`}
-                        className={isDarkMode ? 'bg-gray-800 border-gray-700 text-white' : ''}
+                        className={`w-full ${isDarkMode ? 'bg-gray-800 border-gray-700 text-white' : ''}`}
                       >
                         <SelectValue placeholder="Select a column" />
                       </SelectTrigger>
@@ -223,10 +271,6 @@ export default function TestMappingWizard({
                         ))}
                       </SelectContent>
                     </Select>
-                    <ArrowRight className={`h-4 w-4 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`} />
-                    <div className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                      {field.description}
-                    </div>
                   </div>
                 </div>
               ))}

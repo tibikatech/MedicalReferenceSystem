@@ -444,16 +444,90 @@ export default function TestManagementPage() {
     }
   };
   
-  // Mock import function (would be an API call in a real app)
+  // Import tests to database
   const importTests = async (testsToImport: Test[]) => {
-    // In a real app, this would be an API call
-    toast({
-      title: "CSV Import Complete",
-      description: `Successfully imported ${testsToImport.length} tests.`,
-    });
-    
-    // Refresh the test list
-    queryClient.invalidateQueries({ queryKey: ['/api/tests'] });
+    try {
+      // Track successful and failed imports
+      let successCount = 0;
+      let errorCount = 0;
+      const errors: string[] = [];
+      
+      // Import each test individually to handle errors better
+      for (const test of testsToImport) {
+        try {
+          // Check if test exists (update) or is new (insert)
+          const exists = (tests as any)?.tests.some((t: Test) => t.id === test.id);
+          
+          if (exists) {
+            // Update existing test
+            const response = await fetch(`/api/tests/${test.id}`, {
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(test),
+            });
+            
+            if (response.ok) {
+              successCount++;
+            } else {
+              errorCount++;
+              const errorText = await response.text();
+              errors.push(`Failed to update test ${test.id}: ${errorText}`);
+            }
+          } else {
+            // Insert new test
+            const response = await fetch('/api/tests', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(test),
+            });
+            
+            if (response.ok) {
+              successCount++;
+            } else {
+              errorCount++;
+              const errorText = await response.text();
+              errors.push(`Failed to insert test ${test.id}: ${errorText}`);
+            }
+          }
+        } catch (error) {
+          errorCount++;
+          errors.push(`Error processing test ${test.id}: ${error instanceof Error ? error.message : String(error)}`);
+        }
+      }
+      
+      // Show toast with results
+      if (errorCount > 0) {
+        toast({
+          title: `Import Completed with ${errorCount} errors`,
+          description: `Successfully imported ${successCount} tests. Failed to import ${errorCount} tests.`,
+          variant: successCount > 0 ? "default" : "destructive",
+        });
+        
+        // Log errors to console for debugging
+        console.error("Import errors:", errors);
+      } else {
+        toast({
+          title: "CSV Import Complete",
+          description: `Successfully imported ${successCount} tests.`,
+        });
+      }
+      
+      // Refresh the test list
+      queryClient.invalidateQueries({ queryKey: ['/api/tests'] });
+      // Also refresh categories and subcategories counts
+      queryClient.invalidateQueries({ queryKey: ['/api/test-count-by-category'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/test-count-by-subcategory'] });
+    } catch (error) {
+      toast({
+        title: "Import Failed",
+        description: `Error: ${error instanceof Error ? error.message : String(error)}`,
+        variant: "destructive",
+      });
+    }
   };
   
   // Handle opening the edit modal for a test
