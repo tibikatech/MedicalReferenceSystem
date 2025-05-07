@@ -47,20 +47,11 @@ export default function TestDetailModal({
     notes,
   } = currentTest;
 
-  // Determine which code fields to show based on category
-  const showLoinc = category === "Laboratory Tests" || 
-                    category === "Pulmonary Tests" || 
-                    category === "Gastrointestinal Tests" ||
-                    category === "Specialty-Specific Tests";
-                    
-  // Show SNOMED for all categories that involve procedures or clinical assessments
-  const showSnomed = category === "Imaging Studies" || 
-                     category === "Cardiovascular Tests" || 
-                     category === "Neurological Tests" || 
-                     category === "Pulmonary Tests" || 
-                     category === "Gastrointestinal Tests" ||
-                     category === "Specialty-Specific Tests" ||
-                     category === "Functional Tests";
+  // Always show both LOINC and SNOMED fields for all test types
+  // This allows for comprehensive coding since many tests have both procedure codes (SNOMED)
+  // and result codes (LOINC) for specific findings
+  const showLoinc = true;
+  const showSnomed = true;
 
   const handleEdit = () => {
     setIsEditModalOpen(true);
@@ -136,16 +127,16 @@ export default function TestDetailModal({
                     </div>
                     {showLoinc && (
                       <div>
-                        <span className="text-sm text-blue-400 block mb-1 font-medium">LOINC Code (Primary)</span>
-                        <code className="block w-full px-3 py-2 rounded bg-blue-900/30 text-blue-400 text-sm font-mono border border-blue-800/30">
+                        <span className="text-sm text-gray-400 block mb-1">LOINC Code</span>
+                        <code className="block w-full px-3 py-2 rounded bg-gray-900/50 text-emerald-400 text-sm font-mono">
                           {loincCode || 'N/A'}
                         </code>
                       </div>
                     )}
                     {showSnomed && (
                       <div>
-                        <span className="text-sm text-blue-400 block mb-1 font-medium">SNOMED Code (Primary)</span>
-                        <code className="block w-full px-3 py-2 rounded bg-blue-900/30 text-blue-400 text-sm font-mono border border-blue-800/30">
+                        <span className="text-sm text-gray-400 block mb-1">SNOMED Code</span>
+                        <code className="block w-full px-3 py-2 rounded bg-gray-900/50 text-emerald-400 text-sm font-mono">
                           {snomedCode || 'N/A'}
                         </code>
                       </div>

@@ -258,23 +258,11 @@ export default function TestAddModal({
     }
   };
 
-  // Determine which code fields to show based on category
-  const category = form.watch("category");
-  
-  // Show LOINC for laboratory tests and tests that produce measurable results
-  const showLoincField = category === "Laboratory Tests" || 
-                        category === "Pulmonary Tests" || 
-                        category === "Gastrointestinal Tests" ||
-                        category === "Specialty-Specific Tests";
-                        
-  // Show SNOMED for all categories that involve procedures or clinical assessments
-  const showSnomedField = category === "Imaging Studies" || 
-                         category === "Cardiovascular Tests" || 
-                         category === "Neurological Tests" || 
-                         category === "Pulmonary Tests" || 
-                         category === "Gastrointestinal Tests" ||
-                         category === "Specialty-Specific Tests" ||
-                         category === "Functional Tests";
+  // Always show both LOINC and SNOMED fields for all test types
+  // This allows for comprehensive coding since many tests have both procedure codes (SNOMED)
+  // and result codes (LOINC) for specific findings
+  const showLoincField = true;
+  const showSnomedField = true;
 
   // Get subcategories based on selected category
   const getSubcategoriesForCategory = (category: string) => {
@@ -471,14 +459,14 @@ export default function TestAddModal({
                 )}
               />
 
-              {/* LOINC Code - conditionally shown for Laboratory Tests */}
+              {/* LOINC Code - now shown for all test types */}
               {showLoincField && (
                 <FormField
                   control={form.control}
                   name="loincCode"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm text-blue-400">
+                      <FormLabel className="text-sm text-gray-400">
                         LOINC Code
                       </FormLabel>
                       <FormControl>
@@ -486,8 +474,8 @@ export default function TestAddModal({
                           {...field}
                           value={field.value || ""}
                           className={cn(
-                            "border-blue-700/30 bg-blue-900/20 text-blue-400",
-                            isDarkMode ? "placeholder:text-blue-600/50" : ""
+                            "border-gray-700 bg-gray-800/50 text-white",
+                            isDarkMode ? "placeholder:text-gray-500" : ""
                           )}
                           placeholder="e.g., 12345-6"
                         />
@@ -498,14 +486,14 @@ export default function TestAddModal({
                 />
               )}
 
-              {/* SNOMED Code - conditionally shown for Imaging Studies */}
+              {/* SNOMED Code - now shown for all test types */}
               {showSnomedField && (
                 <FormField
                   control={form.control}
                   name="snomedCode"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm text-blue-400">
+                      <FormLabel className="text-sm text-gray-400">
                         SNOMED Code
                       </FormLabel>
                       <FormControl>
@@ -513,8 +501,8 @@ export default function TestAddModal({
                           {...field}
                           value={field.value || ""}
                           className={cn(
-                            "border-blue-700/30 bg-blue-900/20 text-blue-400",
-                            isDarkMode ? "placeholder:text-blue-600/50" : ""
+                            "border-gray-700 bg-gray-800/50 text-white",
+                            isDarkMode ? "placeholder:text-gray-500" : ""
                           )}
                           placeholder="e.g., 123456789"
                         />
