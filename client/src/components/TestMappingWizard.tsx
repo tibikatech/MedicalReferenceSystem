@@ -101,10 +101,18 @@ export default function TestMappingWizard({
   
   // Handle field mapping change
   const handleFieldMappingChange = (appField: string, csvHeader: string) => {
-    setMapping(prev => ({
-      ...prev,
-      [appField]: csvHeader
-    }));
+    // If "__none__" is selected, don't map this field
+    if (csvHeader === "__none__") {
+      const updatedMapping = { ...mapping };
+      // Remove this field from mapping if it exists
+      delete updatedMapping[appField];
+      setMapping(updatedMapping);
+    } else {
+      setMapping(prev => ({
+        ...prev,
+        [appField]: csvHeader
+      }));
+    }
   };
   
   // Handle form submission
@@ -197,7 +205,7 @@ export default function TestMappingWizard({
                   </div>
                   <div className="flex items-center gap-2">
                     <Select
-                      value={mapping[field.id] || ''}
+                      value={mapping[field.id] || '__none__'}
                       onValueChange={(value) => handleFieldMappingChange(field.id, value)}
                     >
                       <SelectTrigger 
@@ -207,7 +215,7 @@ export default function TestMappingWizard({
                         <SelectValue placeholder="Select a column" />
                       </SelectTrigger>
                       <SelectContent className={isDarkMode ? 'bg-gray-800 border-gray-700 text-white' : ''}>
-                        <SelectItem value="">-- Don't map --</SelectItem>
+                        <SelectItem value="__none__">-- Don't map --</SelectItem>
                         {csvHeaders.map(header => (
                           <SelectItem key={header} value={header}>
                             {header}
