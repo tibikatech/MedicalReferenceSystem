@@ -449,7 +449,7 @@ export default function VendorMarketplace({ searchQuery = '' }: VendorMarketplac
                 <SelectValue placeholder="Product Category" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Categories</SelectItem>
+                <SelectItem value="all_categories">All Categories</SelectItem>
                 {productCategoryOptions.map(option => (
                   <SelectItem key={option.value} value={option.value}>
                     {option.label}
@@ -466,7 +466,7 @@ export default function VendorMarketplace({ searchQuery = '' }: VendorMarketplac
                 <SelectValue placeholder="Vendor" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Vendors</SelectItem>
+                <SelectItem value="all_vendors">All Vendors</SelectItem>
                 {exampleVendors.map(vendor => (
                   <SelectItem key={vendor.id.toString()} value={vendor.id.toString()}>
                     {vendor.vendorName}
@@ -483,7 +483,7 @@ export default function VendorMarketplace({ searchQuery = '' }: VendorMarketplac
                 <SelectValue placeholder="Available In" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Countries</SelectItem>
+                <SelectItem value="all_countries">All Countries</SelectItem>
                 {countryOptions.map(option => (
                   <SelectItem key={option.value} value={option.value}>
                     {option.label}
@@ -742,7 +742,7 @@ export default function VendorMarketplace({ searchQuery = '' }: VendorMarketplac
                 <SelectValue placeholder="Country" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Countries</SelectItem>
+                <SelectItem value="all_countries">All Countries</SelectItem>
                 {countryOptions.map(option => (
                   <SelectItem key={option.value} value={option.value}>
                     {option.label}
@@ -759,7 +759,7 @@ export default function VendorMarketplace({ searchQuery = '' }: VendorMarketplac
                 <SelectValue placeholder="Vendor Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Types</SelectItem>
+                <SelectItem value="all_types">All Types</SelectItem>
                 {vendorTypeOptions.map(option => (
                   <SelectItem key={option.value} value={option.value}>
                     {option.label}
@@ -776,7 +776,7 @@ export default function VendorMarketplace({ searchQuery = '' }: VendorMarketplac
                 <SelectValue placeholder="Product Category" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Categories</SelectItem>
+                <SelectItem value="all_categories">All Categories</SelectItem>
                 {productCategoryOptions.map(option => (
                   <SelectItem key={option.value} value={option.value}>
                     {option.label}
