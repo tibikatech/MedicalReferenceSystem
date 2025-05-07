@@ -289,7 +289,7 @@ export default function TestManagementPage() {
           id: mapping['id'] ? row[mapping['id']] : crypto.randomUUID(),
           name: mapping['name'] ? row[mapping['name']] : '',
           category: mapping['category'] ? row[mapping['category']] : '',
-          subCategory: mapping['subCategory'] ? row[mapping['subCategory']] : null,
+          subCategory: mapping['subCategory'] ? row[mapping['subCategory']] : '',
           cptCode: mapping['cptCode'] ? row[mapping['cptCode']] : null,
           loincCode: mapping['loincCode'] ? row[mapping['loincCode']] : null,
           snomedCode: mapping['snomedCode'] ? row[mapping['snomedCode']] : null,
@@ -368,7 +368,7 @@ export default function TestManagementPage() {
             id: row.id || crypto.randomUUID(),
             name: row.name || '',
             category: row.category || '',
-            subCategory: row.subCategory || null,
+            subCategory: row.subCategory || '',
             cptCode: row.cptCode || null,
             loincCode: row.loincCode || null,
             snomedCode: row.snomedCode || null,
@@ -410,7 +410,7 @@ export default function TestManagementPage() {
           id: row.id || crypto.randomUUID(),
           name: row.name || '',
           category: row.category || '',
-          subCategory: row.subCategory || null,
+          subCategory: row.subCategory || '',
           cptCode: row.cptCode || null,
           loincCode: row.loincCode || null,
           snomedCode: row.snomedCode || null,
@@ -444,6 +444,22 @@ export default function TestManagementPage() {
     
     // Refresh the test list
     queryClient.invalidateQueries({ queryKey: ['/api/tests'] });
+  };
+  
+  // Handle opening the edit modal for a test
+  const handleEditTest = (test: Test) => {
+    setEditingTest(test);
+    setIsEditModalOpen(true);
+  };
+  
+  // Handle test update after editing
+  const handleTestUpdate = (updatedTest: Test) => {
+    // No need to manually update the state since 
+    // TestEditModal already invalidates the cache
+    toast({
+      title: "Test Updated",
+      description: `${updatedTest.name} has been updated successfully.`,
+    });
   };
 
   // Download CSV template
@@ -729,6 +745,7 @@ export default function TestManagementPage() {
                                 variant="ghost" 
                                 size="sm" 
                                 className="text-blue-400 hover:text-blue-300"
+                                onClick={() => handleEditTest(test)}
                               >
                                 Edit
                               </Button>
@@ -946,6 +963,17 @@ export default function TestManagementPage() {
             ? filteredTests.filter((test: Test) => selectedTests.has(test.id))
             : filteredTests
           }
+          isDarkMode={true}
+        />
+      )}
+      
+      {/* Test Edit Modal */}
+      {editingTest && (
+        <TestEditModal
+          test={editingTest}
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+          onSave={handleTestUpdate}
           isDarkMode={true}
         />
       )}
