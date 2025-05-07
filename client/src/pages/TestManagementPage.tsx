@@ -575,27 +575,27 @@ export default function TestManagementPage() {
             <div className="flex space-x-2">
               <Button 
                 variant="outline" 
-                className="bg-purple-600 hover:bg-purple-700 text-white"
-                onClick={() => updateLoincCodesMutation.mutate()}
-                disabled={updateLoincCodesMutation.isPending}
+                className="bg-gray-600 text-gray-400 cursor-not-allowed"
+                disabled={true}
+                title="Coming soon: Feature to update LOINC codes"
               >
-                {updateLoincCodesMutation.isPending ? 'Updating...' : 'Update LOINC Codes'}
+                Update LOINC Codes
               </Button>
               <Button 
                 variant="outline" 
-                className="bg-blue-600 hover:bg-blue-700 text-white"
-                onClick={() => updateSnomedCodesMutation.mutate()}
-                disabled={updateSnomedCodesMutation.isPending}
+                className="bg-gray-600 text-gray-400 cursor-not-allowed"
+                disabled={true}
+                title="Coming soon: Feature to update SNOMED codes"
               >
-                {updateSnomedCodesMutation.isPending ? 'Updating...' : 'Update SNOMED Codes'}
+                Update SNOMED Codes
               </Button>
               <Button 
                 variant="outline" 
-                className="bg-green-600 hover:bg-green-700 text-white"
-                onClick={() => updateBothCodesMutation.mutate()}
-                disabled={updateBothCodesMutation.isPending}
+                className="bg-gray-600 text-gray-400 cursor-not-allowed"
+                disabled={true}
+                title="Coming soon: Feature to update both LOINC and SNOMED codes"
               >
-                {updateBothCodesMutation.isPending ? 'Updating...' : 'Update Both'}
+                Update Both
               </Button>
               <Button 
                 variant="outline" 
