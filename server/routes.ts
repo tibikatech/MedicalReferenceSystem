@@ -2,7 +2,7 @@ import type { Express, Request, Response, NextFunction } from "express";
 import { createServer, type Server } from "http";
 import { dbStorage as storage } from "./storage-db";
 import { errorHandler, createNotFoundError } from "./utils/error-handler";
-import { VALID_CATEGORIES } from "./utils/medical-constants";
+import { VALID_CATEGORIES, generateTestId } from "./utils/medical-constants";
 import fs from 'fs';
 import path from 'path';
 import legalRoutes from './legal-routes';
@@ -249,8 +249,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const existingTests = await storage.getTestsByCategory(testData.category);
       let testCount = existingTests.length;
       
-      // Use the medical-constants utility to generate a proper ID
-      const { generateTestId } = require('./utils/medical-constants');
+      // Use the imported generateTestId function to create a proper ID
       const testId = generateTestId(testData.category, testData.subCategory, testData.cptCode, testCount);
       
       // Create the test with the generated ID
