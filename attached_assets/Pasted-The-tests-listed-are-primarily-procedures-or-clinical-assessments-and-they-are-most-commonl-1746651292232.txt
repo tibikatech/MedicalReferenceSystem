@@ -1,0 +1,67 @@
+The tests listed are primarily **procedures** or **clinical assessments**, and they are most commonly coded using **SNOMED CT** (Systematized Nomenclature of Medicine—Clinical Terms), which is designed to represent clinical procedures, diagnoses, and other healthcare processes. However, some tests involve **laboratory or observational results**, which would use **LOINC** (Logical Observation Identifiers Names and Codes). Below is a breakdown:
+
+---
+
+### **Cardiovascular Tests**  
+- **Electrocardiography (ECG/EKG)**: SNOMED (procedure).  
+- **Echocardiography**: SNOMED (imaging procedure).  
+- **Stress Testing**: SNOMED (procedure).  
+- **Cardiac Catheterization**: SNOMED (invasive procedure).  
+- **Electrophysiology Studies**: SNOMED (procedure).  
+- **Vascular Studies**: SNOMED (e.g., Doppler ultrasound procedures).  
+
+---
+
+### **Neurological Tests**  
+- **Electroencephalography (EEG)**: SNOMED (procedure).  
+- **Electromyography (EMG)**: SNOMED (procedure).  
+- **Nerve Conduction Studies**: SNOMED (procedure).  
+- **Evoked Potentials**: SNOMED (procedure).  
+- **Sleep Studies**: SNOMED (procedure).  
+
+---
+
+### **Pulmonary Tests**  
+- **Pulmonary Function Tests (PFTs)**: SNOMED (procedure).  
+- **Bronchoscopy**: SNOMED (procedure).  
+- **Sleep Studies**: SNOMED (procedure, same as Neurology).  
+- **Arterial Blood Gas Analysis**:  
+  - **Procedure**: SNOMED.  
+  - **Results (e.g., pH, oxygen levels)**: **LOINC** (specific lab values).  
+
+---
+
+### **Gastrointestinal Tests**  
+- **Endoscopic Procedures**: SNOMED (e.g., colonoscopy).  
+- **Manometry**: SNOMED (procedure).  
+- **Breath Tests** (e.g., H. pylori, lactose intolerance):  
+  - **Procedure**: SNOMED.  
+  - **Results (e.g., hydrogen levels)**: **LOINC**.  
+- **Motility Studies**: SNOMED (procedure).  
+
+---
+
+### **Specialty-Specific Tests**  
+- **Women’s Health/OB-GYN**: SNOMED (e.g., ultrasounds, biopsies).  
+- **Ophthalmology**: SNOMED (e.g., fundus exams).  
+- **Audiology**: SNOMED (e.g., hearing tests).  
+- **Dermatology**: SNOMED (e.g., biopsies, skin exams).  
+- **Allergology**:  
+  - **Procedures** (e.g., skin prick tests): SNOMED.  
+  - **Lab-based tests** (e.g., IgE antibody levels): **LOINC**.  
+
+---
+
+### **Functional Tests**  
+- **Exercise Tests**: SNOMED (procedure).  
+- **Swallowing Studies** (e.g., videofluoroscopy): SNOMED (procedure).  
+- **Balance Testing**: SNOMED (e.g., vestibular function tests).  
+
+---
+
+### Key Notes:  
+- **SNOMED CT** is used for **procedures**, **imaging**, and **clinical assessments** (e.g., EEG, echocardiogram).  
+- **LOINC** is used for **laboratory results**, **observation values**, or **specific measurements** (e.g., blood gas results, breath test hydrogen levels).  
+- Many tests have both a **procedure code** (SNOMED) and **result codes** (LOINC) for specific findings.  
+
+If you need exact codes for a specific test, you would need to consult SNOMED CT or LOINC databases with detailed clinical context.

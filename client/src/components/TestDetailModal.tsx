@@ -47,8 +47,20 @@ export default function TestDetailModal({
     notes,
   } = currentTest;
 
-  const showLoinc = category === "Laboratory Tests";
-  const showSnomed = category === "Imaging Studies";
+  // Determine which code fields to show based on category
+  const showLoinc = category === "Laboratory Tests" || 
+                    category === "Pulmonary Tests" || 
+                    category === "Gastrointestinal Tests" ||
+                    category === "Specialty-Specific Tests";
+                    
+  // Show SNOMED for all categories that involve procedures or clinical assessments
+  const showSnomed = category === "Imaging Studies" || 
+                     category === "Cardiovascular Tests" || 
+                     category === "Neurological Tests" || 
+                     category === "Pulmonary Tests" || 
+                     category === "Gastrointestinal Tests" ||
+                     category === "Specialty-Specific Tests" ||
+                     category === "Functional Tests";
 
   const handleEdit = () => {
     setIsEditModalOpen(true);

@@ -259,8 +259,22 @@ export default function TestAddModal({
   };
 
   // Determine which code fields to show based on category
-  const showLoincField = form.watch("category") === "Laboratory Tests";
-  const showSnomedField = form.watch("category") === "Imaging Studies";
+  const category = form.watch("category");
+  
+  // Show LOINC for laboratory tests and tests that produce measurable results
+  const showLoincField = category === "Laboratory Tests" || 
+                        category === "Pulmonary Tests" || 
+                        category === "Gastrointestinal Tests" ||
+                        category === "Specialty-Specific Tests";
+                        
+  // Show SNOMED for all categories that involve procedures or clinical assessments
+  const showSnomedField = category === "Imaging Studies" || 
+                         category === "Cardiovascular Tests" || 
+                         category === "Neurological Tests" || 
+                         category === "Pulmonary Tests" || 
+                         category === "Gastrointestinal Tests" ||
+                         category === "Specialty-Specific Tests" ||
+                         category === "Functional Tests";
 
   // Get subcategories based on selected category
   const getSubcategoriesForCategory = (category: string) => {
