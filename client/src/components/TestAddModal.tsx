@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Test } from "@shared/schema";
-import { X } from "lucide-react";
+import { X, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,6 +14,8 @@ import { z } from "zod";
 import { VALID_CATEGORIES, VALID_SUBCATEGORIES } from "@/lib/constants";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 // Form schema for adding a new test
 const addTestSchema = z.object({
@@ -36,12 +38,92 @@ interface TestAddModalProps {
   isDarkMode?: boolean;
 }
 
+// Category to prefix mapping for test ID preview
+const CATEGORY_PREFIXES: Record<string, string> = {
+  'Laboratory Tests': 'LAB',
+  'Imaging Studies': 'IMG',
+  'Cardiovascular Tests': 'CVS',
+  'Neurological Tests': 'NEU',
+  'Pulmonary Tests': 'PUL',
+  'Gastrointestinal Tests': 'GAS',
+  'Specialty-Specific Tests': 'SPC',
+  'Functional Tests': 'FNC',
+};
+
+// Subcategory to prefix mapping for test ID preview
+const SUBCATEGORY_PREFIXES: Record<string, Record<string, string>> = {
+  'Laboratory Tests': {
+    'Clinical Chemistry': 'CHE',
+    'Hematology': 'HEM',
+    'Immunology/Serology': 'IMM',
+    'Molecular Diagnostics': 'MOL',
+    'Microbiology': 'MIC',
+    'Toxicology': 'TOX',
+    'Urinalysis': 'URI',
+    'Endocrinology': 'END',
+    'Genetic Testing': 'GEN',
+    'Tumor Markers': 'TUM',
+  },
+  'Imaging Studies': {
+    'Radiography (X-rays)': 'XRA',
+    'Computed Tomography (CT)': 'CT',
+    'Magnetic Resonance Imaging (MRI)': 'MRI',
+    'Ultrasound': 'ULT',
+    'Nuclear Medicine': 'NUC',
+    'Positron Emission Tomography (PET)': 'PET',
+    'Fluoroscopy': 'FLU',
+    'Mammography': 'MAM',
+    'Bone Densitometry': 'BON',
+  },
+  'Cardiovascular Tests': {
+    'Electrocardiography': 'ECG',
+    'Echocardiography': 'ECH',
+    'Stress Testing': 'STR',
+    'Cardiac Catheterization': 'CAT',
+    'Electrophysiology Studies': 'EPS',
+    'Vascular Studies': 'VAS',
+  },
+  'Neurological Tests': {
+    'Electroencephalography (EEG)': 'EEG',
+    'Electromyography (EMG)': 'EMG',
+    'Nerve Conduction Studies': 'NCS',
+    'Evoked Potentials': 'EVO',
+    'Sleep Studies': 'SLP',
+  },
+  'Pulmonary Tests': {
+    'Pulmonary Function Tests': 'PFT',
+    'Bronchoscopy': 'BRO',
+    'Arterial Blood Gas Analysis': 'ABG',
+  },
+  'Gastrointestinal Tests': {
+    'Endoscopic Procedures': 'END',
+    'Manometry': 'MAN',
+    'Breath Tests': 'BRE',
+    'Motility Studies': 'MOT',
+  },
+  'Specialty-Specific Tests': {
+    'Women\'s Health/OB-GYN': 'OBG',
+    'Ophthalmology': 'OPH',
+    'Audiology': 'AUD',
+    'Dermatology': 'DER',
+    'Allergology': 'ALL',
+  },
+  'Functional Tests': {
+    'Exercise Tests': 'EXE',
+    'Swallowing Studies': 'SWA',
+    'Balance Testing': 'BAL',
+  },
+};
+
 export default function TestAddModal({
   isOpen,
   onClose,
   onSuccess,
   isDarkMode = true,
 }: TestAddModalProps) {
+  // State for the test ID preview
+  const [testIdPreview, setTestIdPreview] = useState<string>("TTES-???-???-#####");
+  
   const form = useForm<AddTestValues>({
     resolver: zodResolver(addTestSchema),
     defaultValues: {
@@ -69,8 +151,39 @@ export default function TestAddModal({
         description: "",
         notes: "",
       });
+      setTestIdPreview("TTES-???-???-#####");
     }
   }, [isOpen, form]);
+  
+  // Update the test ID preview whenever category or subcategory changes
+  useEffect(() => {
+    const category = form.watch("category");
+    const subCategory = form.watch("subCategory");
+    
+    // Update the test ID preview
+    let updatedPreview = "TTES";
+    
+    // Add category prefix
+    if (category && CATEGORY_PREFIXES[category]) {
+      updatedPreview += `-${CATEGORY_PREFIXES[category]}`;
+    } else {
+      updatedPreview += "-???";
+    }
+    
+    // Add subcategory prefix
+    if (category && subCategory && 
+        SUBCATEGORY_PREFIXES[category] && 
+        SUBCATEGORY_PREFIXES[category][subCategory]) {
+      updatedPreview += `-${SUBCATEGORY_PREFIXES[category][subCategory]}`;
+    } else {
+      updatedPreview += "-???";
+    }
+    
+    // Add placeholder for the unique number
+    updatedPreview += "-#####";
+    
+    setTestIdPreview(updatedPreview);
+  }, [form.watch("category"), form.watch("subCategory")]);
 
   const { toast } = useToast();
 
@@ -175,6 +288,26 @@ export default function TestAddModal({
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            {/* Test ID Preview */}
+            <div className="bg-gray-800/80 p-3 rounded-md border border-gray-700 flex items-center space-x-2">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Info className="h-4 w-4 text-blue-400" />
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-gray-900 text-white border-gray-700">
+                    <p className="text-xs">Generated test ID based on selected Category and Subcategory</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <div className="flex-1">
+                <p className="text-xs text-gray-400 mb-1">Test ID (generated automatically)</p>
+                <Badge variant="outline" className="font-mono bg-blue-900/20 text-blue-400 border-blue-700/30">
+                  {testIdPreview}
+                </Badge>
+              </div>
+            </div>
+            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Test Name */}
               <FormField

@@ -168,7 +168,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         throw createNotFoundError(`Laboratory test with ID ${id} not found`);
       }
       
-      if (test.category !== VALID_CATEGORIES.LABORATORY_TESTS) {
+      if (test.category !== "Laboratory Tests") {
         return res.status(400).json({ 
           error: {
             code: 'INVALID_CATEGORY',
@@ -193,7 +193,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         throw createNotFoundError(`Imaging study with ID ${id} not found`);
       }
       
-      if (test.category !== VALID_CATEGORIES.IMAGING_STUDIES) {
+      if (test.category !== "Imaging Studies") {
         return res.status(400).json({ 
           error: {
             code: 'INVALID_CATEGORY',
