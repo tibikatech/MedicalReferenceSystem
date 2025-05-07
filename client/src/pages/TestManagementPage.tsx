@@ -21,6 +21,12 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
+import {
   AlertCircle,
   Download,
   Filter,
@@ -95,6 +101,21 @@ export default function TestManagementPage() {
     queryKey: ['/api/test-count-by-subcategory'],
   });
 
+  // Check if a test matches the search query
+  const testMatchesSearchQuery = (test: Test, query: string): boolean => {
+    const lowerQuery = query.toLowerCase();
+    return (
+      test.name.toLowerCase().includes(lowerQuery) ||
+      test.category.toLowerCase().includes(lowerQuery) ||
+      test.subCategory?.toLowerCase().includes(lowerQuery) ||
+      test.cptCode?.toLowerCase().includes(lowerQuery) ||
+      test.loincCode?.toLowerCase().includes(lowerQuery) ||
+      test.snomedCode?.toLowerCase().includes(lowerQuery) ||
+      (test.description ? test.description.toLowerCase().includes(lowerQuery) : false) ||
+      (test.notes ? test.notes.toLowerCase().includes(lowerQuery) : false)
+    );
+  };
+  
   // Filter tests based on search query and category/subcategory selections
   const filteredTests = ((tests as any)?.tests || []).filter((test: Test) => {
     // Filter by category
@@ -114,21 +135,6 @@ export default function TestManagementPage() {
     
     return true;
   });
-
-  // Check if a test matches the search query
-  const testMatchesSearchQuery = (test: Test, query: string): boolean => {
-    const lowerQuery = query.toLowerCase();
-    return (
-      test.name.toLowerCase().includes(lowerQuery) ||
-      test.category.toLowerCase().includes(lowerQuery) ||
-      test.subCategory?.toLowerCase().includes(lowerQuery) ||
-      test.cptCode?.toLowerCase().includes(lowerQuery) ||
-      test.loincCode?.toLowerCase().includes(lowerQuery) ||
-      test.snomedCode?.toLowerCase().includes(lowerQuery) ||
-      (test.description ? test.description.toLowerCase().includes(lowerQuery) : false) ||
-      (test.notes ? test.notes.toLowerCase().includes(lowerQuery) : false)
-    );
-  };
 
   // Update LOINC codes mutation
   const updateLoincCodesMutation = useMutation({
@@ -624,15 +630,90 @@ export default function TestManagementPage() {
               </div>
               
               <div className="mb-4 flex items-center">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="bg-gray-800 text-white border-gray-700 mr-2"
-                >
-                  <Filter className="h-4 w-4 mr-2" />
-                  Filter by Category
-                  <ChevronDown className="h-4 w-4 ml-2" />
-                </Button>
+                {/* Category filter dropdown */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="bg-gray-800 text-white border-gray-700 mr-2"
+                    >
+                      <Filter className="h-4 w-4 mr-2" />
+                      Filter by Category
+                      <ChevronDown className="h-4 w-4 ml-2" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="bg-gray-800 border-gray-700 text-white">
+                    {/* All Categories option */}
+                    <DropdownMenuItem 
+                      className={`${!selectedCategory ? 'bg-blue-800/30' : 'hover:bg-gray-700'}`}
+                      onClick={() => {
+                        setSelectedCategory(null);
+                        setSelectedSubCategory(null);
+                      }}
+                    >
+                      All Categories
+                    </DropdownMenuItem>
+                    
+                    {/* List all available categories */}
+                    {(categoriesData as any)?.categories?.map((cat: { category: string, count: number }) => (
+                      <DropdownMenuItem 
+                        key={cat.category}
+                        className={`${selectedCategory === cat.category ? 'bg-blue-800/30' : 'hover:bg-gray-700'}`}
+                        onClick={() => {
+                          setSelectedCategory(cat.category);
+                          setSelectedSubCategory(null);
+                        }}
+                      >
+                        {cat.category} ({cat.count})
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                
+                {/* Subcategory filter dropdown - Only shows when a category is selected */}
+                {selectedCategory && (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="bg-gray-800 text-white border-gray-700 mr-2"
+                      >
+                        <Filter className="h-4 w-4 mr-2" />
+                        Filter by Subcategory
+                        <ChevronDown className="h-4 w-4 ml-2" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="bg-gray-800 border-gray-700 text-white">
+                      {/* All Subcategories option */}
+                      <DropdownMenuItem 
+                        className={`${!selectedSubCategory ? 'bg-blue-800/30' : 'hover:bg-gray-700'}`}
+                        onClick={() => setSelectedSubCategory(null)}
+                      >
+                        All Subcategories
+                      </DropdownMenuItem>
+                      
+                      {/* List all available subcategories for the selected category */}
+                      {(subcategoriesData as any)?.subcategories
+                        ?.filter((subCat: { subCategory: string, count: number }) => 
+                          ((tests as any)?.tests || []).some((test: Test) => 
+                            test.category === selectedCategory && test.subCategory === subCat.subCategory
+                          )
+                        )
+                        .map((subCat: { subCategory: string, count: number }) => (
+                          <DropdownMenuItem 
+                            key={subCat.subCategory}
+                            className={`${selectedSubCategory === subCat.subCategory ? 'bg-blue-800/30' : 'hover:bg-gray-700'}`}
+                            onClick={() => setSelectedSubCategory(subCat.subCategory)}
+                          >
+                            {subCat.subCategory} ({subCat.count})
+                          </DropdownMenuItem>
+                        ))
+                      }
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                )}
                 
                 {/* Category filter badges */}
                 <div className="flex flex-wrap gap-2">
@@ -643,7 +724,10 @@ export default function TestManagementPage() {
                         variant="ghost" 
                         size="icon" 
                         className="h-4 w-4 p-0 hover:bg-transparent"
-                        onClick={() => setSelectedCategory(null)}
+                        onClick={() => {
+                          setSelectedCategory(null);
+                          setSelectedSubCategory(null);
+                        }}
                       >
                         <AlertCircle className="h-3 w-3" />
                       </Button>
