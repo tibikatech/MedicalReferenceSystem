@@ -1256,6 +1256,13 @@ export default function TestManagementPage() {
         }}
         isDarkMode={true}
       />
+      
+      {/* Upload Progress Modal */}
+      <UploadProgressModal
+        isOpen={showUploadProgress}
+        status={uploadStatus}
+        isDarkMode={true}
+      />
     </>
   );
 }
