@@ -49,6 +49,7 @@ import DuplicateTestModal from "@/components/DuplicateTestModal";
 import FhirExportTool from "@/components/FhirExportTool";
 import TestEditModal from "@/components/TestEditModal";
 import TestAddModal from "@/components/TestAddModal";
+import UploadProgressModal from "@/components/UploadProgressModal";
 import { 
   parseCSV, 
   readCSVFile, 
@@ -421,10 +422,9 @@ export default function TestManagementPage() {
     }
   };
   
-  // Handle update all duplicates
+  // Handle updating all duplicates
   const handleUpdateAllDuplicates = async () => {
     setShowDuplicatesModal(false);
-    
     if (!csvFile) return;
     
     try {
@@ -432,7 +432,7 @@ export default function TestManagementPage() {
       const csvContent = await readCSVFile(csvFile);
       const parsedData = parseCSV(csvContent);
       
-      // Convert to tests
+      // Map all tests including duplicates
       const testsToImport = parsedData.map(row => {
         const test: Test = {
           id: row.id || crypto.randomUUID(),
@@ -450,7 +450,7 @@ export default function TestManagementPage() {
         return test;
       });
       
-      // Import all tests (will update duplicates)
+      // Import all tests (this will update existing ones)
       await importTests(testsToImport);
     } catch (error) {
       console.error('Error importing CSV:', error);
