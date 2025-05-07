@@ -604,6 +604,7 @@ export default function TestManagementPage() {
               <Button 
                 variant="outline" 
                 className="bg-blue-600 hover:bg-blue-700 text-white"
+                onClick={() => setIsAddModalOpen(true)}
               >
                 Add New Test
               </Button>
@@ -1065,6 +1066,24 @@ export default function TestManagementPage() {
           isDarkMode={true}
         />
       )}
+      
+      {/* Test Add Modal */}
+      <TestAddModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onSuccess={(newTest) => {
+          setIsAddModalOpen(false);
+          toast({
+            title: "Test Created",
+            description: `Successfully created new test: ${newTest.name}`,
+          });
+          // Refresh the tests list
+          queryClient.invalidateQueries({ queryKey: ['/api/tests'] });
+          queryClient.invalidateQueries({ queryKey: ['/api/test-count-by-category'] });
+          queryClient.invalidateQueries({ queryKey: ['/api/test-count-by-subcategory'] });
+        }}
+        isDarkMode={true}
+      />
     </>
   );
 }
