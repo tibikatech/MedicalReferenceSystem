@@ -5,9 +5,14 @@ import {
   referralFacilities, 
   vendors, 
   products, 
-  productCodes 
+  productCodes,
+  RegulatoryDocument,
+  ReferralFacility,
+  Vendor,
+  Product,
+  ProductCode
 } from "@shared/schema";
-import { eq, like, and, isNotNull } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 
 const router = Router();
 

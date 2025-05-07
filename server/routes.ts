@@ -5,6 +5,7 @@ import { errorHandler, createNotFoundError } from "./utils/error-handler";
 import { VALID_CATEGORIES } from "./utils/medical-constants";
 import fs from 'fs';
 import path from 'path';
+import legalRoutes from './legal-routes';
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Initialize the storage with test data
@@ -280,6 +281,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/health", (req, res) => {
     res.json({ status: "healthy", timestamp: new Date() });
   });
+  
+  // Register legal documentation routes
+  app.use("/api", legalRoutes);
 
   const httpServer = createServer(app);
   return httpServer;
