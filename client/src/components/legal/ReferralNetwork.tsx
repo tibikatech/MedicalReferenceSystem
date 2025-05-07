@@ -227,7 +227,7 @@ export default function ReferralNetwork({ searchQuery = '' }: ReferralNetworkPro
             <SelectValue placeholder="Country" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Countries</SelectItem>
+            <SelectItem value="all_countries">All Countries</SelectItem>
             {countryOptions.map(option => (
               <SelectItem key={option.value} value={option.value}>
                 {option.label}
@@ -244,7 +244,7 @@ export default function ReferralNetwork({ searchQuery = '' }: ReferralNetworkPro
             <SelectValue placeholder="Facility Type" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Types</SelectItem>
+            <SelectItem value="all_types">All Types</SelectItem>
             {facilityTypeOptions.map(option => (
               <SelectItem key={option.value} value={option.value}>
                 {option.label}
@@ -261,7 +261,7 @@ export default function ReferralNetwork({ searchQuery = '' }: ReferralNetworkPro
             <SelectValue placeholder="Test Capability" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Capabilities</SelectItem>
+            <SelectItem value="all_capabilities">All Capabilities</SelectItem>
             {testCapabilityOptions.map(option => (
               <SelectItem key={option.value} value={option.value}>
                 {option.label}

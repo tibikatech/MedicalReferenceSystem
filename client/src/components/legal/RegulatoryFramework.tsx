@@ -151,7 +151,7 @@ export default function RegulatoryFramework({ searchQuery = '' }: RegulatoryFram
             <SelectValue placeholder="Country" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Countries</SelectItem>
+            <SelectItem value="all_countries">All Countries</SelectItem>
             {countryOptions.map(option => (
               <SelectItem key={option.value} value={option.value}>
                 {option.label}
@@ -168,7 +168,7 @@ export default function RegulatoryFramework({ searchQuery = '' }: RegulatoryFram
             <SelectValue placeholder="Region" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Regions</SelectItem>
+            <SelectItem value="all_regions">All Regions</SelectItem>
             {regionOptions.map(option => (
               <SelectItem key={option.value} value={option.value}>
                 {option.label}
@@ -185,7 +185,7 @@ export default function RegulatoryFramework({ searchQuery = '' }: RegulatoryFram
             <SelectValue placeholder="Document Type" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Document Types</SelectItem>
+            <SelectItem value="all_document_types">All Document Types</SelectItem>
             {documentTypeOptions.map(option => (
               <SelectItem key={option.value} value={option.value}>
                 {option.label}
