@@ -92,15 +92,16 @@ const SUBCATEGORY_PREFIXES: Record<string, Record<string, string>> = {
 };
 
 /**
- * Generates a unique test ID based on category, subcategory, and a counter
- * Format: TTES-{CAT}-{SUB}-{RAND}
+ * Generates a unique test ID based on category, subcategory, CPT code, and a counter
+ * Format: TTES-{CAT}-{SUB}-{CPTCODE or RAND}
  * 
  * @param category The test category
  * @param subcategory The test subcategory
- * @param counter A counter or number to make the ID unique
+ * @param cptCode Optional CPT code to use in the ID
+ * @param counter A counter or number to make the ID unique (used only if no CPT code)
  * @returns A formatted test ID
  */
-export function generateTestId(category: string, subcategory: string, counter: number): string {
+export function generateTestId(category: string, subcategory: string, cptCode?: string, counter?: number): string {
   // Get prefixes or use defaults
   const catPrefix = CATEGORY_PREFIXES[category] || 'UNK';
   const subPrefix = 
@@ -108,9 +109,17 @@ export function generateTestId(category: string, subcategory: string, counter: n
       SUBCATEGORY_PREFIXES[category][subcategory] || 'UNK' : 
       'UNK';
   
-  // Generate a random number for uniqueness (5 digits)
-  const randomNum = Math.floor(10000 + counter + Math.random() * 90000);
+  // Use CPT code if provided or generate a random number for uniqueness (5 digits)
+  let suffix: string;
+  if (cptCode && cptCode.trim() !== '') {
+    // Truncate CPT code if it's longer than 5 characters
+    suffix = cptCode.length > 5 ? cptCode.substring(0, 5) : cptCode;
+  } else {
+    // Generate a random number as fallback
+    const randomNum = Math.floor(10000 + (counter || 0) + Math.random() * 90000);
+    suffix = randomNum.toString();
+  }
   
-  // Format: TTES-{CAT}-{SUB}-{RAND}
-  return `TTES-${catPrefix}-${subPrefix}-${randomNum}`;
+  // Format: TTES-{CAT}-{SUB}-{CPTCODE or RAND}
+  return `TTES-${catPrefix}-${subPrefix}-${suffix}`;
 }

@@ -251,7 +251,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Use the medical-constants utility to generate a proper ID
       const { generateTestId } = require('./utils/medical-constants');
-      const testId = generateTestId(testData.category, testData.subCategory, testCount);
+      const testId = generateTestId(testData.category, testData.subCategory, testData.cptCode, testCount);
       
       // Create the test with the generated ID
       const newTest = await storage.insertTest({

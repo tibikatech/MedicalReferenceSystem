@@ -22,7 +22,7 @@ const addTestSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
   category: z.string().min(1, "Category is required"),
   subCategory: z.string().min(1, "Subcategory is required"),
-  cptCode: z.string().optional().nullable(),
+  cptCode: z.string().min(1, "CPT Code is required"),
   loincCode: z.string().optional().nullable(),
   snomedCode: z.string().optional().nullable(),
   description: z.string().optional().nullable(),
@@ -155,10 +155,11 @@ export default function TestAddModal({
     }
   }, [isOpen, form]);
   
-  // Update the test ID preview whenever category or subcategory changes
+  // Update the test ID preview whenever category, subcategory, or CPT code changes
   useEffect(() => {
     const category = form.watch("category");
     const subCategory = form.watch("subCategory");
+    const cptCode = form.watch("cptCode");
     
     // Update the test ID preview
     let updatedPreview = "TTES";
@@ -179,11 +180,17 @@ export default function TestAddModal({
       updatedPreview += "-???";
     }
     
-    // Add placeholder for the unique number
-    updatedPreview += "-#####";
+    // Add CPT code or placeholder
+    if (cptCode) {
+      // Truncate CPT code if it's longer than 5 characters
+      const cptCodeValue = cptCode.length > 5 ? cptCode.substring(0, 5) : cptCode;
+      updatedPreview += `-${cptCodeValue}`;
+    } else {
+      updatedPreview += "-#####";
+    }
     
     setTestIdPreview(updatedPreview);
-  }, [form.watch("category"), form.watch("subCategory")]);
+  }, [form.watch("category"), form.watch("subCategory"), form.watch("cptCode")]);
 
   const { toast } = useToast();
 
@@ -296,7 +303,7 @@ export default function TestAddModal({
                     <Info className="h-4 w-4 text-blue-400" />
                   </TooltipTrigger>
                   <TooltipContent className="bg-gray-900 text-white border-gray-700">
-                    <p className="text-xs">Generated test ID based on selected Category and Subcategory</p>
+                    <p className="text-xs">Generated test ID based on Category, Subcategory, and CPT Code</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -432,7 +439,7 @@ export default function TestAddModal({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-sm text-gray-400">
-                      CPT Code
+                      CPT Code*
                     </FormLabel>
                     <FormControl>
                       <Input
