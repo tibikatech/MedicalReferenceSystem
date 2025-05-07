@@ -110,9 +110,9 @@ export default function HomePage() {
               <Link href="/fhir-wiki" className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md font-medium">
                 FHIR Resources & Wiki
               </Link>
-              <button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md font-medium">
+              <Link href="/legal-documentation" className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md font-medium">
                 Legal & Documentation
-              </button>
+              </Link>
             </div>
           </div>
 

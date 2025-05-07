@@ -11,7 +11,7 @@ import {
   FileText, 
   Building, 
   ShoppingCart,
-  GlobeAfrica
+  Globe
 } from "lucide-react";
 
 export default function LegalDocumentationPage() {
@@ -44,7 +44,7 @@ export default function LegalDocumentationPage() {
           <div className="w-full bg-gray-800 bg-opacity-50 p-8 rounded-lg mb-8 flex items-center justify-between">
             <div className="max-w-2xl">
               <h2 className="text-xl font-semibold flex items-center">
-                <GlobeAfrica className="mr-2 h-5 w-5 text-blue-400" />
+                <Globe className="mr-2 h-5 w-5 text-blue-400" />
                 Africa-Focused Healthcare Resources
               </h2>
               <p className="mt-2 text-gray-300">
@@ -57,7 +57,7 @@ export default function LegalDocumentationPage() {
             <div className="hidden md:block">
               {/* This would be a stylized map of Africa, using a placeholder for now */}
               <div className="w-64 h-64 bg-blue-900 bg-opacity-20 rounded-full flex items-center justify-center">
-                <GlobeAfrica className="h-40 w-40 text-blue-400 opacity-60" />
+                <Globe className="h-40 w-40 text-blue-400 opacity-60" />
               </div>
             </div>
           </div>

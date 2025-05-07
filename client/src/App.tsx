@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import HomePage from "@/pages/HomePage";
 import TestManagementPage from "@/pages/TestManagementPage";
 import FhirResourcesWikiPage from "@/pages/FhirResourcesWikiPage";
+import LegalDocumentationPage from "@/pages/LegalDocumentationPage";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -14,6 +15,7 @@ function Router() {
       <Route path="/" component={HomePage} />
       <Route path="/manage" component={TestManagementPage} />
       <Route path="/fhir-wiki" component={FhirResourcesWikiPage} />
+      <Route path="/legal-documentation" component={LegalDocumentationPage} />
       <Route component={NotFound} />
     </Switch>
   );
