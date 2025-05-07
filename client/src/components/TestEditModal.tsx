@@ -12,7 +12,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { z } from "zod";
 import { VALID_CATEGORIES, VALID_SUBCATEGORIES } from "@/lib/constants";
-import { apiRequest } from "@/lib/queryClient";
+import { apiRequest, queryClient } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 
 // Form schema for editing a test
 const editTestSchema = z.object({
@@ -73,6 +74,8 @@ export default function TestEditModal({
     }
   }, [test, isOpen, form]);
 
+  const { toast } = useToast();
+
   const onSubmit = async (data: EditTestValues) => {
     try {
       // Process any empty strings to null
@@ -95,11 +98,41 @@ export default function TestEditModal({
 
       // Check if response is valid and contains the updated test
       if (responseData && responseData.success && responseData.test) {
+        // Invalidate the cache to refresh the tests list
+        queryClient.invalidateQueries({ queryKey: ['/api/tests'] });
+        
+        // If the test has a category, also invalidate that category
+        if (responseData.test.category) {
+          queryClient.invalidateQueries({ 
+            queryKey: [`/api/tests/category/${encodeURIComponent(responseData.test.category)}`] 
+          });
+        }
+        
+        // If the test has a subcategory, also invalidate that subcategory
+        if (responseData.test.subCategory) {
+          queryClient.invalidateQueries({ 
+            queryKey: [`/api/tests/subcategory/${encodeURIComponent(responseData.test.subCategory)}`] 
+          });
+        }
+        
+        // Show success toast notification
+        toast({
+          title: "Test Updated",
+          description: `The test "${responseData.test.name}" has been updated successfully.`,
+        });
+        
         onSave(responseData.test as Test);
         onClose();
       }
     } catch (error) {
       console.error("Failed to update test:", error);
+      
+      // Show error toast notification
+      toast({
+        title: "Update Failed",
+        description: `Failed to update the test. Please try again.`,
+        variant: "destructive",
+      });
     }
   };
 

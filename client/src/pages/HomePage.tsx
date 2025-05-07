@@ -65,8 +65,8 @@ export default function HomePage() {
     // Update the selected test
     setSelectedTest(updatedTest);
     
-    // Refresh the test list data
-    refetch();
+    // Refresh the test list data - will happen automatically via the cache invalidation
+    // No need to call refetch() as it's handled via the queryClient.invalidateQueries in TestEditModal
     
     // Show success toast
     toast({
