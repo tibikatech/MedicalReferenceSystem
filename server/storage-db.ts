@@ -57,13 +57,39 @@ export class DatabaseStorage implements IStorage {
   }
 
   async updateTest(id: string, testUpdate: Partial<Test>): Promise<Test | undefined> {
-    const result = await db
-      .update(tests)
-      .set({ ...testUpdate, updatedAt: new Date() })
-      .where(eq(tests.id, id))
-      .returning();
-    
-    return result.length > 0 ? result[0] : undefined;
+    // Check if we're updating the id (primary key)
+    if (testUpdate.id && testUpdate.id !== id) {
+      // If changing the ID, we need to:
+      // 1. Get the existing test's full data
+      const existingTest = await this.getTestById(id);
+      if (!existingTest) {
+        return undefined;
+      }
+
+      // 2. Create a new record with the new ID and merged data
+      const newTest: InsertTest = {
+        ...existingTest,
+        ...testUpdate,
+        updatedAt: new Date(),
+      };
+
+      // 3. Insert the new record
+      const insertResult = await db.insert(tests).values(newTest).returning();
+      
+      // 4. Delete the old record
+      await db.delete(tests).where(eq(tests.id, id));
+      
+      return insertResult.length > 0 ? insertResult[0] : undefined;
+    } else {
+      // Regular update without changing ID
+      const result = await db
+        .update(tests)
+        .set({ ...testUpdate, updatedAt: new Date() })
+        .where(eq(tests.id, id))
+        .returning();
+      
+      return result.length > 0 ? result[0] : undefined;
+    }
   }
 
   async deleteTest(id: string): Promise<boolean> {
