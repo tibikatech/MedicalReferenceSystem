@@ -1,0 +1,107 @@
+
+﻿
+9
+@radix-ui_react-select.js?v=f01242ae:869 Uncaught Error: A <Select.Item /> must have a value prop that is not an empty string. This is because the Select value can be set to an empty string to clear the selection and show the placeholder.
+    at @radix-ui_react-sele…s?v=f01242ae:869:13
+    at renderWithHooks (chunk-WERSD76P.js?v=f01242ae:11548:26)
+    at updateForwardRef (chunk-WERSD76P.js?v=f01242ae:14325:28)
+    at beginWork (chunk-WERSD76P.js?v=f01242ae:15946:22)
+    at HTMLUnknownElement.callCallback2 (chunk-WERSD76P.js?v=f01242ae:3674:22)
+    at Object.invokeGuardedCallbackDev (chunk-WERSD76P.js?v=f01242ae:3699:24)
+    at invokeGuardedCallback (chunk-WERSD76P.js?v=f01242ae:3733:39)
+    at beginWork$1 (chunk-WERSD76P.js?v=f01242ae:19765:15)
+    at performUnitOfWork (chunk-WERSD76P.js?v=f01242ae:19198:20)
+    at workLoopSync (chunk-WERSD76P.js?v=f01242ae:19137:13)
+9
+@radix-ui_react-select.js?v=f01242ae:869 Uncaught Error: A <Select.Item /> must have a value prop that is not an empty string. This is because the Select value can be set to an empty string to clear the selection and show the placeholder.
+    at @radix-ui_react-sele…s?v=f01242ae:869:13
+    at renderWithHooks (chunk-WERSD76P.js?v=f01242ae:11548:26)
+    at updateForwardRef (chunk-WERSD76P.js?v=f01242ae:14325:28)
+    at beginWork (chunk-WERSD76P.js?v=f01242ae:15946:22)
+    at HTMLUnknownElement.callCallback2 (chunk-WERSD76P.js?v=f01242ae:3674:22)
+    at Object.invokeGuardedCallbackDev (chunk-WERSD76P.js?v=f01242ae:3699:24)
+    at invokeGuardedCallback (chunk-WERSD76P.js?v=f01242ae:3733:39)
+    at beginWork$1 (chunk-WERSD76P.js?v=f01242ae:19765:15)
+    at performUnitOfWork (chunk-WERSD76P.js?v=f01242ae:19198:20)
+    at workLoopSync (chunk-WERSD76P.js?v=f01242ae:19137:13)
+9
+chunk-WERSD76P.js?v=f01242ae:14032 The above error occurred in the <SelectItem> component:
+
+    at https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…rkspace/node_modules/.vite/deps/@radix-ui_react-select.js?v=f01242ae:842:7
+    at _c11 (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.dev/src/components/ui/select.tsx:208:13)
+    at div
+    at https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…unner/workspace/node_modules/.vite/deps/chunk-PALV7G7K.js?v=f01242ae:42:13
+    at https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…unner/workspace/node_modules/.vite/deps/chunk-LXTJ4TFU.js?v=f01242ae:79:13
+    at https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…unner/workspace/node_modules/.vite/deps/chunk-LXTJ4TFU.js?v=f01242ae:56:13
+    at https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…unner/workspace/node_modules/.vite/deps/chunk-WGNUD6JB.js?v=f01242ae:39:15
+    at https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…kspace/node_modules/.vite/deps/@radix-ui_react-select.js?v=f01242ae:753:13
+    at div
+    at https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…unner/workspace/node_modules/.vite/deps/chunk-LXTJ4TFU.js?v=f01242ae:79:13
+    at https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…unner/workspace/node_modules/.vite/deps/chunk-LXTJ4TFU.js?v=f01242ae:56:13
+    at https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…unner/workspace/node_modules/.vite/deps/chunk-WGNUD6JB.js?v=f01242ae:39:15
+    at Provider (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…unner/workspace/node_modules/.vite/deps/chunk-DAKDTFIW.js?v=f01242ae:48:15)
+    at https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…kspace/node_modules/.vite/deps/@radix-ui_react-select.js?v=f01242ae:296:58
+    at https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…unner/workspace/node_modules/.vite/deps/chunk-LXTJ4TFU.js?v=f01242ae:79:13
+    at https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…unner/workspace/node_modules/.vite/deps/chunk-LXTJ4TFU.js?v=f01242ae:56:13
+    at https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…unner/workspace/node_modules/.vite/deps/chunk-PALV7G7K.js?v=f01242ae:42:13
+    at https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…nner/workspace/node_modules/.vite/deps/chunk-MS7WFRV5.js?v=f01242ae:258:22
+    at SelectPortal
+    at _c7 (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.dev/src/components/ui/select.tsx:123:12)
+    at Provider (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…unner/workspace/node_modules/.vite/deps/chunk-DAKDTFIW.js?v=f01242ae:48:15)
+    at Provider (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…unner/workspace/node_modules/.vite/deps/chunk-DAKDTFIW.js?v=f01242ae:48:15)
+    at CollectionProvider (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…unner/workspace/node_modules/.vite/deps/chunk-WGNUD6JB.js?v=f01242ae:29:13)
+    at Provider (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…unner/workspace/node_modules/.vite/deps/chunk-DAKDTFIW.js?v=f01242ae:48:15)
+    at Provider (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…unner/workspace/node_modules/.vite/deps/chunk-DAKDTFIW.js?v=f01242ae:48:15)
+    at Popper (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…ner/workspace/node_modules/.vite/deps/chunk-KNQCVKLF.js?v=f01242ae:1919:11)
+    at Select (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…orkspace/node_modules/.vite/deps/@radix-ui_react-select.js?v=f01242ae:84:5)
+    at div
+    at div
+    at div
+    at div
+    at div
+    at div
+    at https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…unner/workspace/node_modules/.vite/deps/chunk-PALV7G7K.js?v=f01242ae:42:13
+    at https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…runner/workspace/node_modules/.vite/deps/chunk-MS7WFRV5.js?v=f01242ae:59:7
+    at https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…unner/workspace/node_modules/.vite/deps/chunk-LXTJ4TFU.js?v=f01242ae:79:13
+    at https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…unner/workspace/node_modules/.vite/deps/chunk-LXTJ4TFU.js?v=f01242ae:56:13
+    at https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…unner/workspace/node_modules/.vite/deps/chunk-PALV7G7K.js?v=f01242ae:42:13
+    at https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…runner/workspace/node_modules/.vite/deps/chunk-TUJ2RRSG.js?v=f01242ae:57:5
+    at https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…kspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=f01242ae:235:13
+    at https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…kspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=f01242ae:158:58
+    at Presence (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…unner/workspace/node_modules/.vite/deps/chunk-U7VSWHAD.js?v=f01242ae:24:11)
+    at https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…kspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=f01242ae:149:64
+    at https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…unner/workspace/node_modules/.vite/deps/chunk-LXTJ4TFU.js?v=f01242ae:79:13
+    at https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…unner/workspace/node_modules/.vite/deps/chunk-LXTJ4TFU.js?v=f01242ae:56:13
+    at https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…unner/workspace/node_modules/.vite/deps/chunk-PALV7G7K.js?v=f01242ae:42:13
+    at https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…nner/workspace/node_modules/.vite/deps/chunk-MS7WFRV5.js?v=f01242ae:258:22
+    at Presence (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…unner/workspace/node_modules/.vite/deps/chunk-U7VSWHAD.js?v=f01242ae:24:11)
+    at Provider (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…unner/workspace/node_modules/.vite/deps/chunk-DAKDTFIW.js?v=f01242ae:48:15)
+    at DialogPortal (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…kspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=f01242ae:111:11)
+    at _c3 (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.dev/src/components/ui/dialog.tsx:52:12)
+    at Provider (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…unner/workspace/node_modules/.vite/deps/chunk-DAKDTFIW.js?v=f01242ae:48:15)
+    at Dialog (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…orkspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=f01242ae:52:5)
+    at TestMappingWizard (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.dev/src/components/TestMappingWizard.tsx:40:3)
+    at TestManagementPage (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.dev/src/pages/TestManagementPage.tsx:72:21)
+    at Route (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=f01242ae:323:16)
+    at Switch (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=f01242ae:379:17)
+    at Router
+    at div
+    at Provider (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…unner/workspace/node_modules/.vite/deps/chunk-DAKDTFIW.js?v=f01242ae:48:15)
+    at TooltipProvider (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…rkspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=f01242ae:61:5)
+    at QueryClientProvider (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.d…rkspace/node_modules/.vite/deps/@tanstack_react-query.js?v=f01242ae:2805:3)
+    at App
+    at ThemeProvider (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.dev/src/components/ui/theme-provider.tsx:25:3)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+chunk-WERSD76P.js?v=f01242ae:9129 Uncaught Error: A <Select.Item /> must have a value prop that is not an empty string. This is because the Select value can be set to an empty string to clear the selection and show the placeholder.
+    at @radix-ui_react-sele…s?v=f01242ae:869:13
+    at renderWithHooks (chunk-WERSD76P.js?v=f01242ae:11548:26)
+    at updateForwardRef (chunk-WERSD76P.js?v=f01242ae:14325:28)
+    at beginWork (chunk-WERSD76P.js?v=f01242ae:15946:22)
+    at beginWork$1 (chunk-WERSD76P.js?v=f01242ae:19753:22)
+    at performUnitOfWork (chunk-WERSD76P.js?v=f01242ae:19198:20)
+    at workLoopSync (chunk-WERSD76P.js?v=f01242ae:19137:13)
+    at renderRootSync (chunk-WERSD76P.js?v=f01242ae:19116:15)
+    at recoverFromConcurrentError (chunk-WERSD76P.js?v=f01242ae:18736:28)
+    at performSyncWorkOnRoot (chunk-WERSD76P.js?v=f01242ae:18879:28)
