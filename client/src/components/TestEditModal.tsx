@@ -207,6 +207,11 @@ export default function TestEditModal({
           value === "" ? null : value,
         ])
       );
+      
+      // Include the ID from the preview if it has changed
+      if (testIdPreview && testIdPreview !== test.id) {
+        formattedData.id = testIdPreview;
+      }
 
       // Send update to the server
       const response = await apiRequest(

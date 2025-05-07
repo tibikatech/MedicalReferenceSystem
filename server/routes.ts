@@ -287,27 +287,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
       
-      // Check if we need to update the ID (if category, subcategory or cptCode changed)
-      const categoryChanged = updateData.category && updateData.category !== existingTest.category;
-      const subCategoryChanged = updateData.subCategory && updateData.subCategory !== existingTest.subCategory;
-      const cptCodeChanged = updateData.cptCode && updateData.cptCode !== existingTest.cptCode;
-      
-      // If any of the ID components changed, generate a new ID
-      if (categoryChanged || subCategoryChanged || cptCodeChanged) {
-        // Get values to use for the new ID, using updated values or falling back to existing ones
-        const category = updateData.category || existingTest.category;
-        const subCategory = updateData.subCategory || existingTest.subCategory;
-        const cptCode = updateData.cptCode || existingTest.cptCode;
+      // If the client has already sent an updated ID, use that
+      if (updateData.id && updateData.id !== id) {
+        console.log(`Using client-provided ID: ${updateData.id} (was: ${id})`);
+      } 
+      // Otherwise check if we need to generate a new ID (if category, subcategory or cptCode changed)
+      else {
+        const categoryChanged = updateData.category && updateData.category !== existingTest.category;
+        const subCategoryChanged = updateData.subCategory && updateData.subCategory !== existingTest.subCategory;
+        const cptCodeChanged = updateData.cptCode && updateData.cptCode !== existingTest.cptCode;
         
-        // Get tests count for the category to ensure uniqueness
-        const categoryTests = await storage.getTestsByCategory(category);
-        const testCount = categoryTests.length;
-        
-        // Generate a new ID based on the updated values
-        const newId = generateTestId(category, subCategory, cptCode, testCount);
-        
-        // Add the new ID to the update data
-        updateData.id = newId;
+        // If any of the ID components changed, generate a new ID
+        if (categoryChanged || subCategoryChanged || cptCodeChanged) {
+          // Get values to use for the new ID, using updated values or falling back to existing ones
+          const category = updateData.category || existingTest.category;
+          const subCategory = updateData.subCategory || existingTest.subCategory;
+          const cptCode = updateData.cptCode || existingTest.cptCode;
+          
+          // Get tests count for the category to ensure uniqueness
+          const categoryTests = await storage.getTestsByCategory(category);
+          const testCount = categoryTests.length;
+          
+          // Generate a new ID based on the updated values
+          const newId = generateTestId(category, subCategory, cptCode, testCount);
+          
+          // Add the new ID to the update data
+          updateData.id = newId;
+          console.log(`Generated new ID: ${newId} (was: ${id})`);
+        }
       }
       
       // Update the test
