@@ -41,6 +41,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import TestMappingWizard from "@/components/TestMappingWizard";
 import DuplicateTestModal from "@/components/DuplicateTestModal";
 import FhirExportTool from "@/components/FhirExportTool";
+import TestEditModal from "@/components/TestEditModal";
 import { 
   parseCSV, 
   readCSVFile, 
@@ -74,6 +75,10 @@ export default function TestManagementPage() {
   
   // FHIR export state
   const [showFhirExportTool, setShowFhirExportTool] = useState(false);
+  
+  // Test edit state
+  const [editingTest, setEditingTest] = useState<Test | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   // Get all tests
   const { data: tests, isLoading: testsLoading, isError: testsError } = useQuery({
