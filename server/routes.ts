@@ -240,6 +240,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Create a new test
+  app.post("/api/tests", async (req, res, next) => {
+    try {
+      const testData = req.body;
+      
+      // Generate a unique ID for the test based on the category and subcategory
+      const existingTests = await storage.getTestsByCategory(testData.category);
+      let testCount = existingTests.length;
+      
+      // Use the medical-constants utility to generate a proper ID
+      const { generateTestId } = require('./utils/medical-constants');
+      const testId = generateTestId(testData.category, testData.subCategory, testCount);
+      
+      // Create the test with the generated ID
+      const newTest = await storage.insertTest({
+        id: testId,
+        ...testData,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+      
+      res.status(201).json({
+        success: true,
+        test: newTest
+      });
+    } catch (error) {
+      console.error("Failed to create test:", error);
+      next(error);
+    }
+  });
+
   // Update a test by ID
   app.patch("/api/tests/:id", async (req, res, next) => {
     try {

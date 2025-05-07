@@ -48,6 +48,7 @@ import TestMappingWizard from "@/components/TestMappingWizard";
 import DuplicateTestModal from "@/components/DuplicateTestModal";
 import FhirExportTool from "@/components/FhirExportTool";
 import TestEditModal from "@/components/TestEditModal";
+import TestAddModal from "@/components/TestAddModal";
 import { 
   parseCSV, 
   readCSVFile, 
@@ -85,6 +86,9 @@ export default function TestManagementPage() {
   // Test edit state
   const [editingTest, setEditingTest] = useState<Test | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  
+  // Test add state
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   // Get all tests
   const { data: tests, isLoading: testsLoading, isError: testsError } = useQuery({
