@@ -107,9 +107,9 @@ export default function HomePage() {
               <button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md font-medium">
                 Export to FHIR
               </button>
-              <button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md font-medium">
+              <Link href="/fhir-wiki" className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md font-medium">
                 FHIR Resources & Wiki
-              </button>
+              </Link>
               <button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md font-medium">
                 Legal & Documentation
               </button>
