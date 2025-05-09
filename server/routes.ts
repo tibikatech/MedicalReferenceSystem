@@ -8,12 +8,17 @@ import path from 'path';
 import legalRoutes from './legal-routes';
 import { setupAuth } from './auth';
 
+import { createDefaultAdmin } from "./utils/init-admin";
+
 export async function registerRoutes(app: Express): Promise<Server> {
   // Initialize the storage with test data
   await initializeTestData();
   
   // Setup authentication
   setupAuth(app);
+  
+  // Create default admin user
+  await createDefaultAdmin();
   
   // Get all tests
   app.get("/api/tests", async (req, res) => {
