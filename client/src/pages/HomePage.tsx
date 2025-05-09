@@ -5,6 +5,7 @@ import CategorySidebar from "@/components/CategorySidebar";
 import TestsGrid from "@/components/TestsGrid";
 import Footer from "@/components/Footer";
 import TestDetailModal from "@/components/TestDetailModal";
+import FhirExportTool from "@/components/FhirExportTool";
 import { useTestData } from "@/hooks/useTestData";
 import { Test } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
@@ -15,6 +16,7 @@ export default function HomePage() {
   const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null);
   const [selectedTest, setSelectedTest] = useState<Test | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showFhirExportTool, setShowFhirExportTool] = useState(false);
   const { toast } = useToast();
 
   const { 
@@ -75,6 +77,12 @@ export default function HomePage() {
       variant: "default",
     });
   };
+  
+  // Handle opening the FHIR export tool
+  const handleFhirExportClick = () => {
+    // Open the FHIR export modal directly
+    setShowFhirExportTool(true);
+  };
 
   return (
     <>
@@ -104,7 +112,10 @@ export default function HomePage() {
                 </svg>
                 Manage Products
               </button>
-              <button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md font-medium">
+              <button 
+                onClick={handleFhirExportClick}
+                className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md font-medium"
+              >
                 Export to FHIR
               </button>
               <Link href="/fhir-wiki" className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md font-medium">
@@ -145,6 +156,16 @@ export default function HomePage() {
           isOpen={isModalOpen}
           onClose={handleCloseModal}
           onEdit={handleTestEdit}
+          isDarkMode={true}
+        />
+      )}
+      
+      {/* FHIR Export Modal */}
+      {showFhirExportTool && (
+        <FhirExportTool
+          isOpen={showFhirExportTool}
+          onClose={() => setShowFhirExportTool(false)}
+          tests={tests || []}
           isDarkMode={true}
         />
       )}
