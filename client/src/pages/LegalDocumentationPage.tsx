@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "wouter";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -11,7 +12,8 @@ import {
   FileText, 
   Building, 
   ShoppingCart,
-  Globe
+  Globe,
+  ChevronLeft
 } from "lucide-react";
 
 export default function LegalDocumentationPage() {
@@ -28,12 +30,17 @@ export default function LegalDocumentationPage() {
       
       <main className="flex-grow bg-gray-900 text-white min-h-screen">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Hero section */}
+          {/* Back button and title */}
+          <div className="flex items-center mb-6">
+            <Link href="/" className="text-blue-400 hover:text-blue-300 flex items-center mr-4">
+              <ChevronLeft className="w-5 h-5 mr-1" />
+              Back to Home
+            </Link>
+            <h1 className="text-2xl font-bold text-white">Legal & Documentation</h1>
+          </div>
+          
+          {/* Hero section description */}
           <div className="mb-8">
-            <h1 className="text-2xl font-bold text-white flex items-center">
-              <FileText className="mr-2 h-6 w-6" />
-              Legal & Documentation
-            </h1>
             <p className="mt-2 text-gray-400">
               Comprehensive resources focused on Kenya and Africa - regulatory frameworks, 
               medical test documentation, referral networks, and vendor marketplace.

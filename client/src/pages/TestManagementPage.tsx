@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Test } from '@shared/schema';
+import { Link } from "wouter";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { 
@@ -39,7 +40,8 @@ import {
   Square,
   Search,
   ArrowRight,
-  FileCode
+  FileCode,
+  ChevronLeft
 } from "lucide-react";
 import { useToast } from '@/hooks/use-toast';
 import { queryClient } from "@/lib/queryClient";
@@ -751,8 +753,15 @@ export default function TestManagementPage() {
       
       <main className="flex-grow bg-gray-900 text-white min-h-screen">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Back button and title */}
           <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-bold text-white">Test Management</h1>
+            <div className="flex items-center">
+              <Link href="/" className="text-blue-400 hover:text-blue-300 flex items-center mr-4">
+                <ChevronLeft className="w-5 h-5 mr-1" />
+                Back to Home
+              </Link>
+              <h1 className="text-2xl font-bold text-white">Test Management</h1>
+            </div>
             <div className="flex space-x-2">
               <Button 
                 variant="outline" 
