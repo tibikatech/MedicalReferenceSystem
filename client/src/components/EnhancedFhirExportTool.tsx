@@ -28,6 +28,7 @@ import {
   CheckCircle,
   FileJson,
   HelpCircle,
+  PlusCircle,
   Package,
   Layers,
   BarChart4
@@ -364,7 +365,7 @@ export default function EnhancedFhirExportTool({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent 
-        className={`max-w-5xl ${bgClass} ${textClass}`}
+        className={`max-w-5xl ${bgClass} ${textClass} max-h-[90vh] overflow-y-auto`}
       >
         <DialogHeader>
           <DialogTitle className={`text-xl ${isDarkMode ? 'text-white' : ''}`}>
@@ -507,7 +508,19 @@ export default function EnhancedFhirExportTool({
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                 {/* Categories filter panel */}
                 <Card className={`p-3 ${cardClass} col-span-1`}>
-                  <h3 className="font-medium mb-2">Categories</h3>
+                  <h3 className="font-medium mb-2 flex items-center">
+                    Categories
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Info className="h-4 w-4 ml-2 text-blue-600 dark:text-blue-400" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Categories are clickable - click to filter by category</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </h3>
                   <div className="space-y-2">
                     {categoryFilter && (
                       <div className="mb-2">
@@ -523,13 +536,20 @@ export default function EnhancedFhirExportTool({
                       {filteredCategories.map(category => (
                         <div 
                           key={category}
-                          className={`flex items-center justify-between p-2 rounded cursor-pointer hover:${secondaryBgClass} ${
-                            categoryFilter === category ? highlightClass : ''
-                          }`}
+                          className={`flex items-center justify-between p-2 rounded cursor-pointer
+                            border border-gray-600 hover:bg-blue-800/30 transition-colors
+                            ${categoryFilter === category ? 'bg-blue-800/50 border-blue-500' : ''}
+                          `}
                           onClick={() => setCategoryFilter(categoryFilter === category ? '' : category)}
                         >
-                          <span className="text-sm">{category}</span>
-                          <Badge variant="outline">
+                          <span className="text-sm flex items-center">
+                            {category}
+                            {/* Visual indicator that it's clickable */}
+                            <Button variant="ghost" size="icon" className="h-4 w-4 ml-1 p-0">
+                              <PlusCircle className="h-3 w-3" />
+                            </Button>
+                          </span>
+                          <Badge variant="outline" className={categoryFilter === category ? 'bg-blue-800/50 border-blue-500' : ''}>
                             {categoryCountMap.get(category) || 0}
                           </Badge>
                         </div>
@@ -540,7 +560,19 @@ export default function EnhancedFhirExportTool({
                 
                 {/* Subcategories filter panel */}
                 <Card className={`p-3 ${cardClass} col-span-1`}>
-                  <h3 className="font-medium mb-2">Subcategories</h3>
+                  <h3 className="font-medium mb-2 flex items-center">
+                    Subcategories
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Info className="h-4 w-4 ml-2 text-blue-600 dark:text-blue-400" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Subcategories are clickable - click to filter by subcategory</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </h3>
                   <div className="space-y-2">
                     {subcategoryFilter && (
                       <div className="mb-2">
@@ -556,13 +588,20 @@ export default function EnhancedFhirExportTool({
                       {filteredSubcategories.map(subcategory => (
                         <div 
                           key={subcategory}
-                          className={`flex items-center justify-between p-2 rounded cursor-pointer hover:${secondaryBgClass} ${
-                            subcategoryFilter === subcategory ? highlightClass : ''
-                          }`}
+                          className={`flex items-center justify-between p-2 rounded cursor-pointer
+                            border border-gray-600 hover:bg-blue-800/30 transition-colors
+                            ${subcategoryFilter === subcategory ? 'bg-blue-800/50 border-blue-500' : ''}
+                          `}
                           onClick={() => setSubcategoryFilter(subcategoryFilter === subcategory ? '' : subcategory)}
                         >
-                          <span className="text-sm">{subcategory}</span>
-                          <Badge variant="outline">
+                          <span className="text-sm flex items-center">
+                            {subcategory}
+                            {/* Visual indicator that it's clickable */}
+                            <Button variant="ghost" size="icon" className="h-4 w-4 ml-1 p-0">
+                              <PlusCircle className="h-3 w-3" />
+                            </Button>
+                          </span>
+                          <Badge variant="outline" className={subcategoryFilter === subcategory ? 'bg-blue-800/50 border-blue-500' : ''}>
                             {subcategoryCountMap.get(subcategory) || 0}
                           </Badge>
                         </div>
