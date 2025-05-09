@@ -1100,16 +1100,16 @@ export default function EnhancedFhirExportTool({
               <Button
                 onClick={generatePreview}
                 disabled={selectedCount === 0 || isGeneratingPreview}
-                className={`${primaryBtnClass} ${
+                className={`py-6 bg-blue-600 hover:bg-blue-700 text-white text-lg font-medium shadow-lg ${
                   (selectedCount === 0 || isGeneratingPreview) ? 'opacity-50 cursor-not-allowed' : ''
                 }`}
               >
                 {isGeneratingPreview ? (
-                  <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                  <RefreshCw className="h-5 w-5 mr-2 animate-spin" />
                 ) : (
-                  <ChevronRight className="h-4 w-4 mr-2" />
+                  <ChevronRight className="h-5 w-5 mr-2" />
                 )}
-                Preview FHIR Data
+                Preview FHIR Data {selectedCount > 0 ? `(${selectedCount} tests)` : ''}
               </Button>
             </>
           )}
