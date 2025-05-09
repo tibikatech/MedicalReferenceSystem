@@ -50,6 +50,7 @@ import FhirExportTool from "@/components/FhirExportTool";
 import TestEditModal from "@/components/TestEditModal";
 import TestAddModal from "@/components/TestAddModal";
 import UploadProgressModal from "@/components/UploadProgressModal";
+import CategoryMappingModal from "@/components/CategoryMappingModal";
 import { 
   parseCSV, 
   readCSVFile, 
@@ -108,6 +109,9 @@ export default function TestManagementPage() {
   
   // Test add state
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  
+  // Category Mapping state
+  const [showCategoryMappingModal, setShowCategoryMappingModal] = useState(false);
 
   // Get all tests
   const { data: tests, isLoading: testsLoading, isError: testsError } = useQuery({
@@ -1123,10 +1127,27 @@ export default function TestManagementPage() {
                 <Button 
                   variant="outline" 
                   className="bg-teal-600 hover:bg-teal-700 text-white"
+                  onClick={() => setShowCategoryMappingModal(true)}
                 >
                   Map Categories
                 </Button>
               </div>
+              
+              {/* Category Mapping Modal */}
+              {showCategoryMappingModal && (
+                <CategoryMappingModal 
+                  isOpen={showCategoryMappingModal} 
+                  onClose={() => setShowCategoryMappingModal(false)}
+                  onComplete={() => {
+                    setShowCategoryMappingModal(false);
+                    queryClient.invalidateQueries({ queryKey: ['/api/tests'] });
+                    toast({
+                      title: "Category Mapping Complete",
+                      description: "All tests have been successfully mapped to appropriate categories and subcategories.",
+                    });
+                  }}
+                />
+              )}
               
               {/* CSV Mapping Preview */}
               <div className="bg-gray-800 rounded-lg border border-gray-700 p-6">
