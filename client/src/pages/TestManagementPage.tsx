@@ -51,6 +51,7 @@ import TestEditModal from "@/components/TestEditModal";
 import TestAddModal from "@/components/TestAddModal";
 import UploadProgressModal from "@/components/UploadProgressModal";
 import CategoryMappingModal from "@/components/CategoryMappingModal";
+import ExportToCsv from "@/components/ExportToCsv";
 import { 
   parseCSV, 
   readCSVFile, 
@@ -1072,21 +1073,8 @@ export default function TestManagementPage() {
                   </Button>
                 </div>
                 
-                {/* Export to CSV */}
-                <div className="bg-gray-800 rounded-lg border border-gray-700 p-6 flex flex-col items-center">
-                  <FileDown className="h-12 w-12 text-purple-500 mb-3" />
-                  <h3 className="text-lg font-semibold mb-2">Export Tests to CSV</h3>
-                  <p className="text-sm text-gray-400 text-center mb-4">
-                    Download all tests as a standard CSV file
-                  </p>
-                  <Button 
-                    variant="outline" 
-                    className="w-full bg-purple-600 hover:bg-purple-700 text-white"
-                    onClick={exportTestsToCsv}
-                  >
-                    Export CSV
-                  </Button>
-                </div>
+                {/* Export to CSV with Category Filtering */}
+                <ExportToCsv />
                 
                 {/* Export to FHIR */}
                 <div className="bg-gray-800 rounded-lg border border-gray-700 p-6 flex flex-col items-center">

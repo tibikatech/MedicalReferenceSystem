@@ -114,11 +114,14 @@ const CsvExportTool: React.FC<CsvExportToolProps> = ({ isOpen, onClose }) => {
 
   // Filter tests based on selected categories and subcategories
   const filteredTests = useMemo(() => {
-    if (!testsData?.tests || (!selectedCategories.length && !selectedSubcategories.length)) {
-      return testsData?.tests || [];
+    const allTests = (testsData as any)?.tests || [];
+    
+    if ((!allTests.length || allTests.length === 0) || 
+        (!selectedCategories.length && !selectedSubcategories.length)) {
+      return allTests;
     }
 
-    return testsData.tests.filter((test: Test) => {
+    return allTests.filter((test: Test) => {
       // If categories are selected, test must be in one of them
       const categoryMatch = selectedCategories.length === 0 || 
         selectedCategories.includes(test.category);
