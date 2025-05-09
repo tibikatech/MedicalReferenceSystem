@@ -66,10 +66,10 @@ export default function HomePage() {
   const handleTestEdit = (updatedTest: Test) => {
     // Update the selected test
     setSelectedTest(updatedTest);
-    
+
     // Refresh the test list data - will happen automatically via the cache invalidation
     // No need to call refetch() as it's handled via the queryClient.invalidateQueries in TestEditModal
-    
+
     // Show success toast
     toast({
       title: "Test updated successfully",
@@ -77,7 +77,7 @@ export default function HomePage() {
       variant: "default",
     });
   };
-  
+
   // Handle opening the FHIR export tool
   const handleFhirExportClick = () => {
     // Open the FHIR export modal directly
@@ -87,7 +87,7 @@ export default function HomePage() {
   return (
     <>
       <Header onSearch={setSearchQuery} />
-      
+
       <main className="flex-grow bg-gray-900 text-white min-h-screen">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Hero section */}
@@ -98,7 +98,7 @@ export default function HomePage() {
             <span className="inline-block mt-2 px-3 py-1 bg-gray-800 text-white rounded-full text-sm">
               {tests ? tests.length : 0} tests available
             </span>
-            
+
             <div className="mt-4 flex space-x-2">
               <Link href="/manage" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium flex items-center">
                 <svg className="mr-2 -ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -106,8 +106,11 @@ export default function HomePage() {
                 </svg>
                 Manage Tests
               </Link>
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium flex items-center">
-                <svg className="mr-2 -ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <button 
+                disabled
+                className="bg-gray-500 cursor-not-allowed text-gray-300 px-4 py-2 rounded-md font-medium"
+              >
+                <svg className="w-5 h-5 mr-1 inline-block" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
                 </svg>
                 Manage Products
@@ -137,7 +140,7 @@ export default function HomePage() {
               onCategorySelect={handleCategorySelect}
               onSubCategorySelect={handleSubCategorySelect}
             />
-            
+
             <TestsGrid 
               tests={tests}
               isLoading={isLoading}
@@ -147,9 +150,9 @@ export default function HomePage() {
           </div>
         </div>
       </main>
-      
+
       <Footer />
-      
+
       {selectedTest && (
         <TestDetailModal 
           test={selectedTest}
@@ -159,7 +162,7 @@ export default function HomePage() {
           isDarkMode={true}
         />
       )}
-      
+
       {/* FHIR Export Modal */}
       {showFhirExportTool && (
         <FhirExportTool
