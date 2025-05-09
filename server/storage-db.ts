@@ -9,8 +9,21 @@ import {
 } from "@shared/schema";
 import { db } from "./db";
 import { IStorage } from './storage';
+import session from "express-session";
+import connectPg from "connect-pg-simple";
+import { pool } from './db';
+
+const PostgresSessionStore = connectPg(session);
 
 export class DatabaseStorage implements IStorage {
+  sessionStore: session.Store;
+  
+  constructor() {
+    this.sessionStore = new PostgresSessionStore({ 
+      pool,
+      createTableIfMissing: true
+    });
+  }
   // Test methods
   async getAllTests(): Promise<Test[]> {
     return await db.select().from(tests);

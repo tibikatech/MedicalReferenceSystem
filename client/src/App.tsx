@@ -7,15 +7,19 @@ import HomePage from "@/pages/HomePage";
 import TestManagementPage from "@/pages/TestManagementPage";
 import FhirResourcesWikiPage from "@/pages/FhirResourcesWikiPage";
 import LegalDocumentationPage from "@/pages/LegalDocumentationPage";
+import AuthPage from "@/pages/auth-page";
 import NotFound from "@/pages/not-found";
+import { AuthProvider } from "@/hooks/use-auth";
+import { ProtectedRoute } from "./lib/protected-route";
 
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={HomePage} />
-      <Route path="/manage" component={TestManagementPage} />
-      <Route path="/fhir-wiki" component={FhirResourcesWikiPage} />
-      <Route path="/legal-documentation" component={LegalDocumentationPage} />
+      <ProtectedRoute path="/" component={HomePage} />
+      <ProtectedRoute path="/manage" component={TestManagementPage} />
+      <ProtectedRoute path="/fhir-wiki" component={FhirResourcesWikiPage} />
+      <ProtectedRoute path="/legal-documentation" component={LegalDocumentationPage} />
+      <Route path="/auth" component={AuthPage} />
       <Route component={NotFound} />
     </Switch>
   );
@@ -25,10 +29,12 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <div className="flex flex-col min-h-screen">
-          <Toaster />
-          <Router />
-        </div>
+        <AuthProvider>
+          <div className="flex flex-col min-h-screen">
+            <Toaster />
+            <Router />
+          </div>
+        </AuthProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );

@@ -8,6 +8,7 @@ import {
 } from "@shared/schema";
 import fs from 'fs';
 import path from 'path';
+import session from "express-session";
 
 export interface IStorage {
   // Test methods
@@ -34,17 +35,28 @@ export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
+  
+  // Session store for authentication
+  sessionStore: session.Store;
 }
+
+import createMemoryStore from "memorystore";
+
+const MemoryStore = createMemoryStore(session);
 
 export class MemStorage implements IStorage {
   private tests: Map<string, Test>;
   private users: Map<number, User>;
   private currentUserId: number;
+  sessionStore: session.Store;
 
   constructor() {
     this.tests = new Map();
     this.users = new Map();
     this.currentUserId = 1;
+    this.sessionStore = new MemoryStore({
+      checkPeriod: 86400000, // prune expired entries every 24h
+    });
 
     // Initialize with pre-loaded test data if needed
   }

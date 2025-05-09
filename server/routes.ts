@@ -6,10 +6,14 @@ import { VALID_CATEGORIES, generateTestId } from "./utils/medical-constants";
 import fs from 'fs';
 import path from 'path';
 import legalRoutes from './legal-routes';
+import { setupAuth } from './auth';
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Initialize the storage with test data
   await initializeTestData();
+  
+  // Setup authentication
+  setupAuth(app);
   
   // Get all tests
   app.get("/api/tests", async (req, res) => {
