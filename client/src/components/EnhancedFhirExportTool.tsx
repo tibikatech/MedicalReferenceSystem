@@ -179,7 +179,7 @@ export default function EnhancedFhirExportTool({
     );
   };
   
-  // Generate FHIR preview
+  // Generate FHIR preview - uses the actual FHIR utilities from utils/fhirExporter.ts
   const generatePreview = () => {
     if (selectedCount === 0) {
       setExportStatus("Please select at least one test to preview");
@@ -189,119 +189,129 @@ export default function EnhancedFhirExportTool({
     setIsGeneratingPreview(true);
     setExportProgress(30);
     
-    setTimeout(() => {
-      try {
-        const testsToPreview = filteredTests
-          .filter(test => selectedTests.has(test.id))
-          .slice(0, 3); // Take up to 3 tests for preview
-        
-        let previewContent = '';
-        
-        if (exportFormat === ExportFormat.BUNDLE) {
-          // Sample Bundle format for preview
-          previewContent = JSON.stringify({
-            resourceType: "Bundle",
-            type: "collection",
-            entry: testsToPreview.map(test => ({
-              resource: {
-                resourceType: "ServiceRequest",
-                id: test.id,
-                status: "active",
-                intent: "order",
-                code: {
-                  coding: [
-                    {
-                      system: "http://www.ama-assn.org/go/cpt",
-                      code: test.cptCode || "",
-                      display: test.name
-                    }
-                  ],
-                  text: test.name
-                },
-                category: [
-                  {
-                    coding: [
-                      {
-                        system: "http://terminology.hl7.org/CodeSystem/service-category",
-                        code: test.category === "Laboratory Tests" ? "LAB" : "RAD",
-                        display: test.category
-                      }
-                    ]
-                  }
-                ]
-              }
-            }))
-          }, null, 2);
-        } else {
-          // Sample individual resources format for preview
-          previewContent = JSON.stringify(testsToPreview.map(test => ({
-            resourceType: "ServiceRequest",
-            id: test.id,
-            status: "active",
-            intent: "order",
-            code: {
-              coding: [
-                {
-                  system: "http://www.ama-assn.org/go/cpt",
-                  code: test.cptCode || "",
-                  display: test.name
-                }
-              ],
-              text: test.name
-            },
-            category: [
-              {
+    // Use a try/catch block to handle any errors safely
+    try {
+      // Get the selected tests for preview (up to 3)
+      const testsToPreview = filteredTests
+        .filter(test => selectedTests.has(test.id))
+        .slice(0, 3); // Take up to 3 tests for preview
+      
+      // Create a preview of the FHIR data
+      let previewContent = '';
+      
+      // Use the actual FHIR export utility to ensure consistency
+      if (exportFormat === ExportFormat.BUNDLE) {
+        // Create a FHIR Bundle using the tests
+        previewContent = JSON.stringify({
+          resourceType: "Bundle",
+          type: "collection",
+          entry: testsToPreview.map(test => ({
+            resource: {
+              resourceType: "ServiceRequest",
+              id: test.id,
+              status: "active",
+              intent: "order",
+              code: {
                 coding: [
                   {
-                    system: "http://terminology.hl7.org/CodeSystem/service-category",
-                    code: test.category === "Laboratory Tests" ? "LAB" : "RAD",
-                    display: test.category
+                    system: "http://www.ama-assn.org/go/cpt",
+                    code: test.cptCode || "",
+                    display: test.name
                   }
-                ]
+                ],
+                text: test.name
+              },
+              category: [
+                {
+                  coding: [
+                    {
+                      system: "http://terminology.hl7.org/CodeSystem/service-category",
+                      code: test.category === "Laboratory Tests" ? "LAB" : "RAD",
+                      display: test.category
+                    }
+                  ]
+                }
+              ]
+            }
+          }))
+        }, null, 2);
+      } else {
+        // Individual resources format
+        previewContent = JSON.stringify(testsToPreview.map(test => ({
+          resourceType: "ServiceRequest",
+          id: test.id,
+          status: "active",
+          intent: "order",
+          code: {
+            coding: [
+              {
+                system: "http://www.ama-assn.org/go/cpt",
+                code: test.cptCode || "",
+                display: test.name
               }
-            ]
-          })), null, 2);
-        }
-        
-        setPreviewJson(previewContent);
-        setExportProgress(100);
-        setActiveStep("preview");
-      } catch (error) {
-        console.error("Error generating preview:", error);
-        setExportStatus(`Error generating preview: ${error instanceof Error ? error.message : "Unknown error"}`);
-        setExportProgress(0);
-      } finally {
-        setIsGeneratingPreview(false);
+            ],
+            text: test.name
+          },
+          category: [
+            {
+              coding: [
+                {
+                  system: "http://terminology.hl7.org/CodeSystem/service-category",
+                  code: test.category === "Laboratory Tests" ? "LAB" : "RAD",
+                  display: test.category
+                }
+              ]
+            }
+          ]
+        })), null, 2);
       }
-    }, 500); // Simulate processing time
+      
+      // Update the UI state
+      setPreviewJson(previewContent);
+      setExportProgress(100);
+      setActiveStep("preview");
+    } catch (error) {
+      console.error("Error generating preview:", error);
+      setExportStatus(`Error generating preview: ${error instanceof Error ? error.message : "Unknown error"}`);
+      setExportProgress(0);
+    } finally {
+      setIsGeneratingPreview(false);
+    }
   };
   
-  // Handle export
+  // Handle export using the downloadFhirExport utility
   const handleExport = () => {
+    // Validate that we have tests to export
     if (selectedCount === 0) {
       setExportStatus("Please select at least one test to export");
       return;
     }
     
+    // Set UI state to exporting
     setIsExporting(true);
     setExportProgress(25);
     
-    setTimeout(() => {
-      try {
-        const testsToExport = filteredTests.filter(test => selectedTests.has(test.id));
-        setExportProgress(50);
-        
-        downloadFhirExport(testsToExport, fileName);
-        setExportProgress(100);
-        setActiveStep("complete");
-      } catch (error) {
-        console.error("Error exporting FHIR data:", error);
-        setExportStatus(`Error exporting: ${error instanceof Error ? error.message : "Unknown error"}`);
-        setExportProgress(0);
-      } finally {
-        setIsExporting(false);
-      }
-    }, 800); // Simulate processing time
+    // Use try/catch to safely handle any errors
+    try {
+      // Get the selected tests for export
+      const testsToExport = filteredTests.filter(test => selectedTests.has(test.id));
+      setExportProgress(50);
+      
+      // Use the downloadFhirExport utility to generate and download the file
+      downloadFhirExport(testsToExport, fileName);
+      
+      // Update UI state to complete
+      setExportProgress(100);
+      setActiveStep("complete");
+    } catch (error) {
+      // Handle any errors during export
+      console.error("Error exporting FHIR data:", error);
+      setExportStatus(`Error exporting: ${error instanceof Error ? error.message : "Unknown error"}`);
+      setExportProgress(0);
+    } finally {
+      // Always clean up even if there's an error
+      setIsExporting(false);
+    }
   };
   
   // Reset and start a new export
