@@ -7,7 +7,6 @@ import HomePage from "@/pages/HomePage";
 import TestManagementPage from "@/pages/TestManagementPage";
 import FhirResourcesWikiPage from "@/pages/FhirResourcesWikiPage";
 import LegalDocumentationPage from "@/pages/LegalDocumentationPage";
-import FhirExportPage from "@/pages/FhirExportPage";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -17,7 +16,6 @@ function Router() {
       <Route path="/manage" component={TestManagementPage} />
       <Route path="/fhir-wiki" component={FhirResourcesWikiPage} />
       <Route path="/legal-documentation" component={LegalDocumentationPage} />
-      <Route path="/fhir-export" component={FhirExportPage} />
       <Route component={NotFound} />
     </Switch>
   );
