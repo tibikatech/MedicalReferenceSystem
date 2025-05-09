@@ -1,19 +1,36 @@
-import { useState } from "react";
 import SearchBar from "./SearchBar";
-import { MoonIcon, SunIcon, BookmarkIcon } from "lucide-react";
+import { MoonIcon, SunIcon, BookmarkIcon, LogOut, UserCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/ui/theme-provider";
+import { useAuth } from "@/hooks/use-auth";
+import { useLocation } from "wouter";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface HeaderProps {
   onSearch: (query: string) => void;
 }
 
 export default function Header({ onSearch }: HeaderProps) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { theme, setTheme } = useTheme();
+  const { user, logoutMutation } = useAuth();
+  const [, navigate] = useLocation();
 
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
+  };
+
+  const handleLogout = () => {
+    logoutMutation.mutate();
+  };
+
+  const goToAuth = () => {
+    navigate("/auth");
   };
 
   return (
@@ -56,14 +73,40 @@ export default function Header({ onSearch }: HeaderProps) {
               )}
             </Button>
             
-            <Button
-              variant="default"
-              size="sm"
-              className="ml-4 inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 border-0 text-sm font-medium rounded-md text-white"
-              onClick={() => setIsLoggedIn(!isLoggedIn)}
-            >
-              {isLoggedIn ? "Sign out" : "doctor1"}
-            </Button>
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="default" size="sm" className="ml-4">
+                    {logoutMutation.isPending ? (
+                      <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                    ) : (
+                      <UserCircle className="h-4 w-4 mr-2" />
+                    )}
+                    {user.username}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem disabled>
+                    <UserCircle className="mr-2 h-4 w-4" />
+                    <span>Profile</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Log out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button
+                variant="default"
+                size="sm"
+                className="ml-4 inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 border-0 text-sm font-medium rounded-md text-white"
+                onClick={goToAuth}
+              >
+                Sign in
+              </Button>
+            )}
           </div>
         </div>
       </div>
