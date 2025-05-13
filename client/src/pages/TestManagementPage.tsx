@@ -113,6 +113,10 @@ export default function TestManagementPage() {
   // Test add state
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   
+  // Test delete state
+  const [deletingTest, setDeletingTest] = useState<Test | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  
   // Category Mapping state
   const [showCategoryMappingModal, setShowCategoryMappingModal] = useState(false);
 
@@ -641,6 +645,47 @@ export default function TestManagementPage() {
     setIsEditModalOpen(true);
   };
   
+  // Handle test delete
+  const handleDeleteTest = (test: Test) => {
+    setDeletingTest(test);
+    setIsDeleteModalOpen(true);
+  };
+  
+  // Confirm test deletion
+  const confirmDeleteTest = async () => {
+    if (!deletingTest) return;
+    
+    try {
+      const response = await fetch(`/api/tests/${deletingTest.id}`, {
+        method: 'DELETE',
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to delete test');
+      }
+      
+      // Close delete modal
+      setIsDeleteModalOpen(false);
+      setDeletingTest(null);
+      
+      // Invalidate queries to refresh the tests list
+      queryClient.invalidateQueries({ queryKey: ['/api/tests'] });
+      
+      // Show success message
+      toast({
+        title: "Test Deleted",
+        description: `${deletingTest.name} has been deleted successfully.`,
+      });
+    } catch (error) {
+      console.error('Error deleting test:', error);
+      toast({
+        title: "Error",
+        description: `Failed to delete test: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        variant: "destructive",
+      });
+    }
+  };
+  
   // Handle test update after editing
   const handleTestUpdate = (updatedTest: Test) => {
     // No need to manually update the state since 
@@ -745,6 +790,40 @@ export default function TestManagementPage() {
       title: "Not Implemented",
       description: "This feature would open a modal to decide each duplicate individually.",
     });
+  };
+
+  // Delete confirmation dialog component
+  const DeleteConfirmDialog = () => {
+    return (
+      <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Confirm Deletion</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete the test "{deletingTest?.name}"? 
+              This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-end space-x-2 pt-5">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setIsDeleteModalOpen(false);
+                setDeletingTest(null);
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={confirmDeleteTest}
+            >
+              Delete
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
   };
 
   return (
