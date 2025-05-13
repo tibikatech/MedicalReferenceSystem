@@ -276,7 +276,8 @@ export default function TestAddModal({
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent
         className={cn(
-          "sm:max-w-2xl border-gray-700 max-h-[70vh] sm:max-h-[75vh] md:max-h-[80vh] overflow-y-auto pr-1",
+          "sm:max-w-2xl border-gray-700 overflow-y-auto",
+          "max-h-[70vh] sm:max-h-[75vh] md:max-h-[90vh] lg:max-h-none",
           isDarkMode
             ? "bg-gradient-to-b from-gray-800 to-gray-900 text-white"
             : "bg-white text-gray-900"
@@ -296,7 +297,7 @@ export default function TestAddModal({
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 overflow-y-auto">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             {/* Test ID Preview */}
             <div className="bg-gray-800/80 p-3 rounded-md border border-gray-700 flex items-center space-x-2">
               <TooltipProvider>
