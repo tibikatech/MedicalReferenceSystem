@@ -770,7 +770,10 @@ const TestManagement: React.FC<TestManagementProps> = ({
                             </div>
                           ) : (
                             <button
-                              onClick={() => setShowDeleteConfirm(test.id)}
+                              onClick={() => {
+                                // Set the ID of the test to delete in the state
+                                setShowDeleteConfirm(test.id);
+                              }}
                               className={`p-1.5 rounded-md ${
                                 isDarkMode ? 'text-red-400 hover:bg-red-900 hover:text-red-300' : 'text-red-500 hover:bg-red-100'
                               }`}
