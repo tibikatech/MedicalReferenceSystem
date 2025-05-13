@@ -281,7 +281,7 @@ export default function TestEditModal({
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent
         className={cn(
-          "sm:max-w-2xl border-gray-700",
+          "sm:max-w-2xl border-gray-700 max-h-[90vh] overflow-y-auto",
           isDarkMode
             ? "bg-gradient-to-b from-gray-800 to-gray-900 text-white"
             : "bg-white text-gray-900"
