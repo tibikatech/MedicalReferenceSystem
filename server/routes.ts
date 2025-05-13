@@ -95,6 +95,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ error: "Failed to fetch test" });
     }
   });
+  
+  // Delete test by ID
+  app.delete("/api/tests/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      
+      // Check if test exists
+      const test = await storage.getTestById(id);
+      if (!test) {
+        return res.status(404).json({ error: "Test not found" });
+      }
+      
+      // Delete the test
+      const deleted = await storage.deleteTest(id);
+      if (deleted) {
+        return res.json({ success: true, message: `Test deleted successfully` });
+      } else {
+        return res.status(500).json({ error: "Failed to delete test" });
+      }
+    } catch (error) {
+      console.error(`Error deleting test ${req.params.id}:`, error);
+      res.status(500).json({ error: "Failed to delete test" });
+    }
+  });
 
   // Get test counts by category
   app.get("/api/test-count-by-category", async (req, res) => {
