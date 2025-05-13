@@ -19,6 +19,13 @@ import {
   TableHeader, 
   TableRow 
 } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle
+} from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -1107,6 +1114,7 @@ export default function TestManagementPage() {
                                 variant="ghost" 
                                 size="sm" 
                                 className="text-red-400 hover:text-red-300"
+                                onClick={() => handleDeleteTest(test)}
                               >
                                 Delete
                               </Button>
@@ -1360,6 +1368,9 @@ export default function TestManagementPage() {
         status={uploadStatus}
         isDarkMode={true}
       />
+      
+      {/* Delete Confirmation Dialog */}
+      <DeleteConfirmDialog />
     </>
   );
 }
