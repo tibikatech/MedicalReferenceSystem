@@ -124,6 +124,9 @@ export default function TestManagementPage() {
   const [deletingTest, setDeletingTest] = useState<Test | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   
+  // Bulk delete state
+  const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
+  
   // Category Mapping state
   const [showCategoryMappingModal, setShowCategoryMappingModal] = useState(false);
 
@@ -692,6 +695,74 @@ export default function TestManagementPage() {
       });
     }
   };
+
+  // Handle bulk delete
+  const handleBulkDelete = () => {
+    if (selectedTests.size === 0) {
+      toast({
+        title: "No Tests Selected",
+        description: "Please select tests to delete.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setIsBulkDeleteModalOpen(true);
+  };
+
+  // Confirm bulk deletion
+  const confirmBulkDelete = async () => {
+    if (selectedTests.size === 0) return;
+    
+    try {
+      // Get the selected test names for the success message
+      const selectedTestNames = filteredTests
+        .filter((test: Test) => selectedTests.has(test.id))
+        .map((test: Test) => test.name);
+      
+      // Create array of test IDs to delete
+      const testIdsToDelete = Array.from(selectedTests);
+      
+      // Make the bulk delete API call
+      const response = await fetch('/api/tests/bulk-delete', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ testIds: testIdsToDelete }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to delete tests');
+      }
+      
+      const result = await response.json();
+      
+      // Close bulk delete modal
+      setIsBulkDeleteModalOpen(false);
+      
+      // Clear selections
+      setSelectedTests(new Set());
+      setSelectAll(false);
+      
+      // Invalidate queries to refresh the tests list
+      queryClient.invalidateQueries({ queryKey: ['/api/tests'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/test-count-by-category'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/test-count-by-subcategory'] });
+      
+      // Show success message
+      toast({
+        title: "Tests Deleted",
+        description: `Successfully deleted ${result.deletedCount} test${result.deletedCount !== 1 ? 's' : ''}.`,
+      });
+    } catch (error) {
+      console.error('Error deleting tests:', error);
+      toast({
+        title: "Error",
+        description: `Failed to delete tests: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        variant: "destructive",
+      });
+    }
+  };
   
   // Handle test update after editing
   const handleTestUpdate = (updatedTest: Test) => {
@@ -833,6 +904,61 @@ export default function TestManagementPage() {
     );
   };
 
+  // Bulk delete confirmation dialog component
+  const BulkDeleteConfirmDialog = () => {
+    const selectedTestNames = filteredTests
+      .filter((test: Test) => selectedTests.has(test.id))
+      .map((test: Test) => test.name);
+    
+    return (
+      <Dialog open={isBulkDeleteModalOpen} onOpenChange={setIsBulkDeleteModalOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Confirm Bulk Deletion</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete {selectedTests.size} selected test{selectedTests.size !== 1 ? 's' : ''}? 
+              This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          {selectedTestNames.length <= 5 ? (
+            <div className="py-4">
+              <p className="text-sm text-gray-600 mb-2">Tests to be deleted:</p>
+              <ul className="text-sm space-y-1">
+                {selectedTestNames.map((name: string, index: number) => (
+                  <li key={index} className="text-gray-800">• {name}</li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <div className="py-4">
+              <p className="text-sm text-gray-600 mb-2">Selected tests include:</p>
+              <ul className="text-sm space-y-1">
+                {selectedTestNames.slice(0, 3).map((name: string, index: number) => (
+                  <li key={index} className="text-gray-800">• {name}</li>
+                ))}
+                <li className="text-gray-600 italic">... and {selectedTests.size - 3} more tests</li>
+              </ul>
+            </div>
+          )}
+          <div className="flex justify-end space-x-2 pt-5">
+            <Button
+              variant="outline"
+              onClick={() => setIsBulkDeleteModalOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={confirmBulkDelete}
+            >
+              Delete {selectedTests.size} Test{selectedTests.size !== 1 ? 's' : ''}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  };
+
   return (
     <>
       <Header onSearch={() => {}} />
@@ -905,6 +1031,40 @@ export default function TestManagementPage() {
                   />
                 </div>
               </div>
+              
+              {/* Bulk actions bar - shows when tests are selected */}
+              {selectedTests.size > 0 && (
+                <div className="mb-4 bg-blue-900/20 border border-blue-600/30 rounded-lg p-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-4">
+                      <span className="text-sm text-blue-300">
+                        {selectedTests.size} test{selectedTests.size !== 1 ? 's' : ''} selected
+                      </span>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-blue-400 border-blue-600 hover:bg-blue-900/30"
+                        onClick={() => {
+                          setSelectedTests(new Set());
+                          setSelectAll(false);
+                        }}
+                      >
+                        Clear Selection
+                      </Button>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        className="bg-red-600 hover:bg-red-700 text-white"
+                        onClick={handleBulkDelete}
+                      >
+                        Delete Selected ({selectedTests.size})
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              )}
               
               <div className="mb-4 flex items-center">
                 {/* Category filter dropdown */}
@@ -1371,6 +1531,9 @@ export default function TestManagementPage() {
       
       {/* Delete Confirmation Dialog */}
       <DeleteConfirmDialog />
+      
+      {/* Bulk Delete Confirmation Dialog */}
+      <BulkDeleteConfirmDialog />
     </>
   );
 }
