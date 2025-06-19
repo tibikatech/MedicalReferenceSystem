@@ -68,6 +68,13 @@ import {
   exportTestsToCSV 
 } from "@/utils/csvImportExport";
 import { downloadFhirExport } from "@/utils/fhirExporter";
+import { 
+  ImportAuditService, 
+  parseCSVWithValidation, 
+  detectDuplicates, 
+  validateTestData 
+} from "@/lib/importAuditService";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function TestManagementPage() {
   const { toast } = useToast();

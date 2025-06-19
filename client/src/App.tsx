@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import HomePage from "@/pages/HomePage";
 import TestManagementPage from "@/pages/TestManagementPage";
+import ImportReportsPage from "@/pages/ImportReportsPage";
 import FhirResourcesWikiPage from "@/pages/FhirResourcesWikiPage";
 import LegalDocumentationPage from "@/pages/LegalDocumentationPage";
 import AuthPage from "@/pages/auth-page";
@@ -17,6 +18,7 @@ function Router() {
     <Switch>
       <ProtectedRoute path="/" component={HomePage} />
       <ProtectedRoute path="/manage" component={TestManagementPage} />
+      <ProtectedRoute path="/import-reports" component={ImportReportsPage} />
       <ProtectedRoute path="/fhir-wiki" component={FhirResourcesWikiPage} />
       <ProtectedRoute path="/legal-documentation" component={LegalDocumentationPage} />
       <Route path="/auth" component={AuthPage} />

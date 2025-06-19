@@ -435,6 +435,80 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json({ status: "healthy", timestamp: new Date() });
   });
   
+  // Import audit reporting routes
+  app.get("/api/import-sessions", async (req, res, next) => {
+    try {
+      const { limit = 50 } = req.query;
+      const sessions = await storage.getImportSessions(Number(limit));
+      res.json({ sessions });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.get("/api/import-sessions/:id", async (req, res, next) => {
+    try {
+      const sessionId = parseInt(req.params.id);
+      const session = await storage.getImportSessionById(sessionId);
+      
+      if (!session) {
+        return res.status(404).json({ error: "Import session not found" });
+      }
+      
+      const auditLogs = await storage.getImportAuditLogs(sessionId);
+      res.json({ session, auditLogs });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.get("/api/import-sessions/user/:userId", async (req, res, next) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const { limit = 20 } = req.query;
+      const sessions = await storage.getImportSessionsForUser(userId, Number(limit));
+      res.json({ sessions });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.post("/api/import-sessions", async (req, res, next) => {
+    try {
+      const sessionData = req.body;
+      const session = await storage.createImportSession(sessionData);
+      res.json({ session });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.patch("/api/import-sessions/:id", async (req, res, next) => {
+    try {
+      const sessionId = parseInt(req.params.id);
+      const updates = req.body;
+      const session = await storage.updateImportSession(sessionId, updates);
+      
+      if (!session) {
+        return res.status(404).json({ error: "Import session not found" });
+      }
+      
+      res.json({ session });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.post("/api/import-audit-logs", async (req, res, next) => {
+    try {
+      const logData = req.body;
+      const log = await storage.createImportAuditLog(logData);
+      res.json({ log });
+    } catch (error) {
+      next(error);
+    }
+  });
+
   // Register legal documentation routes
   app.use("/api", legalRoutes);
 
