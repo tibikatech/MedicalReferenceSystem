@@ -349,68 +349,68 @@ export default function TestManagementPage() {
     event.target.value = '';
   };
   
-  // Handle mapping completion
+  // Handle mapping completion with enhanced audit logging
   const handleMappingComplete = async (mapping: Record<string, string>) => {
-    // Close the mapping wizard
     setShowMappingWizard(false);
     
-    if (!csvFile) return;
+    if (!csvFile || !user) return;
     
     try {
-      // Read the CSV file
+      // Read and parse CSV with validation
       const csvContent = await readCSVFile(csvFile);
-      const parsedData = parseCSV(csvContent);
+      const validationResult = parseCSVWithValidation(csvContent);
       
-      // Map CSV data to tests based on the mapping
-      const importedTests = parsedData.map(row => {
+      if (!validationResult.success) {
+        toast({
+          title: "Import Failed",
+          description: "CSV validation failed during import.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Start audit session
+      const sessionId = await auditService.current.startImportSession(
+        csvFile.name,
+        csvFile.size,
+        validationResult.data.length,
+        user.id
+      );
+
+      // Map CSV data to tests using the provided mapping
+      const mappedTests = validationResult.data.map(row => {
         const test: Test = {
-          id: mapping['id'] ? row[mapping['id']] : crypto.randomUUID(),
-          name: mapping['name'] ? row[mapping['name']] : '',
-          category: mapping['category'] ? row[mapping['category']] : '',
-          subCategory: mapping['subCategory'] ? row[mapping['subCategory']] : '',
-          cptCode: mapping['cptCode'] ? row[mapping['cptCode']] : null,
-          loincCode: mapping['loincCode'] ? row[mapping['loincCode']] : null,
-          snomedCode: mapping['snomedCode'] ? row[mapping['snomedCode']] : null,
-          description: mapping['description'] ? row[mapping['description']] : null,
-          notes: mapping['notes'] ? row[mapping['notes']] : null,
+          id: mapping['id'] ? row[mapping['id']] || crypto.randomUUID() : crypto.randomUUID(),
+          name: mapping['name'] ? row[mapping['name']] || '' : '',
+          category: mapping['category'] ? row[mapping['category']] || '' : '',
+          subCategory: mapping['subCategory'] ? row[mapping['subCategory']] || '' : '',
+          cptCode: mapping['cptCode'] ? row[mapping['cptCode']] || null : null,
+          loincCode: mapping['loincCode'] ? row[mapping['loincCode']] || null : null,
+          snomedCode: mapping['snomedCode'] ? row[mapping['snomedCode']] || null : null,
+          description: mapping['description'] ? row[mapping['description']] || null : null,
+          notes: mapping['notes'] ? row[mapping['notes']] || null : null,
           createdAt: new Date(),
           updatedAt: new Date()
         };
         return test;
       });
       
-      // Check for duplicates
-      const duplicatesById: Test[] = [];
-      const duplicatesByCptCode: Test[] = [];
-      
-      // Get all existing tests
+      // Get all existing tests for duplicate detection
       const allTests = (tests as any)?.tests || [];
       
-      // Check each imported test for duplicates
-      importedTests.forEach(test => {
-        // Check for ID duplication
-        if (allTests.some((existingTest: Test) => existingTest.id === test.id)) {
-          duplicatesById.push(test);
-        }
-        
-        // Check for CPT code duplication (only if CPT code is present)
-        if (test.cptCode && allTests.some(
-          (existingTest: Test) => existingTest.cptCode === test.cptCode && existingTest.id !== test.id
-        )) {
-          duplicatesByCptCode.push(test);
-        }
-      });
+      // Enhanced duplicate detection using the audit service
+      const duplicateResult = detectDuplicates(mappedTests, allTests);
       
       // Show duplicates modal if there are any duplicates
-      if (duplicatesById.length > 0 || duplicatesByCptCode.length > 0) {
+      if (duplicateResult.duplicatesById.length > 0 || duplicateResult.duplicatesByCptCode.length > 0) {
         setDuplicateTests({
-          duplicatesById,
-          duplicatesByCptCode
+          duplicatesById: duplicateResult.duplicatesById as Test[],
+          duplicatesByCptCode: duplicateResult.duplicatesByCptCode as Test[]
         });
         setShowDuplicatesModal(true);
       } else {
-        // If no duplicates, proceed with import
-        await importTests(importedTests);
+        // If no duplicates, proceed with import using audit logging
+        await importTestsWithAudit(duplicateResult.uniqueTests as Test[], sessionId, validationResult.data);
       }
     } catch (error) {
       console.error('Error importing CSV:', error);
@@ -506,6 +506,216 @@ export default function TestManagementPage() {
       toast({
         title: "Import Error",
         description: `Failed to import the file: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        variant: "destructive",
+      });
+    }
+  };
+
+  // Enhanced import function with comprehensive audit logging
+  const importTestsWithAudit = async (testsToImport: Test[], sessionId: number, originalData: Record<string, any>[]) => {
+    if (!user) return;
+
+    try {
+      // Reset upload status
+      setUploadStatus({
+        state: 'processing',
+        processed: 0,
+        total: testsToImport.length,
+        successCount: 0,
+        errorCount: 0,
+        errors: []
+      });
+
+      // Show upload progress modal
+      setShowUploadProgress(true);
+
+      // Process data delay to show initial processing state
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      // Update status to validating
+      setUploadStatus(prev => ({
+        ...prev,
+        state: 'validating',
+      }));
+
+      // Process validation delay to show validating state
+      await new Promise(resolve => setTimeout(resolve, 800));
+
+      // Track successful and failed imports
+      let successCount = 0;
+      let errorCount = 0;
+      let duplicateCount = 0;
+      const errors: string[] = [];
+
+      // Update status to uploading
+      setUploadStatus(prev => ({
+        ...prev,
+        state: 'uploading',
+      }));
+
+      // Import each test individually with detailed audit logging
+      for (let i = 0; i < testsToImport.length; i++) {
+        const test = testsToImport[i];
+        const originalRow = originalData[i] || {};
+        const startTime = Date.now();
+
+        try {
+          // Check if test exists (update) or is new (insert)
+          const exists = (tests as any)?.tests.some((t: Test) => t.id === test.id);
+          const operation = exists ? 'update' : 'insert';
+
+          let response;
+          if (exists) {
+            // Update existing test
+            response = await fetch(`/api/tests/${test.id}`, {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(test),
+            });
+          } else {
+            // Insert new test
+            response = await fetch('/api/tests', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(test),
+            });
+          }
+
+          const processingTime = Date.now() - startTime;
+
+          if (response.ok) {
+            successCount++;
+            // Log successful operation
+            await auditService.current.logTestProcessing(
+              originalRow,
+              operation,
+              {
+                success: true,
+                testId: test.id,
+              }
+            );
+          } else {
+            errorCount++;
+            const errorText = await response.text();
+            const errorMessage = `Failed to ${operation} test ${test.id}: ${errorText}`;
+            errors.push(errorMessage);
+
+            // Log failed operation
+            await auditService.current.logTestProcessing(
+              originalRow,
+              operation,
+              {
+                success: false,
+                error: errorMessage,
+              }
+            );
+          }
+        } catch (error) {
+          errorCount++;
+          const errorMessage = `Error processing test ${test.id}: ${error instanceof Error ? error.message : String(error)}`;
+          errors.push(errorMessage);
+
+          // Log error
+          await auditService.current.logTestProcessing(
+            originalRow,
+            'error',
+            {
+              success: false,
+              error: errorMessage,
+            }
+          );
+        }
+
+        // Update processed count
+        setUploadStatus(prev => ({
+          ...prev,
+          processed: i + 1,
+          successCount,
+          errorCount,
+          errors
+        }));
+
+        // Add a small delay between operations to show progress
+        if (i < testsToImport.length - 1) {
+          await new Promise(resolve => setTimeout(resolve, 50));
+        }
+      }
+
+      // Update final status
+      setUploadStatus(prev => ({
+        ...prev,
+        state: 'complete',
+        successCount,
+        errorCount,
+        errors
+      }));
+
+      // Finish audit session
+      await auditService.current.finishImportSession(
+        successCount,
+        errorCount,
+        duplicateCount,
+        errors,
+        `Imported ${successCount} tests successfully`
+      );
+
+      // Show completion toast
+      if (errorCount > 0) {
+        toast({
+          title: `Import Completed with ${errorCount} errors`,
+          description: `Successfully imported ${successCount} tests. Failed to import ${errorCount} tests.`,
+          variant: successCount > 0 ? "default" : "destructive",
+        });
+        console.error("Import errors:", errors);
+      } else {
+        toast({
+          title: "CSV Import Complete",
+          description: `Successfully imported ${successCount} tests with full audit logging.`,
+        });
+      }
+
+      // Keep the progress dialog open for a moment
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      // Hide upload progress modal
+      setShowUploadProgress(false);
+
+      // Refresh the test list
+      queryClient.invalidateQueries({ queryKey: ['/api/tests'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/test-count-by-category'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/test-count-by-subcategory'] });
+
+    } catch (error) {
+      // Handle overall import error
+      setUploadStatus({
+        state: 'error',
+        processed: 0,
+        total: testsToImport.length,
+        successCount: 0,
+        errorCount: 1,
+        errors: [`${error instanceof Error ? error.message : String(error)}`]
+      });
+
+      // Finish audit session with error
+      if (sessionId) {
+        await auditService.current.finishImportSession(
+          0,
+          1,
+          0,
+          [`Import session failed: ${error instanceof Error ? error.message : String(error)}`],
+          'Import session failed due to system error'
+        );
+      }
+
+      // Keep error displayed for a moment
+      await new Promise(resolve => setTimeout(resolve, 3000));
+
+      // Hide upload progress modal
+      setShowUploadProgress(false);
+
+      toast({
+        title: "Import Failed",
+        description: `Error: ${error instanceof Error ? error.message : String(error)}`,
         variant: "destructive",
       });
     }
