@@ -298,43 +298,50 @@ export default function TestManagementPage() {
     fileInputRef.current?.click();
   };
 
-  // Process the uploaded CSV file with enhanced validation and audit logging
+  // Process the uploaded CSV file with flexible mapping (aligned with production)
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file || !user) return;
 
     try {
-      // Read and validate CSV content
+      // Read CSV content without strict validation (like production)
       const csvContent = await readCSVFile(file);
-      const validationResult = parseCSVWithValidation(csvContent);
       
-      if (!validationResult.success) {
+      // Parse CSV to extract headers and preview data
+      const lines = csvContent.split('\n').filter(line => line.trim());
+      
+      if (lines.length < 2) {
         toast({
-          title: "CSV Validation Failed",
-          description: `${validationResult.errors.length} validation errors found. Please check your file.`,
+          title: "Invalid CSV File",
+          description: "CSV file must contain at least a header row and one data row.",
           variant: "destructive",
         });
-        
-        // Show detailed errors
-        console.error('CSV Validation Errors:', validationResult.errors);
         return;
       }
 
-      // Store the validated data for mapping
-      setCsvFile(file);
+      // Parse headers
+      const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
       
-      // Extract headers from the first successful row
-      if (validationResult.data.length > 0) {
-        setCsvHeaders(Object.keys(validationResult.data[0]));
-        setCsvPreviewRows(validationResult.data.slice(0, 5).map(row => Object.values(row) as string[]));
+      // Parse preview rows (first 5 data rows)
+      const previewRows: string[][] = [];
+      for (let i = 1; i < Math.min(lines.length, 6); i++) {
+        if (lines[i].trim()) {
+          const values = lines[i].split(',').map(v => v.trim().replace(/"/g, ''));
+          previewRows.push(values);
+        }
       }
+
+      // Store file and CSV data for mapping
+      setCsvFile(file);
+      setCsvHeaders(headers);
+      setCsvPreviewRows(previewRows);
       
-      // Show the mapping wizard
+      // Show the mapping wizard directly (like production)
       setShowMappingWizard(true);
       
       toast({
-        title: "CSV Validated Successfully",
-        description: `File ${file.name} contains ${validationResult.data.length} valid test records.`,
+        title: "CSV File Loaded",
+        description: `File ${file.name} loaded successfully. Please map the columns to proceed.`,
       });
     } catch (error) {
       console.error('Error processing CSV:', error);
@@ -356,29 +363,34 @@ export default function TestManagementPage() {
     if (!csvFile || !user) return;
     
     try {
-      // Read and parse CSV with validation
+      // Read and parse CSV without strict validation (like production)
       const csvContent = await readCSVFile(csvFile);
-      const validationResult = parseCSVWithValidation(csvContent);
+      const lines = csvContent.split('\n').filter(line => line.trim());
+      const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
       
-      if (!validationResult.success) {
-        toast({
-          title: "Import Failed",
-          description: "CSV validation failed during import.",
-          variant: "destructive",
-        });
-        return;
+      // Parse all data rows
+      const csvData: Record<string, string>[] = [];
+      for (let i = 1; i < lines.length; i++) {
+        if (lines[i].trim()) {
+          const values = lines[i].split(',').map(v => v.trim().replace(/"/g, ''));
+          const row: Record<string, string> = {};
+          headers.forEach((header, index) => {
+            row[header] = values[index] || '';
+          });
+          csvData.push(row);
+        }
       }
 
       // Start audit session
       const sessionId = await auditService.current.startImportSession(
         csvFile.name,
         csvFile.size,
-        validationResult.data.length,
+        csvData.length,
         user.id
       );
 
       // Map CSV data to tests using the provided mapping
-      const mappedTests = validationResult.data.map(row => {
+      const mappedTests = csvData.map(row => {
         const test: Test = {
           id: mapping['id'] ? row[mapping['id']] || crypto.randomUUID() : crypto.randomUUID(),
           name: mapping['name'] ? row[mapping['name']] || '' : '',

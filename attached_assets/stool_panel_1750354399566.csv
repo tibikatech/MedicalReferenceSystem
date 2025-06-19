@@ -1,0 +1,9 @@
+id,Name,category,subCategory,cptCode,loincCode,snomedCode,description,notes
+"TTES-LAB-STO-87103","STOOL MICROSCOPY","Laboratory Tests","Stool Panel","87103","17801-2","363755009","Microscopic examination of stool for parasites","test"
+"TTES-LAB-STO-87104","STOOL MICROSCOPY CULTURE SENSITIVITY","Laboratory Tests","Stool Panel","87104","17802-0","363756005","Culture and sensitivity for bacterial stool pathogens","test"
+"TTES-LAB-STO-82270","FAECAL OCCULT BLOOD","Laboratory Tests","Stool Panel","82270","14901-7","363757001","Test for hidden blood in stool","test"
+"TTES-LAB-STO-87250","ROTA/ADENOVIRUS ANTIGEN","Laboratory Tests","Stool Panel","87250","31314-7","363758006","Test for viral causes of gastroenteritis","test"
+"TTES-LAB-STO-87182","C DIFFICILE TOXIN PCR","Laboratory Tests","Stool Panel","87182","49041-3","448711000000104","PCR test for Clostridioides difficile toxin genes","test"
+"TTES-LAB-STO-87183","SHIGA PRODUCING E COLI TOXIN","Laboratory Tests","Stool Panel","87183","49042-1","448721000000106","PCR test for STEC strains","test"
+"TTES-LAB-STO-87184","VIBRIO CHOLERAE TOXIN","Laboratory Tests","Stool Panel","87184","49043-9","448731000000108","PCR test for Vibrio cholerae toxins","test"
+"TTES-LAB-STO-87185","GASTROINTESTINAL PATHOGEN PANEL","Laboratory Tests","Stool Panel","87185","49044-7","448741000000100","Multi-pathogen PCR panel for GI infections","test"
