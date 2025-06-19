@@ -137,3 +137,45 @@ export const referralFacilities = pgTable("referral_facilities", {
 export const insertReferralFacilitySchema = createInsertSchema(referralFacilities).omit({ id: true });
 export type InsertReferralFacility = z.infer<typeof insertReferralFacilitySchema>;
 export type ReferralFacility = typeof referralFacilities.$inferSelect;
+
+// Import session tracking for audit reports
+export const importSessions = pgTable("import_sessions", {
+  id: serial("id").primaryKey(),
+  userId: serial("user_id").notNull().references(() => users.id),
+  filename: varchar("filename").notNull(),
+  fileSize: serial("file_size"), // in bytes
+  totalTests: serial("total_tests").notNull(),
+  successCount: serial("success_count").notNull(),
+  errorCount: serial("error_count").notNull(),
+  duplicateCount: serial("duplicate_count").notNull(),
+  validationErrors: json("validation_errors"), // Array of validation error messages
+  importStatus: varchar("import_status").notNull(), // 'completed', 'failed', 'partial'
+  startedAt: timestamp("started_at").defaultNow(),
+  completedAt: timestamp("completed_at"),
+  notes: text("notes"), // Optional notes about the import
+});
+
+export const insertImportSessionSchema = createInsertSchema(importSessions).omit({ id: true });
+export type InsertImportSession = z.infer<typeof insertImportSessionSchema>;
+export type ImportSession = typeof importSessions.$inferSelect;
+
+// Detailed audit log for each test in an import session
+export const importAuditLogs = pgTable("import_audit_logs", {
+  id: serial("id").primaryKey(),
+  sessionId: serial("session_id").notNull().references(() => importSessions.id),
+  testId: varchar("test_id"), // May be null if test creation failed
+  originalTestId: varchar("original_test_id"), // ID from CSV file
+  operation: varchar("operation").notNull(), // 'insert', 'update', 'skip', 'error'
+  status: varchar("status").notNull(), // 'success', 'failed', 'duplicate', 'validation_error'
+  errorMessage: text("error_message"), // Error details if failed
+  validationErrors: json("validation_errors"), // Field-specific validation errors
+  originalData: json("original_data"), // The raw CSV row data
+  processedData: json("processed_data"), // The processed test data
+  duplicateReason: varchar("duplicate_reason"), // 'id_exists', 'cpt_code_exists'
+  processingTime: serial("processing_time"), // Time in ms to process this test
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertImportAuditLogSchema = createInsertSchema(importAuditLogs).omit({ id: true });
+export type InsertImportAuditLog = z.infer<typeof insertImportAuditLogSchema>;
+export type ImportAuditLog = typeof importAuditLogs.$inferSelect;

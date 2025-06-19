@@ -1,11 +1,17 @@
-import { eq, like, or } from 'drizzle-orm';
+import { eq, like, or, desc } from 'drizzle-orm';
 import { 
   tests, 
   type Test, 
   type InsertTest,
   users,
   type User,
-  type InsertUser
+  type InsertUser,
+  importSessions,
+  type ImportSession,
+  type InsertImportSession,
+  importAuditLogs,
+  type ImportAuditLog,
+  type InsertImportAuditLog
 } from "@shared/schema";
 import { db } from "./db";
 import { IStorage } from './storage';
@@ -237,6 +243,56 @@ export class DatabaseStorage implements IStorage {
   async createUser(insertUser: InsertUser): Promise<User> {
     const result = await db.insert(users).values(insertUser).returning();
     return result[0];
+  }
+
+  // Import audit methods
+  async createImportSession(session: InsertImportSession): Promise<ImportSession> {
+    const result = await db.insert(importSessions).values(session).returning();
+    return result[0];
+  }
+
+  async updateImportSession(id: number, updates: Partial<ImportSession>): Promise<ImportSession | undefined> {
+    const result = await db
+      .update(importSessions)
+      .set({ ...updates, completedAt: new Date() })
+      .where(eq(importSessions.id, id))
+      .returning();
+    return result.length > 0 ? result[0] : undefined;
+  }
+
+  async getImportSessions(limit: number = 50): Promise<ImportSession[]> {
+    return await db
+      .select()
+      .from(importSessions)
+      .orderBy(desc(importSessions.startedAt))
+      .limit(limit);
+  }
+
+  async getImportSessionById(id: number): Promise<ImportSession | undefined> {
+    const result = await db.select().from(importSessions).where(eq(importSessions.id, id));
+    return result.length > 0 ? result[0] : undefined;
+  }
+
+  async createImportAuditLog(log: InsertImportAuditLog): Promise<ImportAuditLog> {
+    const result = await db.insert(importAuditLogs).values(log).returning();
+    return result[0];
+  }
+
+  async getImportAuditLogs(sessionId: number): Promise<ImportAuditLog[]> {
+    return await db
+      .select()
+      .from(importAuditLogs)
+      .where(eq(importAuditLogs.sessionId, sessionId))
+      .orderBy(desc(importAuditLogs.createdAt));
+  }
+
+  async getImportSessionsForUser(userId: number, limit: number = 20): Promise<ImportSession[]> {
+    return await db
+      .select()
+      .from(importSessions)
+      .where(eq(importSessions.userId, userId))
+      .orderBy(desc(importSessions.startedAt))
+      .limit(limit);
   }
 }
 
