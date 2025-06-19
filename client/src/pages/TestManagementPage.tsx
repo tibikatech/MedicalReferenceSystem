@@ -78,12 +78,16 @@ import { useAuth } from "@/hooks/use-auth";
 
 export default function TestManagementPage() {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [selectedTests, setSelectedTests] = useState<Set<string>>(new Set());
   const [selectAll, setSelectAll] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Initialize audit service
+  const auditService = useRef(new ImportAuditService());
 
   // CSV import related state
   const [csvFile, setCsvFile] = useState<File | null>(null);
@@ -294,32 +298,49 @@ export default function TestManagementPage() {
     fileInputRef.current?.click();
   };
 
-  // Process the uploaded CSV file
+  // Process the uploaded CSV file with enhanced validation and audit logging
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (!file) return;
+    if (!file || !user) return;
 
     try {
-      // Preview the CSV file
-      const { headers, previewRows } = await previewCSV(file, 5);
+      // Read and validate CSV content
+      const csvContent = await readCSVFile(file);
+      const validationResult = parseCSVWithValidation(csvContent);
       
-      // Store the data for the mapping wizard
+      if (!validationResult.success) {
+        toast({
+          title: "CSV Validation Failed",
+          description: `${validationResult.errors.length} validation errors found. Please check your file.`,
+          variant: "destructive",
+        });
+        
+        // Show detailed errors
+        console.error('CSV Validation Errors:', validationResult.errors);
+        return;
+      }
+
+      // Store the validated data for mapping
       setCsvFile(file);
-      setCsvHeaders(headers);
-      setCsvPreviewRows(previewRows);
+      
+      // Extract headers from the first successful row
+      if (validationResult.data.length > 0) {
+        setCsvHeaders(Object.keys(validationResult.data[0]));
+        setCsvPreviewRows(validationResult.data.slice(0, 5).map(row => Object.values(row) as string[]));
+      }
       
       // Show the mapping wizard
       setShowMappingWizard(true);
       
       toast({
-        title: "CSV Uploaded",
-        description: `File ${file.name} uploaded. Please map the columns.`,
+        title: "CSV Validated Successfully",
+        description: `File ${file.name} contains ${validationResult.data.length} valid test records.`,
       });
     } catch (error) {
-      console.error('Error previewing CSV:', error);
+      console.error('Error processing CSV:', error);
       toast({
-        title: "CSV Error",
-        description: `Failed to read the file: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        title: "CSV Processing Error",
+        description: `Failed to process the file: ${error instanceof Error ? error.message : 'Unknown error'}`,
         variant: "destructive",
       });
     }

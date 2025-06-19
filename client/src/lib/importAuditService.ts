@@ -25,7 +25,7 @@ export interface ImportAuditLogData {
   originalData?: Record<string, any>;
   processedData?: Record<string, any>;
   duplicateReason?: string;
-  processingTime?: number;
+  processingTime: number;
 }
 
 export class ImportAuditService {
@@ -64,6 +64,9 @@ export class ImportAuditService {
 
       const result = await response.json();
       this.sessionId = result.session.id;
+      if (!this.sessionId) {
+        throw new Error('Session ID not received from server');
+      }
       return this.sessionId;
     } catch (error) {
       console.error('Error creating import session:', error);
@@ -90,7 +93,7 @@ export class ImportAuditService {
     const processingTime = Date.now() - this.startTime;
     
     const logData: ImportAuditLogData = {
-      sessionId: this.sessionId,
+      sessionId: this.sessionId!,
       testId: result.testId,
       originalTestId: originalData.id || originalData.testId,
       operation,
@@ -104,7 +107,7 @@ export class ImportAuditService {
         id: result.testId,
         operation,
         timestamp: new Date().toISOString()
-      } : null,
+      } : undefined,
       duplicateReason: result.duplicateReason,
       processingTime
     };
