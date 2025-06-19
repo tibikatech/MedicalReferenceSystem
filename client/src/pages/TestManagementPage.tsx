@@ -422,7 +422,7 @@ export default function TestManagementPage() {
         setShowDuplicatesModal(true);
       } else {
         // If no duplicates, proceed with import using audit logging
-        await importTestsWithAudit(duplicateResult.uniqueTests as Test[], sessionId, validationResult.data);
+        await importTestsWithAudit(duplicateResult.uniqueTests as Test[], sessionId, csvData);
       }
     } catch (error) {
       console.error('Error importing CSV:', error);
