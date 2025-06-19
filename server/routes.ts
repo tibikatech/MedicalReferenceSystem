@@ -96,31 +96,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  // Delete test by ID
-  app.delete("/api/tests/:id", async (req, res) => {
-    try {
-      const { id } = req.params;
-      
-      // Check if test exists
-      const test = await storage.getTestById(id);
-      if (!test) {
-        return res.status(404).json({ error: "Test not found" });
-      }
-      
-      // Delete the test
-      const deleted = await storage.deleteTest(id);
-      if (deleted) {
-        return res.json({ success: true, message: `Test deleted successfully` });
-      } else {
-        return res.status(500).json({ error: "Failed to delete test" });
-      }
-    } catch (error) {
-      console.error(`Error deleting test ${req.params.id}:`, error);
-      res.status(500).json({ error: "Failed to delete test" });
-    }
-  });
-
-  // Bulk delete tests
+  // Bulk delete tests - MUST come before the :id route
   app.delete("/api/tests/bulk-delete", async (req, res) => {
     try {
       const { testIds } = req.body;
@@ -177,6 +153,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error in bulk delete:", error);
       res.status(500).json({ error: "Failed to bulk delete tests" });
+    }
+  });
+
+  // Delete test by ID - MUST come after bulk-delete route
+  app.delete("/api/tests/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      
+      // Check if test exists
+      const test = await storage.getTestById(id);
+      if (!test) {
+        return res.status(404).json({ error: "Test not found" });
+      }
+      
+      // Delete the test
+      const deleted = await storage.deleteTest(id);
+      if (deleted) {
+        return res.json({ success: true, message: `Test deleted successfully` });
+      } else {
+        return res.status(500).json({ error: "Failed to delete test" });
+      }
+    } catch (error) {
+      console.error(`Error deleting test ${req.params.id}:`, error);
+      res.status(500).json({ error: "Failed to delete test" });
     }
   });
 
