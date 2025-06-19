@@ -120,6 +120,66 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Bulk delete tests
+  app.delete("/api/tests/bulk-delete", async (req, res) => {
+    try {
+      const { testIds } = req.body;
+      
+      // Validate request body
+      if (!testIds || !Array.isArray(testIds) || testIds.length === 0) {
+        return res.status(400).json({ error: "testIds array is required and cannot be empty" });
+      }
+      
+      // Validate that all testIds are strings
+      if (!testIds.every(id => typeof id === 'string')) {
+        return res.status(400).json({ error: "All test IDs must be strings" });
+      }
+      
+      let deletedCount = 0;
+      const failedDeletions: string[] = [];
+      
+      // Delete each test
+      for (const testId of testIds) {
+        try {
+          // Check if test exists
+          const test = await storage.getTestById(testId);
+          if (!test) {
+            failedDeletions.push(`Test ${testId} not found`);
+            continue;
+          }
+          
+          // Delete the test
+          const deleted = await storage.deleteTest(testId);
+          if (deleted) {
+            deletedCount++;
+          } else {
+            failedDeletions.push(`Failed to delete test ${testId}`);
+          }
+        } catch (error) {
+          failedDeletions.push(`Error deleting test ${testId}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        }
+      }
+      
+      // Return results
+      if (failedDeletions.length > 0) {
+        return res.status(207).json({ 
+          deletedCount,
+          failedCount: failedDeletions.length,
+          errors: failedDeletions,
+          message: `Successfully deleted ${deletedCount} tests, ${failedDeletions.length} failed`
+        });
+      } else {
+        return res.json({ 
+          deletedCount,
+          message: `Successfully deleted ${deletedCount} tests`
+        });
+      }
+    } catch (error) {
+      console.error("Error in bulk delete:", error);
+      res.status(500).json({ error: "Failed to bulk delete tests" });
+    }
+  });
+
   // Get test counts by category
   app.get("/api/test-count-by-category", async (req, res) => {
     try {
