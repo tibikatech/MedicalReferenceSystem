@@ -127,6 +127,12 @@ The core of the application is a comprehensive test catalog with:
 - **Build Command**: `npm run build`
 - **Start Command**: `npm run start`
 
+## Recent Changes
+- **June 20, 2025**: Added `isReportable` flag to import sessions
+  - Import sessions only appear in reports when tests are actually added to database
+  - Maintains full audit trail while filtering meaningful reports
+  - Updated ImportAuditService to mark sessions reportable only when successCount > 0
+
 ## Changelog
 - June 19, 2025. Initial setup
 

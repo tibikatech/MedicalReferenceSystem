@@ -187,7 +187,7 @@ const ImportReportsPage = () => {
               <div>
                 <h1 className="text-3xl font-bold tracking-tight text-white">Import Reports</h1>
                 <p className="text-gray-400 mt-2">
-                  View detailed audit logs and reports for CSV file imports
+                  View detailed audit logs and reports for successful CSV file imports
                 </p>
               </div>
             </div>

@@ -150,6 +150,7 @@ export const importSessions = pgTable("import_sessions", {
   duplicateCount: serial("duplicate_count").notNull(),
   validationErrors: json("validation_errors"), // Array of validation error messages
   importStatus: varchar("import_status").notNull(), // 'completed', 'failed', 'partial'
+  isReportable: boolean("is_reportable").default(false), // Only true when tests were actually added
   startedAt: timestamp("started_at").defaultNow(),
   completedAt: timestamp("completed_at"),
   notes: text("notes"), // Optional notes about the import

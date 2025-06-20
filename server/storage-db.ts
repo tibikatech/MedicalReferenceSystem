@@ -1,4 +1,4 @@
-import { eq, like, or, desc } from 'drizzle-orm';
+import { eq, like, or, desc, and } from 'drizzle-orm';
 import { 
   tests, 
   type Test, 
@@ -264,6 +264,15 @@ export class DatabaseStorage implements IStorage {
     return await db
       .select()
       .from(importSessions)
+      .where(eq(importSessions.isReportable, true))
+      .orderBy(desc(importSessions.startedAt))
+      .limit(limit);
+  }
+
+  async getAllImportSessions(limit: number = 50): Promise<ImportSession[]> {
+    return await db
+      .select()
+      .from(importSessions)
       .orderBy(desc(importSessions.startedAt))
       .limit(limit);
   }
@@ -290,7 +299,7 @@ export class DatabaseStorage implements IStorage {
     return await db
       .select()
       .from(importSessions)
-      .where(eq(importSessions.userId, userId))
+      .where(and(eq(importSessions.userId, userId), eq(importSessions.isReportable, true)))
       .orderBy(desc(importSessions.startedAt))
       .limit(limit);
   }

@@ -151,6 +151,7 @@ export class ImportAuditService {
       duplicateCount,
       validationErrors: validationErrors.length > 0 ? validationErrors : null,
       importStatus,
+      isReportable: successCount > 0, // Only mark as reportable if tests were actually added
       notes
     };
 
