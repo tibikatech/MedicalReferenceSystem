@@ -311,25 +311,34 @@ export class DatabaseStorage implements IStorage {
     testNames: string[];
   }>> {
     try {
-      const result = await this.db.execute(sql`
-        SELECT 
-          "cptCode", 
-          COUNT(*) as count,
-          STRING_AGG(id, ', ' ORDER BY id) as test_ids,
-          STRING_AGG(name, ' | ' ORDER BY id) as test_names
-        FROM tests 
-        WHERE "cptCode" IS NOT NULL 
-        GROUP BY "cptCode" 
-        HAVING COUNT(*) > 1 
-        ORDER BY count DESC, "cptCode"
-      `);
+      // Use Drizzle ORM for better compatibility
+      const allTests = await this.db
+        .select()
+        .from(tests)
+        .where(sql`"cptCode" IS NOT NULL`);
 
-      return result.rows.map((row: any) => ({
-        cptCode: row.cptCode || row.cpt_code,
-        count: parseInt(row.count),
-        testIds: row.test_ids ? row.test_ids.split(', ') : [],
-        testNames: row.test_names ? row.test_names.split(' | ') : []
-      }));
+      // Group by CPT code to find duplicates
+      const cptGroups = new Map<string, typeof allTests>();
+      
+      allTests.forEach(test => {
+        if (test.cptCode) {
+          if (!cptGroups.has(test.cptCode)) {
+            cptGroups.set(test.cptCode, []);
+          }
+          cptGroups.get(test.cptCode)!.push(test);
+        }
+      });
+
+      // Return only duplicates (count > 1)
+      return Array.from(cptGroups.entries())
+        .filter(([_, testsArray]) => testsArray.length > 1)
+        .map(([cptCode, testsArray]) => ({
+          cptCode,
+          count: testsArray.length,
+          testIds: testsArray.map(t => t.id),
+          testNames: testsArray.map(t => t.name)
+        }))
+        .sort((a, b) => b.count - a.count);
     } catch (error) {
       console.error('Error fetching CPT duplicates:', error);
       return [];
