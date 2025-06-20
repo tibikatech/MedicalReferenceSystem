@@ -315,8 +315,8 @@ export class DatabaseStorage implements IStorage {
         SELECT 
           "cptCode", 
           COUNT(*) as count,
-          ARRAY_AGG(id ORDER BY id) as test_ids,
-          ARRAY_AGG(name ORDER BY id) as test_names
+          STRING_AGG(id, ', ' ORDER BY id) as test_ids,
+          STRING_AGG(name, ' | ' ORDER BY id) as test_names
         FROM tests 
         WHERE "cptCode" IS NOT NULL 
         GROUP BY "cptCode" 
@@ -325,10 +325,10 @@ export class DatabaseStorage implements IStorage {
       `);
 
       return result.rows.map((row: any) => ({
-        cptCode: row.cptCode,
+        cptCode: row.cptCode || row.cpt_code,
         count: parseInt(row.count),
-        testIds: row.test_ids,
-        testNames: row.test_names
+        testIds: row.test_ids ? row.test_ids.split(', ') : [],
+        testNames: row.test_names ? row.test_names.split(' | ') : []
       }));
     } catch (error) {
       console.error('Error fetching CPT duplicates:', error);

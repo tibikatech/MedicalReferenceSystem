@@ -117,25 +117,15 @@ const ImportReportsPage = () => {
     enabled: !!selectedSession && showDetailModal
   });
 
-  // Fetch CPT duplicates data using SQL query directly
+  // Fetch CPT duplicates data
   const { data: cptDuplicatesData, isLoading: cptLoading } = useQuery({
     queryKey: ["/api/cpt-duplicates"],
     queryFn: async () => {
-      try {
-        const response = await fetch("/api/cpt-duplicates");
-        if (!response.ok) {
-          // If API fails, return empty data
-          console.warn('CPT duplicates API failed, using empty data');
-          return { duplicates: [] };
-        }
-        return response.json();
-      } catch (error) {
-        console.warn('CPT duplicates fetch error:', error);
-        return { duplicates: [] };
-      }
+      const response = await fetch("/api/cpt-duplicates");
+      if (!response.ok) throw new Error("Failed to fetch CPT duplicates");
+      return response.json();
     },
-    enabled: showDetailModal,
-    retry: false
+    enabled: showDetailModal
   });
 
   const sessions: ImportSession[] = sessionsData?.sessions || [];
