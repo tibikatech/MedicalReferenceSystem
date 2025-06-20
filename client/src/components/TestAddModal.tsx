@@ -11,11 +11,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { z } from "zod";
-import { VALID_CATEGORIES, VALID_SUBCATEGORIES } from "@/lib/constants";
+import { VALID_CATEGORIES } from "@/lib/constants";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useQuery } from "@tanstack/react-query";
 
 // Form schema for adding a new test
 const addTestSchema = z.object({
@@ -264,9 +265,20 @@ export default function TestAddModal({
   const showLoincField = true;
   const showSnomedField = true;
 
+  // Fetch subcategories dynamically from API
+  const { data: subcategoriesData } = useQuery({
+    queryKey: ['/api/test-count-by-subcategory'],
+    enabled: true
+  });
+
   // Get subcategories based on selected category
   const getSubcategoriesForCategory = (category: string) => {
-    return VALID_SUBCATEGORIES[category] || [];
+    if (!subcategoriesData?.subcategories) return [];
+    
+    // Return all subcategories from the database - they will be filtered by relevance in the UI
+    return subcategoriesData.subcategories
+      .map((item: { subCategory: string; count: number }) => item.subCategory)
+      .sort(); // Sort alphabetically for better UX
   };
 
   const selectedCategory = form.watch("category");
