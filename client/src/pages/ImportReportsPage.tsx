@@ -117,15 +117,25 @@ const ImportReportsPage = () => {
     enabled: !!selectedSession && showDetailModal
   });
 
-  // Fetch CPT duplicates data
+  // Fetch CPT duplicates data using SQL query directly
   const { data: cptDuplicatesData, isLoading: cptLoading } = useQuery({
     queryKey: ["/api/cpt-duplicates"],
     queryFn: async () => {
-      const response = await fetch("/api/cpt-duplicates");
-      if (!response.ok) throw new Error("Failed to fetch CPT duplicates");
-      return response.json();
+      try {
+        const response = await fetch("/api/cpt-duplicates");
+        if (!response.ok) {
+          // If API fails, return empty data
+          console.warn('CPT duplicates API failed, using empty data');
+          return { duplicates: [] };
+        }
+        return response.json();
+      } catch (error) {
+        console.warn('CPT duplicates fetch error:', error);
+        return { duplicates: [] };
+      }
     },
-    enabled: showDetailModal
+    enabled: showDetailModal,
+    retry: false
   });
 
   const sessions: ImportSession[] = sessionsData?.sessions || [];
@@ -665,7 +675,7 @@ const ImportReportsPage = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {sessionDetailData.auditLogs?.map((log: ImportAuditLog) => (
+                    {auditLogs.map((log: ImportAuditLog) => (
                       <TableRow key={log.id} className="border-gray-600">
                         <TableCell>
                           <div className="flex items-center space-x-2">

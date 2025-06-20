@@ -1,0 +1,42 @@
+ncaught TypeError: Cannot read properties of undefined (reading 'auditLogs')
+    at ImportReportsPage (ImportReportsPage.tsx:668:40)
+    at renderWithHooks (chunk-RPCDYKBN.js?v=ea8d9109:11548:26)
+    at updateFunctionComponent (chunk-RPCDYKBN.js?v=ea8d9109:14582:28)
+    at beginWork (chunk-RPCDYKBN.js?v=ea8d9109:15924:22)
+    at HTMLUnknownElement.callCallback2 (chunk-RPCDYKBN.js?v=ea8d9109:3674:22)
+    at Object.invokeGuardedCallbackDev (chunk-RPCDYKBN.js?v=ea8d9109:3699:24)
+    at invokeGuardedCallback (chunk-RPCDYKBN.js?v=ea8d9109:3733:39)
+    at beginWork$1 (chunk-RPCDYKBN.js?v=ea8d9109:19765:15)
+    at performUnitOfWork (chunk-RPCDYKBN.js?v=ea8d9109:19198:20)
+    at workLoopSync (chunk-RPCDYKBN.js?v=ea8d9109:19137:13)
+chunk-RPCDYKBN.js?v=ea8d9109:14032 The above error occurred in the <ImportReportsPage> component:
+
+    at ImportReportsPage (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.dev/src/pages/ImportReportsPage.tsx:58:49)
+    at Route (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=ea8d9109:323:16)
+    at ProtectedRoute (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.dev/src/lib/protected-route.tsx:22:3)
+    at Switch (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=ea8d9109:379:17)
+    at Router
+    at div
+    at AuthProvider (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.dev/src/hooks/use-auth.tsx:26:32)
+    at Provider (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-OXZDJRWN.js?v=ea8d9109:38:15)
+    at TooltipProvider (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=ea8d9109:63:5)
+    at QueryClientProvider (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=ea8d9109:2805:3)
+    at App
+    at ThemeProvider (https://74d15c02-7983-4d6a-86a4-1618c59ce8ef-00-2acs28hgftqjb.kirk.replit.dev/src/components/ui/theme-provider.tsx:25:3)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+logCapturedError @ chunk-RPCDYKBN.js?v=ea8d9109:14032
+Show 1 more frame
+Show less
+chunk-RPCDYKBN.js?v=ea8d9109:9129 Uncaught TypeError: Cannot read properties of undefined (reading 'auditLogs')
+    at ImportReportsPage (ImportReportsPage.tsx:668:40)
+    at renderWithHooks (chunk-RPCDYKBN.js?v=ea8d9109:11548:26)
+    at updateFunctionComponent (chunk-RPCDYKBN.js?v=ea8d9109:14582:28)
+    at beginWork (chunk-RPCDYKBN.js?v=ea8d9109:15924:22)
+    at beginWork$1 (chunk-RPCDYKBN.js?v=ea8d9109:19753:22)
+    at performUnitOfWork (chunk-RPCDYKBN.js?v=ea8d9109:19198:20)
+    at workLoopSync (chunk-RPCDYKBN.js?v=ea8d9109:19137:13)
+    at renderRootSync (chunk-RPCDYKBN.js?v=ea8d9109:19116:15)
+    at recoverFromConcurrentError (chunk-RPCDYKBN.js?v=ea8d9109:18736:28)
+    at performSyncWorkOnRoot (chunk-RPCDYKBN.js?v=ea8d9109:18879:28)
