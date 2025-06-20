@@ -573,15 +573,24 @@ const ImportReportsPage = () => {
             <div className="flex items-center justify-center py-8">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
             </div>
-          ) : sessionDetailData && (
-            <Tabs defaultValue="summary" className="w-full">
-              <TabsList className="grid w-full grid-cols-3 bg-gray-700">
-                <TabsTrigger value="summary" className="text-gray-300 data-[state=active]:bg-gray-600">Summary</TabsTrigger>
-                <TabsTrigger value="logs" className="text-gray-300 data-[state=active]:bg-gray-600">Audit Logs</TabsTrigger>
-                <TabsTrigger value="errors" className="text-gray-300 data-[state=active]:bg-gray-600">Errors</TabsTrigger>
+          ) : (
+            <Tabs defaultValue="overview" className="w-full">
+              <TabsList className="grid w-full grid-cols-4 bg-gray-700">
+                <TabsTrigger value="overview" className="data-[state=active]:bg-gray-600">
+                  Overview
+                </TabsTrigger>
+                <TabsTrigger value="audit" className="data-[state=active]:bg-gray-600">
+                  Audit Log
+                </TabsTrigger>
+                <TabsTrigger value="cpt-duplicates" className="data-[state=active]:bg-gray-600">
+                  CPT Duplicates
+                </TabsTrigger>
+                <TabsTrigger value="errors" className="data-[state=active]:bg-gray-600">
+                  Errors
+                </TabsTrigger>
               </TabsList>
 
-              <TabsContent value="summary" className="space-y-4">
+              <TabsContent value="overview" className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <Card className="bg-gray-700 border-gray-600">
                     <CardHeader>
@@ -644,7 +653,7 @@ const ImportReportsPage = () => {
                 </div>
               </TabsContent>
 
-              <TabsContent value="logs" className="space-y-4">
+              <TabsContent value="audit" className="space-y-4">
                 <Table>
                   <TableHeader>
                     <TableRow className="border-gray-600">

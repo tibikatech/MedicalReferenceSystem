@@ -1,4 +1,4 @@
-import { eq, like, or, desc, and } from 'drizzle-orm';
+import { eq, like, or, desc, and, sql } from 'drizzle-orm';
 import { 
   tests, 
   type Test, 
@@ -302,6 +302,33 @@ export class DatabaseStorage implements IStorage {
       .where(and(eq(importSessions.userId, userId), eq(importSessions.isReportable, true)))
       .orderBy(desc(importSessions.startedAt))
       .limit(limit);
+  }
+
+  async getCptDuplicates(): Promise<Array<{
+    cptCode: string;
+    count: number;
+    testIds: string[];
+    testNames: string[];
+  }>> {
+    const result = await this.db.execute(sql`
+      SELECT 
+        "cptCode", 
+        COUNT(*) as count,
+        ARRAY_AGG(id ORDER BY id) as test_ids,
+        ARRAY_AGG(name ORDER BY id) as test_names
+      FROM tests 
+      WHERE "cptCode" IS NOT NULL 
+      GROUP BY "cptCode" 
+      HAVING COUNT(*) > 1 
+      ORDER BY count DESC, "cptCode"
+    `);
+
+    return result.rows.map((row: any) => ({
+      cptCode: row.cptCode,
+      count: parseInt(row.count),
+      testIds: row.test_ids,
+      testNames: row.test_names
+    }));
   }
 }
 
