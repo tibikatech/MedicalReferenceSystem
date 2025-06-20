@@ -310,25 +310,30 @@ export class DatabaseStorage implements IStorage {
     testIds: string[];
     testNames: string[];
   }>> {
-    const result = await this.db.execute(sql`
-      SELECT 
-        "cptCode", 
-        COUNT(*) as count,
-        ARRAY_AGG(id ORDER BY id) as test_ids,
-        ARRAY_AGG(name ORDER BY id) as test_names
-      FROM tests 
-      WHERE "cptCode" IS NOT NULL 
-      GROUP BY "cptCode" 
-      HAVING COUNT(*) > 1 
-      ORDER BY count DESC, "cptCode"
-    `);
+    try {
+      const result = await this.db.execute(sql`
+        SELECT 
+          "cptCode", 
+          COUNT(*) as count,
+          ARRAY_AGG(id ORDER BY id) as test_ids,
+          ARRAY_AGG(name ORDER BY id) as test_names
+        FROM tests 
+        WHERE "cptCode" IS NOT NULL 
+        GROUP BY "cptCode" 
+        HAVING COUNT(*) > 1 
+        ORDER BY count DESC, "cptCode"
+      `);
 
-    return result.rows.map((row: any) => ({
-      cptCode: row.cptCode,
-      count: parseInt(row.count),
-      testIds: row.test_ids,
-      testNames: row.test_names
-    }));
+      return result.rows.map((row: any) => ({
+        cptCode: row.cptCode,
+        count: parseInt(row.count),
+        testIds: row.test_ids,
+        testNames: row.test_names
+      }));
+    } catch (error) {
+      console.error('Error fetching CPT duplicates:', error);
+      return [];
+    }
   }
 }
 

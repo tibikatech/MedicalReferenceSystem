@@ -710,6 +710,14 @@ const ImportReportsPage = () => {
                     ))}
                   </TableBody>
                 </Table>
+
+                {auditLogs.length === 0 && sessionDetailData && (
+                  <div className="text-center py-8">
+                    <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-gray-200 mb-2">No Audit Logs</h3>
+                    <p className="text-gray-400">No detailed audit logs available for this import session.</p>
+                  </div>
+                )}
               </TabsContent>
 
               <TabsContent value="cpt-duplicates" className="space-y-4">
