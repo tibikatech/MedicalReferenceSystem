@@ -65,6 +65,9 @@ const SUBCATEGORY_PREFIXES: Record<string, Record<string, string>> = {
     'Endocrinology': 'END',
     'Genetic Testing': 'GEN',
     'Tumor Markers': 'TUM',
+    'Sputum': 'SPT',
+    'Infectious Diseases': 'INF',
+    'Stool Panel': 'STO',
   },
   'Imaging Studies': {
     'Radiography (X-rays)': 'XRA',
@@ -195,8 +198,8 @@ export default function TestEditModal({
       updatedPreview += "-#####";
     }
     
-    // In edit mode, show the original ID but note what a new ID would be
-    setTestIdPreview(test.id); // Keep original ID for editing
+    // Show the generated preview but don't use it for saving in edit mode
+    setTestIdPreview(updatedPreview);
   }, [form.watch("category"), form.watch("subCategory"), form.watch("cptCode"), form, test.id]);
 
   const { toast } = useToast();

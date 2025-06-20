@@ -128,6 +128,12 @@ The core of the application is a comprehensive test catalog with:
 - **Start Command**: `npm run start`
 
 ## Recent Changes
+- **June 20, 2025**: Fixed dynamic subcategory dropdown implementation
+  - Replaced hardcoded VALID_SUBCATEGORIES with live API data from /api/test-count-by-subcategory
+  - TestAddModal and TestEditModal now show all subcategories that exist in database
+  - New subcategories like "Sputum", "Infectious Diseases", "Stool Panel" now appear automatically
+  - Fixed test ID corruption issue in edit modal that was causing 404 errors on save
+  - Added alphabetical sorting for better user experience
 - **June 20, 2025**: Added `isReportable` flag to import sessions
   - Import sessions only appear in reports when tests are actually added to database
   - Maintains full audit trail while filtering meaningful reports

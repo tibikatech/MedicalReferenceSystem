@@ -64,6 +64,9 @@ const SUBCATEGORY_PREFIXES: Record<string, Record<string, string>> = {
     'Endocrinology': 'END',
     'Genetic Testing': 'GEN',
     'Tumor Markers': 'TUM',
+    'Sputum': 'SPT',
+    'Infectious Diseases': 'INF',
+    'Stool Panel': 'STO',
   },
   'Imaging Studies': {
     'Radiography (X-rays)': 'XRA',

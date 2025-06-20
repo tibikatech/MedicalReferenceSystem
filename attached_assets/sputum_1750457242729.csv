@@ -1,0 +1,8 @@
+id,Name,category,subCategory,cptCode,loincCode,snomedCode,description,notes
+"TTES-LAB-SPT-87100","SPUTUM MICROSCOPY","Laboratory Tests","Sputum","87100","3022-5","363703004","Microscopic exam of respiratory secretions","test"
+"TTES-LAB-SPT-87101","SPUTUM MICROSCOPY/CULTURE/SENSITIVITY","Laboratory Tests","Sputum","87101","3023-3","363789003","Culture and sensitivity for respiratory pathogens","test"
+"TTES-LAB-SPT-87102","ZN STAIN","Laboratory Tests","Sputum","87102","11231-6","363752007","Ziehl-Neelsen stain for acid-fast bacilli","test"
+"TTES-LAB-SPT-86580","TB QUANTIFERON GOLD","Laboratory Tests","Sputum","86580","24358-8","363718003","Interferon-gamma release assay for TB","test"
+"TTES-LAB-SPT-87266","PCP PCR","Laboratory Tests","Sputum","87266","49045-5","448751000000107","PCR for Pneumocystis jirovecii pneumonia","test"
+"TTES-LAB-SPT-87103","FUNGAL MICROSCOPY/CULTURE/SENSITIVITY","Laboratory Tests","Sputum","87103","3024-1","363790002","Examines fungal elements in sputum","test"
+"TTES-LAB-SPT-87267","ATYPICAL PNEUMONIA PCR","Laboratory Tests","Sputum","87267","49046-3","448761000000104","PCR for Mycoplasma, Legionella, Chlamydia pneumoniae","test"
