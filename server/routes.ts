@@ -473,6 +473,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // CPT duplicates analysis endpoint
+  app.get("/api/cpt-duplicates", async (req, res, next) => {
+    try {
+      const duplicates = await storage.getCptDuplicates();
+      res.json({ duplicates });
+    } catch (error) {
+      next(error);
+    }
+  });
+
   app.get("/api/import-sessions/user/:userId", async (req, res, next) => {
     try {
       const userId = parseInt(req.params.userId);
