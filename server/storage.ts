@@ -36,6 +36,14 @@ export interface IStorage {
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   
+  // CPT duplicates analysis
+  getCptDuplicates(): Promise<Array<{
+    cptCode: string;
+    count: number;
+    testIds: string[];
+    testNames: string[];
+  }>>;
+  
   // Session store for authentication
   sessionStore: session.Store;
 }
@@ -266,6 +274,36 @@ export class MemStorage implements IStorage {
     const user: User = { ...insertUser, id };
     this.users.set(id, user);
     return user;
+  }
+
+  async getCptDuplicates(): Promise<Array<{
+    cptCode: string;
+    count: number;
+    testIds: string[];
+    testNames: string[];
+  }>> {
+    const cptGroups = new Map<string, Test[]>();
+    
+    // Group tests by CPT code
+    Array.from(this.tests.values()).forEach(test => {
+      if (test.cptCode) {
+        if (!cptGroups.has(test.cptCode)) {
+          cptGroups.set(test.cptCode, []);
+        }
+        cptGroups.get(test.cptCode)!.push(test);
+      }
+    });
+
+    // Return only duplicates
+    return Array.from(cptGroups.entries())
+      .filter(([_, tests]) => tests.length > 1)
+      .map(([cptCode, tests]) => ({
+        cptCode,
+        count: tests.length,
+        testIds: tests.map(t => t.id),
+        testNames: tests.map(t => t.name)
+      }))
+      .sort((a, b) => b.count - a.count);
   }
 }
 
