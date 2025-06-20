@@ -166,7 +166,8 @@ export default function TestEditModal({
     const subCategory = form.watch("subCategory");
     const cptCode = form.watch("cptCode");
     
-    // Update the test ID preview
+    // For edit mode, keep the original test ID as the base
+    // Only update preview to show what the ID would look like if this were a new test
     let updatedPreview = "TTES";
     
     // Add category prefix
@@ -194,8 +195,9 @@ export default function TestEditModal({
       updatedPreview += "-#####";
     }
     
-    setTestIdPreview(updatedPreview);
-  }, [form.watch("category"), form.watch("subCategory"), form.watch("cptCode"), form]);
+    // In edit mode, show the original ID but note what a new ID would be
+    setTestIdPreview(test.id); // Keep original ID for editing
+  }, [form.watch("category"), form.watch("subCategory"), form.watch("cptCode"), form, test.id]);
 
   const { toast } = useToast();
 
@@ -209,10 +211,8 @@ export default function TestEditModal({
         ])
       );
       
-      // Include the ID from the preview if it has changed
-      if (testIdPreview && testIdPreview !== test.id) {
-        formattedData.id = testIdPreview;
-      }
+      // Don't change the test ID when editing - use the original ID
+      // The preview is just for display purposes
 
       // Send update to the server
       const response = await apiRequest(
