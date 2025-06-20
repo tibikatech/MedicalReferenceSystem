@@ -446,6 +446,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Admin route to view all import sessions (including non-reportable ones)
+  app.get("/api/import-sessions/all", async (req, res, next) => {
+    try {
+      const { limit = 50 } = req.query;
+      const sessions = await storage.getAllImportSessions(Number(limit));
+      res.json({ sessions });
+    } catch (error) {
+      next(error);
+    }
+  });
+
   app.get("/api/import-sessions/:id", async (req, res, next) => {
     try {
       const sessionId = parseInt(req.params.id);
