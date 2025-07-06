@@ -128,6 +128,13 @@ The core of the application is a comprehensive test catalog with:
 - **Start Command**: `npm run start`
 
 ## Recent Changes
+- **July 6, 2025**: Implemented deletion progress modal with real-time tracking
+  - Created DeletionProgressModal component matching upload progress UI/UX design
+  - Added step-by-step progress tracking for both single and bulk test deletions
+  - Displays current test being deleted by name, progress bar, and success/error counts
+  - Shows detailed error messages for failed deletions with expandable error list
+  - Updated both individual and bulk delete functions to use progress modal
+  - Provides visual feedback similar to upload process for consistent user experience
 - **June 20, 2025**: Fixed dynamic subcategory dropdown implementation
   - Replaced hardcoded VALID_SUBCATEGORIES with live API data from /api/test-count-by-subcategory
   - TestAddModal and TestEditModal now show all subcategories that exist in database
