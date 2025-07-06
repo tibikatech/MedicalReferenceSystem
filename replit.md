@@ -128,6 +128,14 @@ The core of the application is a comprehensive test catalog with:
 - **Start Command**: `npm run start`
 
 ## Recent Changes
+- **July 6, 2025**: Implemented comprehensive data protection and source tracking system
+  - Added dataSource column to tests table tracking data origin (JSON/CSV_IMPORT/MANUAL/API_IMPORT)
+  - Implemented robust shielding mechanisms to prevent accidental CSV data overwrites
+  - Server startup protection checks database state and blocks JSON imports when >50 CSV tests exist
+  - Added data source statistics endpoint (/api/data-source-stats) for monitoring and auditing
+  - Updated all import processes to properly track data sources with x-import-source headers
+  - Created environment controls (ALLOW_JSON_IMPORT, FORCE_JSON_OVERRIDE) for production protection
+  - All 92 existing tests properly marked as CSV_IMPORT preserving data integrity
 - **July 6, 2025**: Implemented deletion progress modal with real-time tracking
   - Created DeletionProgressModal component matching upload progress UI/UX design
   - Added step-by-step progress tracking for both single and bulk test deletions

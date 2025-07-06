@@ -13,6 +13,7 @@ export const tests = pgTable("tests", {
   snomedCode: varchar("snomedCode"),
   description: text("description"),
   notes: text("notes"),
+  dataSource: varchar("dataSource").default("MANUAL"), // Track data origin: JSON_IMPORT, CSV_IMPORT, MANUAL, API_IMPORT
   createdAt: timestamp("createdAt").defaultNow(),
   updatedAt: timestamp("updatedAt").defaultNow(),
 });

@@ -483,7 +483,7 @@ export default function TestManagementPage() {
         })
         .filter(test => !skipIds.has(test.id));
       
-      // Import the remaining tests
+      // Import the remaining tests (marked as CSV import)
       await importTests(testsToImport);
     } catch (error) {
       console.error('Error importing CSV:', error);
@@ -593,14 +593,20 @@ export default function TestManagementPage() {
             // Update existing test
             response = await fetch(`/api/tests/${test.id}`, {
               method: 'PATCH',
-              headers: { 'Content-Type': 'application/json' },
+              headers: { 
+                'Content-Type': 'application/json',
+                'x-import-source': 'csv'
+              },
               body: JSON.stringify(test),
             });
           } else {
             // Insert new test
             response = await fetch('/api/tests', {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+              headers: { 
+                'Content-Type': 'application/json',
+                'x-import-source': 'csv'
+              },
               body: JSON.stringify(test),
             });
           }
@@ -797,6 +803,7 @@ export default function TestManagementPage() {
               method: 'PATCH',
               headers: {
                 'Content-Type': 'application/json',
+                'x-import-source': 'csv'
               },
               body: JSON.stringify(test),
             });
@@ -814,6 +821,7 @@ export default function TestManagementPage() {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
+                'x-import-source': 'csv'
               },
               body: JSON.stringify(test),
             });

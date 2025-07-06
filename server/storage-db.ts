@@ -71,7 +71,12 @@ export class DatabaseStorage implements IStorage {
   }
 
   async insertTest(test: InsertTest): Promise<Test> {
-    const result = await db.insert(tests).values(test).returning();
+    // Ensure dataSource is set if not provided
+    const testWithSource = {
+      ...test,
+      dataSource: test.dataSource || "MANUAL"
+    };
+    const result = await db.insert(tests).values(testWithSource).returning();
     return result[0];
   }
 
@@ -341,6 +346,34 @@ export class DatabaseStorage implements IStorage {
         .sort((a, b) => b.count - a.count);
     } catch (error) {
       console.error('Error fetching CPT duplicates:', error);
+      return [];
+    }
+  }
+
+  async getDataSourceStatistics(): Promise<Array<{
+    dataSource: string;
+    count: number;
+    percentage: number;
+  }>> {
+    try {
+      // Get all tests and group by data source
+      const allTests = await this.getAllTests();
+      const dataSourceCounts = new Map<string, number>();
+      
+      allTests.forEach(test => {
+        const source = test.dataSource || 'UNKNOWN';
+        dataSourceCounts.set(source, (dataSourceCounts.get(source) || 0) + 1);
+      });
+      
+      const totalTests = allTests.length;
+      
+      return Array.from(dataSourceCounts.entries()).map(([dataSource, count]) => ({
+        dataSource,
+        count,
+        percentage: totalTests > 0 ? Number(((count / totalTests) * 100).toFixed(2)) : 0
+      }));
+    } catch (error) {
+      console.error('Error fetching data source statistics:', error);
       return [];
     }
   }

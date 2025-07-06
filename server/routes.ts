@@ -359,10 +359,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Use the imported generateTestId function to create a proper ID
       const testId = generateTestId(testData.category, testData.subCategory, testData.cptCode, testCount);
       
-      // Create the test with the generated ID
+      // Determine data source based on request headers or default to CSV_IMPORT for imports
+      const dataSource = req.headers['x-import-source'] === 'csv' ? 'CSV_IMPORT' : 
+                        req.headers['x-import-source'] === 'api' ? 'API_IMPORT' : 'MANUAL';
+      
+      // Create the test with the generated ID and data source tracking
       const newTest = await storage.insertTest({
         id: testId,
         ...testData,
+        dataSource,
         createdAt: new Date(),
         updatedAt: new Date()
       });
@@ -447,6 +452,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Health check endpoint
   app.get("/api/health", (req, res) => {
     res.json({ status: "healthy", timestamp: new Date() });
+  });
+
+  // Data source statistics endpoint for monitoring import sources
+  app.get("/api/data-source-stats", async (req, res, next) => {
+    try {
+      const stats = await storage.getDataSourceStatistics();
+      res.json({ 
+        stats,
+        protectionSettings: {
+          jsonImportAllowed: process.env.ALLOW_JSON_IMPORT !== 'false',
+          forceOverrideRequired: process.env.FORCE_JSON_OVERRIDE === 'true',
+          protectionThreshold: 50
+        },
+        timestamp: new Date()
+      });
+    } catch (error) {
+      next(error);
+    }
   });
   
   // Import audit reporting routes
@@ -551,11 +574,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
   return httpServer;
 }
 
-// Helper function to initialize test data from JSON files
+// Helper function to initialize test data from JSON files with protective safeguards
 async function initializeTestData() {
   try {
-    // First check if we have a small dataset that should be replaced
+    // CRITICAL PROTECTION #1: Environment variable control
+    const allowJsonImport = process.env.ALLOW_JSON_IMPORT !== 'false';
+    if (!allowJsonImport) {
+      console.log(`🛡️ JSON import disabled by ALLOW_JSON_IMPORT environment variable`);
+      return;
+    }
+
+    // CRITICAL PROTECTION #2: Database state protection
     const existingTests = await storage.getAllTests();
+    const PROTECTION_THRESHOLD = 50; // Don't overwrite if we have substantial data
+    
+    if (existingTests.length >= PROTECTION_THRESHOLD) {
+      console.log(`🛡️ Database protection active: ${existingTests.length} tests exist (>=${PROTECTION_THRESHOLD}). Skipping JSON import to preserve CSV-imported data.`);
+      console.log(`   To force JSON import, set ALLOW_JSON_IMPORT=true and FORCE_JSON_OVERRIDE=true`);
+      return;
+    }
+
+    // CRITICAL PROTECTION #3: Force override check for substantial databases
+    if (existingTests.length > 0 && process.env.FORCE_JSON_OVERRIDE !== 'true') {
+      console.log(`🛡️ Existing ${existingTests.length} tests found. Set FORCE_JSON_OVERRIDE=true to override.`);
+      return;
+    }
     
     // Read the revised tests data
     let testsData;
@@ -566,34 +609,40 @@ async function initializeTestData() {
       );
     } catch (err) {
       // If revised tests file doesn't exist, try the original file
-      testsData = fs.readFileSync(
-        path.resolve(process.cwd(), "attached_assets/tests.json"), 
-        'utf8'
-      );
+      try {
+        testsData = fs.readFileSync(
+          path.resolve(process.cwd(), "attached_assets/tests.json"), 
+          'utf8'
+        );
+      } catch (secondErr) {
+        console.log(`ℹ️ No JSON test files found. Database will remain unchanged.`);
+        return;
+      }
     }
 
-    // If we already have all the tests, return early
+    // Parse and validate JSON data
     const parsedTests = JSON.parse(testsData);
     const testsArray = Array.isArray(parsedTests) ? parsedTests : (parsedTests.tests || []);
     
-    if (existingTests.length >= testsArray.length) {
-      console.log(`✅ Database already contains ${existingTests.length} tests (out of ${testsArray.length} available)`);
+    if (testsArray.length === 0) {
+      console.log(`ℹ️ No tests found in JSON file. Database will remain unchanged.`);
       return;
     }
     
-    // If we're here, we need to update or insert tests
-    console.log(`🔄 Updating database with new test data. Current: ${existingTests.length}, New: ${testsArray.length}`);
-    
-    // First clear existing data if we have some but not all
+    // PROTECTION #4: Data source tracking and backup warning
     if (existingTests.length > 0) {
-      // Delete all existing tests
+      console.log(`⚠️ WARNING: About to replace ${existingTests.length} existing tests with ${testsArray.length} JSON tests`);
+      console.log(`   This action will delete existing data. Continuing in 2 seconds...`);
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Delete existing tests but preserve their audit trail
       for (const test of existingTests) {
         await storage.deleteTest(test.id);
       }
-      console.log(`🗑️ Cleared ${existingTests.length} existing tests for fresh import`);
+      console.log(`🗑️ Cleared ${existingTests.length} existing tests for JSON import`);
     }
     
-    // Add each test to storage
+    // Add each test to storage with JSON_IMPORT data source
     let loadedCount = 0;
     for (const test of testsArray) {
       try {
@@ -608,6 +657,7 @@ async function initializeTestData() {
           snomedCode: test.snomed_code || test.snomedCode || null,
           description: test.description || null,
           notes: test.notes || "",
+          dataSource: "JSON_IMPORT", // Track data source
           createdAt: new Date(test.created_at || test.createdAt || now),
           updatedAt: new Date(test.updated_at || test.updatedAt || now)
         });
@@ -617,7 +667,7 @@ async function initializeTestData() {
       }
     }
     
-    console.log(`✅ Loaded ${loadedCount} tests into database`);
+    console.log(`✅ Loaded ${loadedCount} tests from JSON with data source tracking`);
   } catch (error) {
     console.error("Failed to initialize test data:", error);
   }
