@@ -62,6 +62,7 @@ import UploadProgressModal from "@/components/UploadProgressModal";
 import DeletionProgressModal, { DeletionStatus } from "@/components/DeletionProgressModal";
 import CategoryMappingModal from "@/components/CategoryMappingModal";
 import ExportToCsv from "@/components/ExportToCsv";
+import QAVerificationTool from "@/components/QAVerificationTool";
 import { 
   parseCSV, 
   readCSVFile, 
@@ -1348,6 +1349,9 @@ export default function TestManagementPage() {
               <TabsTrigger value="import-export" className="text-white data-[state=active]:bg-gray-700">
                 Import/Export
               </TabsTrigger>
+              <TabsTrigger value="qa-verification" className="text-white data-[state=active]:bg-gray-700">
+                QA Verification
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="manage">
@@ -1778,6 +1782,10 @@ export default function TestManagementPage() {
                   </div>
                 </div>
               </div>
+            </TabsContent>
+
+            <TabsContent value="qa-verification">
+              <QAVerificationTool isDarkMode={true} />
             </TabsContent>
           </Tabs>
         </div>
