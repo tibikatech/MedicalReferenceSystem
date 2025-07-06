@@ -1,0 +1,8 @@
+id,Name,category,subCategory,cptCode,loincCode,snomedCode,description,notes
+"TTES-IMG-INT-75853a","Interventional Radiology Chest","Imaging Studies","Interventional Radiology","75853a","24701-6","363693007","Guided procedures such as biopsies or drainages in chest area","imaging"
+"TTES-IMG-INT-75853b","Interventional Radiology Abdomen","Imaging Studies","Interventional Radiology","75853b","24702-4","363694003","Guided procedures such as biopsies or drainages in abdominal area","imaging"
+"TTES-IMG-INT-75853c","Interventional Radiology Pelvis","Imaging Studies","Interventional Radiology","75853c","24709-9","363723001","Guided procedures such as biopsies or drainages in pelvic area","imaging"
+"TTES-IMG-INT-20610a","Interventional Radiology Shoulder Left With Contrast","Imaging Studies","Interventional Radiology","20610a","18853-4","363709006","Joint injections or aspirations guided by imaging","imaging"
+"TTES-IMG-INT-20610b","Interventional Radiology Shoulder Right With Contrast","Imaging Studies","Interventional Radiology","20610b","18853-4","363709006","Joint injections or aspirations guided by imaging","imaging"
+"TTES-IMG-INT-20610c","Interventional Radiology Shoulder Left Without Contrast","Imaging Studies","Interventional Radiology","20610c","18853-4","363709006","Joint injections or aspirations guided by imaging","imaging"
+"TTES-IMG-INT-20610d","Interventional Radiology Shoulder Right Without Contrast","Imaging Studies","Interventional Radiology","20610d","18853-4","363709006","Joint injections or aspirations guided by imaging","imaging"

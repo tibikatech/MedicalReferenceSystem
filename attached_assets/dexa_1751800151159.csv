@@ -1,0 +1,3 @@
+id,Name,category,subCategory,cptCode,loincCode,snomedCode,description,notes
+"TTES-IMG-BMD-77080a","Bone Densitometry Whole Body","Imaging Studies","DEXA Scan","77080a","24706-5","363688001","Bone mineral density measurement to assess osteoporosis risk","imaging"
+"TTES-IMG-BMD-77080b","Bone Densitometry Spine","Imaging Studies","DEXA Scan","77080b","24706-5","363688001","Bone mineral density measurement of lumbar spine","imaging"

@@ -1,0 +1,12 @@
+id,Name,category,subCategory,cptCode,loincCode,snomedCode,description,notes
+"TTES-IMG-US-76810","Ultrasound Brain","Imaging Studies","Ultrasound","76810","18855-8","363681002","Cardiac ultrasound to evaluate heart structure and function","imaging"
+"TTES-IMG-US-76410","Ultrasound Cervical Spine Without Contrast","Imaging Studies","Ultrasound","76410","11940-1","363681002","Not commonly used for cervical spine imaging","imaging"
+"TTES-IMG-US-76415","Ultrasound Thoracic Spine Without Contrast","Imaging Studies","Ultrasound","76415","11939-3","363681002","Not commonly used for thoracic spine imaging","imaging"
+"TTES-IMG-US-76420","Ultrasound Lumbar Spine Without Contrast","Imaging Studies","Ultrasound","76420","11941-9","363681002","Limited use for chest imaging; usually for pleural effusion","imaging"
+"TTES-IMG-US-76425","Ultrasound Sacrococcygeal Without Contrast","Imaging Studies","Ultrasound","76425","11942-7","363681002","Not typically used for sacrococcygeal imaging","imaging"
+"TTES-IMG-US-76310","Ultrasound Chest Without Contrast","Imaging Studies","Ultrasound","76310","18855-8","363681002","Limited use for chest imaging; usually for pleural effusion","imaging"
+"TTES-IMG-US-76700","Ultrasound Abdomen Without Contrast","Imaging Studies","Ultrasound","76700","18842-5","363679005","Ultrasound imaging of abdominal organs including liver gallbladder spleen kidneys","imaging"
+"TTES-IMG-US-76856e","Ultrasound Pelvis Without Contrast","Imaging Studies","Ultrasound","76856e","18843-3","363680001","Pelvic ultrasound for evaluation of uterus ovaries and bladder","imaging"
+"TTES-IMG-US-76886f","Ultrasound Shoulder Left With Contrast","Imaging Studies","Ultrasound","76886f","18853-4","363709006","Musculoskeletal ultrasound to assess joint and tendon pathology","imaging"
+"TTES-IMG-US-76886g","Ultrasound Shoulder Right With Contrast","Imaging Studies","Ultrasound","76886g","18853-4","363709006","Musculoskeletal ultrasound to assess joint and tendon pathology","imaging"
+"TTES-IMG-US-76886h","Ultrasound Shoulder Left Without Contrast","Imaging Studies","Ultrasound","76886h","18853-4","363709006","Musculoskeletal ultrasound to assess joint and tendon pathology","imaging"

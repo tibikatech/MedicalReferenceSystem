@@ -1,0 +1,13 @@
+id,Name,category,subCategory,cptCode,loincCode,snomedCode,description,notes
+"TTES-IMG-DOP-76811","Doppler Ultrasound Brain","Imaging Studies","Doppler Ultrasound","76811","18855-8","363681002","Used to assess cerebral blood flow","imaging"
+"TTES-IMG-DOP-93971","Doppler Ultrasound Cervical Spine Without Contrast","Imaging Studies","Doppler Ultrasound","93971","18849-1","363689000","Not typically used for cervical spine imaging","imaging"
+"TTES-IMG-DOP-93972","Doppler Ultrasound Thoracic Spine Without Contrast","Imaging Studies","Doppler Ultrasound","93972","18850-9","363689000","Not typically used for thoracic spine imaging","imaging"
+"TTES-IMG-DOP-93970","Doppler Ultrasound Lumbar Spine Without Contrast","Imaging Studies","Doppler Ultrasound","93970","18848-3","363689000","Doppler ultrasound of legs to assess peripheral arterial disease","imaging"
+"TTES-IMG-DOP-93974","Doppler Ultrasound Sacrococcygeal Without Contrast","Imaging Studies","Doppler Ultrasound","93974","18851-7","363689000","Not typically used for sacrococcygeal imaging","imaging"
+"TTES-IMG-DOP-93973","Doppler Ultrasound Chest Without Contrast","Imaging Studies","Doppler Ultrasound","93973","18852-5","363689000","Rarely used; more common for cardiac applications","imaging"
+"TTES-IMG-DOP-76700","Doppler Ultrasound Abdomen Without Contrast","Imaging Studies","Doppler Ultrasound","76700","18842-5","363679005","Ultrasound imaging of abdominal organs including liver gallbladder spleen kidneys","imaging"
+"TTES-IMG-DOP-76856","Doppler Ultrasound Pelvis Without Contrast","Imaging Studies","Doppler Ultrasound","76856","18843-3","363680001","Pelvic ultrasound for evaluation of uterus ovaries and bladder","imaging"
+"TTES-IMG-DOP-76886a","Doppler Ultrasound Shoulder Left With Contrast","Imaging Studies","Doppler Ultrasound","76886a","18853-4","363709006","Musculoskeletal ultrasound to assess joint and tendon pathology","imaging"
+"TTES-IMG-DOP-76886b","Doppler Ultrasound Shoulder Right With Contrast","Imaging Studies","Doppler Ultrasound","76886b","18853-4","363709006","Musculoskeletal ultrasound to assess joint and tendon pathology","imaging"
+"TTES-IMG-DOP-76886c","Doppler Ultrasound Shoulder Left Without Contrast","Imaging Studies","Doppler Ultrasound","76886c","18853-4","363709006","Musculoskeletal ultrasound to assess joint and tendon pathology","imaging"
+"TTES-IMG-DOP-76886d","Doppler Ultrasound Shoulder Right Without Contrast","Imaging Studies","Doppler Ultrasound","76886d","18853-4","363709006","Musculoskeletal ultrasound to assess joint and tendon pathology","imaging"

@@ -1,0 +1,3 @@
+id,Name,category,subCategory,cptCode,loincCode,snomedCode,description,notes
+"TTES-IMG-MAM-77057","Mammogram Screening","Imaging Studies","Mammography","77057","26083-1","363686007","Screening mammography for breast cancer detection","imaging"
+"TTES-IMG-MAM-77059","Mammogram Diagnostic","Imaging Studies","Mammography","77059","26084-9","363687003","Diagnostic mammography for abnormal findings or symptoms","imaging"

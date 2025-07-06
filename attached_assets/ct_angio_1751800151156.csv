@@ -1,0 +1,9 @@
+id,Name,category,subCategory,cptCode,loincCode,snomedCode,description,notes
+"TTES-IMG-CTA-70491","CT Angiography Brain","Imaging Studies","Angiography","70491","24678-2","363728003","CT angiography of brain arteries for aneurysm or stroke assessment","imaging"
+"TTES-IMG-CTA-72128","CT Angiography Cervical Spine","Imaging Studies","Angiography","72128","24715-6","363712008","CT angiography of cervical spine vessels","imaging"
+"TTES-IMG-CTA-72134","CT Angiography Thoracic Spine","Imaging Studies","Angiography","72134","24717-2","363689000","CT angiography of thoracic spine vessels","imaging"
+"TTES-IMG-CTA-72140","CT Angiography Lumbar Spine","Imaging Studies","Angiography","72140","24719-8","363693007","CT angiography of lumbar spine vessels","imaging"
+"TTES-IMG-CTA-73402","CT Angiography Sacrococcygeal","Imaging Studies","Angiography","73402","78404-1","448871000000105","CT angiography of sacral vessels","imaging"
+"TTES-IMG-CTA-71275","CT Angiography Chest","Imaging Studies","Angiography","71275","24701-6","363693007","CT angiography of chest to evaluate pulmonary embolism or aortic pathology","imaging"
+"TTES-IMG-CTA-74150","CT Angiography Abdomen","Imaging Studies","Angiography","74150","24703-2","363702004","CT angiography of abdominal vessels to evaluate aneurysm or stenosis","imaging"
+"TTES-IMG-CTA-73401","CT Angiography Pelvis","Imaging Studies","Angiography","73401","78404-2","363723001","CT urography to evaluate entire urinary tract","imaging"

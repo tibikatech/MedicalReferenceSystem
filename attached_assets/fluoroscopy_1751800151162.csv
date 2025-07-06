@@ -1,0 +1,5 @@
+id,Name,category,subCategory,cptCode,loincCode,snomedCode,description,notes
+"TTES-IMG-FLU-76080a","Fluoroscopy Joint Shoulder Left With Contrast","Imaging Studies","Fluoroscopy","76080a","18853-4","363709006","Real-time imaging for guided joint procedures","imaging"
+"TTES-IMG-FLU-76080b","Fluoroscopy Joint Shoulder Right With Contrast","Imaging Studies","Fluoroscopy","76080b","18853-4","363709006","Real-time imaging for guided joint procedures","imaging"
+"TTES-IMG-FLU-76080c","Fluoroscopy Joint Shoulder Left Without Contrast","Imaging Studies","Fluoroscopy","76080c","18853-4","363709006","Real-time imaging for guided joint procedures","imaging"
+"TTES-IMG-FLU-76080d","Fluoroscopy Joint Shoulder Right Without Contrast","Imaging Studies","Fluoroscopy","76080d","18853-4","363709006","Real-time imaging for guided joint procedures","imaging"

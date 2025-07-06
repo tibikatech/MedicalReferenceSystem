@@ -1,0 +1,13 @@
+id,Name,category,subCategory,cptCode,loincCode,snomedCode,description,notes
+"TTES-IMG-XRAY-70250","X-RAY Brain Without Contrast","Imaging Studies","Radiography","70250","24696-8","363725005","Skull X-ray to assess facial bones or head injury","imaging"
+"TTES-IMG-XRAY-72010a","X-RAY Cervical Spine Without Contrast","Imaging Studies","Radiography","72010a","24725-1","363706005","X-ray of cervical spine to detect alignment issues or degeneration","imaging"
+"TTES-IMG-XRAY-72030","X-RAY Thoracic Spine Without Contrast","Imaging Studies","Radiography","72030","24726-9","363707001","X-ray of thoracic spine to evaluate posture and vertebral health","imaging"
+"TTES-IMG-XRAY-72080","X-RAY Lumbar Spine Without Contrast","Imaging Studies","Radiography","72080","24725-1","363706005","X-ray of lumbar spine to assess disc space and nerve compression","imaging"
+"TTES-IMG-XRAY-72100a","X-RAY Sacrococcygeal Without Contrast","Imaging Studies","Radiography","72100a","24732-2","363717005","Pelvic X-ray to evaluate sacroiliac joints and coccyx","imaging"
+"TTES-IMG-XRAY-71010b","X-RAY Chest Without Contrast","Imaging Studies","Radiography","71010b","24698-4","16905004","Radiographic imaging of the chest in posteroanterior projection","imaging"
+"TTES-IMG-XRAY-74022","X-RAY Abdomen Without Contrast","Imaging Studies","Radiography","74022","24713-1","428600005","Radiographic imaging of abdomen in anterior-posterior and lateral views","imaging"
+"TTES-IMG-XRAY-72100b","X-RAY Pelvis Without Contrast","Imaging Studies","Radiography","72100b","24732-2","363717005","Hip joint imaging to evaluate dysplasia or degenerative disease","imaging"
+"TTES-IMG-XRAY-73020a","X-RAY Shoulder Left With Contrast","Imaging Studies","Radiography","73020a","24727-2","363717005","Shoulder imaging to detect dislocation or arthritis","imaging"
+"TTES-IMG-XRAY-73020b","X-RAY Shoulder Right With Contrast","Imaging Studies","Radiography","73020b","24727-2","363717005","Shoulder imaging to detect dislocation or arthritis","imaging"
+"TTES-IMG-XRAY-73020c","X-RAY Shoulder Left Without Contrast","Imaging Studies","Radiography","73020c","24727-2","363717005","Shoulder imaging to detect dislocation or arthritis","imaging"
+"TTES-IMG-XRAY-73020d","X-RAY Shoulder Right Without Contrast","Imaging Studies","Radiography","73020d","24727-2","363717005","Shoulder imaging to detect dislocation or arthritis","imaging"
