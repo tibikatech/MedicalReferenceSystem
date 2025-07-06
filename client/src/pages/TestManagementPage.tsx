@@ -59,6 +59,7 @@ import FhirExportTool from "@/components/FhirExportTool";
 import TestEditModal from "@/components/TestEditModal";
 import TestAddModal from "@/components/TestAddModal";
 import UploadProgressModal from "@/components/UploadProgressModal";
+import DeletionProgressModal, { DeletionStatus } from "@/components/DeletionProgressModal";
 import CategoryMappingModal from "@/components/CategoryMappingModal";
 import ExportToCsv from "@/components/ExportToCsv";
 import { 
@@ -137,6 +138,17 @@ export default function TestManagementPage() {
   
   // Bulk delete state
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
+  
+  // Deletion progress state
+  const [deletionStatus, setDeletionStatus] = useState<DeletionStatus>({
+    state: 'idle',
+    processed: 0,
+    total: 0,
+    successCount: 0,
+    errorCount: 0,
+    errors: []
+  });
+  const [showDeletionProgress, setShowDeletionProgress] = useState(false);
   
   // Category Mapping state
   const [showCategoryMappingModal, setShowCategoryMappingModal] = useState(false);
@@ -911,9 +923,24 @@ export default function TestManagementPage() {
     setIsDeleteModalOpen(true);
   };
   
-  // Confirm test deletion
+  // Confirm test deletion with progress tracking
   const confirmDeleteTest = async () => {
     if (!deletingTest) return;
+    
+    // Close confirmation modal and show progress modal
+    setIsDeleteModalOpen(false);
+    setShowDeletionProgress(true);
+    
+    // Initialize deletion status for single test
+    setDeletionStatus({
+      state: 'deleting',
+      processed: 0,
+      total: 1,
+      successCount: 0,
+      errorCount: 0,
+      errors: [],
+      currentTestName: deletingTest.name
+    });
     
     try {
       const response = await fetch(`/api/tests/${deletingTest.id}`, {
@@ -924,24 +951,33 @@ export default function TestManagementPage() {
         throw new Error('Failed to delete test');
       }
       
-      // Close delete modal
-      setIsDeleteModalOpen(false);
+      // Update progress to complete
+      setDeletionStatus({
+        state: 'complete',
+        processed: 1,
+        total: 1,
+        successCount: 1,
+        errorCount: 0,
+        errors: []
+      });
+      
+      // Clear the deleting test state
       setDeletingTest(null);
       
       // Invalidate queries to refresh the tests list
       queryClient.invalidateQueries({ queryKey: ['/api/tests'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/test-count-by-category'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/test-count-by-subcategory'] });
       
-      // Show success message
-      toast({
-        title: "Test Deleted",
-        description: `${deletingTest.name} has been deleted successfully.`,
-      });
     } catch (error) {
       console.error('Error deleting test:', error);
-      toast({
-        title: "Error",
-        description: `Failed to delete test: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        variant: "destructive",
+      setDeletionStatus({
+        state: 'error',
+        processed: 1,
+        total: 1,
+        successCount: 0,
+        errorCount: 1,
+        errors: [`Failed to delete "${deletingTest.name}": ${error instanceof Error ? error.message : 'Unknown error'}`]
       });
     }
   };
@@ -959,36 +995,75 @@ export default function TestManagementPage() {
     setIsBulkDeleteModalOpen(true);
   };
 
-  // Confirm bulk deletion
+  // Confirm bulk deletion with progress tracking
   const confirmBulkDelete = async () => {
     if (selectedTests.size === 0) return;
     
+    // Close confirmation modal and show progress modal
+    setIsBulkDeleteModalOpen(false);
+    setShowDeletionProgress(true);
+    
+    // Get selected tests data
+    const selectedTestsData = filteredTests.filter((test: Test) => selectedTests.has(test.id));
+    const testIdsToDelete = Array.from(selectedTests);
+    
+    // Initialize deletion status
+    setDeletionStatus({
+      state: 'deleting',
+      processed: 0,
+      total: testIdsToDelete.length,
+      successCount: 0,
+      errorCount: 0,
+      errors: []
+    });
+    
     try {
-      // Get the selected test names for the success message
-      const selectedTestNames = filteredTests
-        .filter((test: Test) => selectedTests.has(test.id))
-        .map((test: Test) => test.name);
+      let successCount = 0;
+      let errorCount = 0;
+      const errors: string[] = [];
       
-      // Create array of test IDs to delete
-      const testIdsToDelete = Array.from(selectedTests);
-      
-      // Make the bulk delete API call
-      const response = await fetch('/api/tests/bulk-delete', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ testIds: testIdsToDelete }),
-      });
-      
-      if (!response.ok) {
-        throw new Error('Failed to delete tests');
+      // Delete tests one by one to show progress
+      for (let i = 0; i < testIdsToDelete.length; i++) {
+        const testId = testIdsToDelete[i];
+        const testData = selectedTestsData.find(t => t.id === testId);
+        const testName = testData?.name || `Test ${testId}`;
+        
+        // Update current test being deleted
+        setDeletionStatus(prev => ({
+          ...prev,
+          processed: i + 1,
+          currentTestName: testName
+        }));
+        
+        try {
+          // Make individual delete API call
+          const response = await fetch(`/api/tests/${testId}`, {
+            method: 'DELETE',
+          });
+          
+          if (!response.ok) {
+            throw new Error(`Failed to delete test: ${response.statusText}`);
+          }
+          
+          successCount++;
+        } catch (error) {
+          errorCount++;
+          errors.push(`Failed to delete "${testName}": ${error instanceof Error ? error.message : 'Unknown error'}`);
+        }
+        
+        // Add small delay to show progress (optional)
+        await new Promise(resolve => setTimeout(resolve, 100));
       }
       
-      const result = await response.json();
-      
-      // Close bulk delete modal
-      setIsBulkDeleteModalOpen(false);
+      // Update final status
+      setDeletionStatus({
+        state: 'complete',
+        processed: testIdsToDelete.length,
+        total: testIdsToDelete.length,
+        successCount,
+        errorCount,
+        errors
+      });
       
       // Clear selections
       setSelectedTests(new Set());
@@ -999,17 +1074,15 @@ export default function TestManagementPage() {
       queryClient.invalidateQueries({ queryKey: ['/api/test-count-by-category'] });
       queryClient.invalidateQueries({ queryKey: ['/api/test-count-by-subcategory'] });
       
-      // Show success message
-      toast({
-        title: "Tests Deleted",
-        description: `Successfully deleted ${result.deletedCount} test${result.deletedCount !== 1 ? 's' : ''}.`,
-      });
     } catch (error) {
-      console.error('Error deleting tests:', error);
-      toast({
-        title: "Error",
-        description: `Failed to delete tests: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        variant: "destructive",
+      console.error('Error in bulk deletion:', error);
+      setDeletionStatus({
+        state: 'error',
+        processed: 0,
+        total: testIdsToDelete.length,
+        successCount: 0,
+        errorCount: testIdsToDelete.length,
+        errors: [`Bulk deletion failed: ${error instanceof Error ? error.message : 'Unknown error'}`]
       });
     }
   };
@@ -1777,6 +1850,14 @@ export default function TestManagementPage() {
         isOpen={showUploadProgress}
         status={uploadStatus}
         isDarkMode={true}
+      />
+      
+      {/* Deletion Progress Modal */}
+      <DeletionProgressModal
+        isOpen={showDeletionProgress}
+        status={deletionStatus}
+        isDarkMode={true}
+        onClose={() => setShowDeletionProgress(false)}
       />
       
       {/* Delete Confirmation Dialog */}

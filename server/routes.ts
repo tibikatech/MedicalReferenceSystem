@@ -113,14 +113,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       let deletedCount = 0;
       const failedDeletions: string[] = [];
+      const testNames: string[] = [];
+      
+      // First, get all test names for progress tracking
+      for (const testId of testIds) {
+        try {
+          const test = await storage.getTestById(testId);
+          testNames.push(test ? test.name : `Unknown (${testId})`);
+        } catch (error) {
+          testNames.push(`Unknown (${testId})`);
+        }
+      }
       
       // Delete each test
-      for (const testId of testIds) {
+      for (let i = 0; i < testIds.length; i++) {
+        const testId = testIds[i];
+        const testName = testNames[i];
+        
         try {
           // Check if test exists
           const test = await storage.getTestById(testId);
           if (!test) {
-            failedDeletions.push(`Test ${testId} not found`);
+            failedDeletions.push(`Test "${testName}" not found`);
             continue;
           }
           
@@ -129,10 +143,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
           if (deleted) {
             deletedCount++;
           } else {
-            failedDeletions.push(`Failed to delete test ${testId}`);
+            failedDeletions.push(`Failed to delete test "${testName}"`);
           }
         } catch (error) {
-          failedDeletions.push(`Error deleting test ${testId}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+          failedDeletions.push(`Error deleting test "${testName}": ${error instanceof Error ? error.message : 'Unknown error'}`);
         }
       }
       
