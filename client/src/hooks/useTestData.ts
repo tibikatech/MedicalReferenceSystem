@@ -56,13 +56,15 @@ export function useTestData(
   });
   
   // Determine which tests to display based on active filters
+  // Priority: Search > Subcategory > Category > All Tests
   let tests: Test[] | undefined;
   if (searchQuery.length > 0 && searchTestsQuery.data && searchTestsQuery.fetchStatus !== "idle") {
     tests = searchTestsQuery.data.tests;
+  } else if (selectedSubCategory && subcategoryQuery.data) {
+    // Subcategory has higher priority than category
+    tests = subcategoryQuery.data.tests;
   } else if (selectedCategory && categoryQuery.data) {
     tests = categoryQuery.data.tests;
-  } else if (selectedSubCategory && subcategoryQuery.data) {
-    tests = subcategoryQuery.data.tests;
   } else if (testsQuery.data) {
     tests = testsQuery.data.tests;
   }
