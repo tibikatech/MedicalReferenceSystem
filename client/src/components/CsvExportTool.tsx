@@ -13,12 +13,20 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { AlertCircle, Download, Filter, CheckSquare, X, RefreshCw } from 'lucide-react';
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { AlertCircle, Download, Filter, CheckSquare, X, RefreshCw, BarChart3, FileText, Layers } from 'lucide-react';
 import { VALID_CATEGORIES, VALID_SUBCATEGORIES } from '@/lib/constants';
 import { useQuery } from '@tanstack/react-query';
 import { useToast } from '@/hooks/use-toast';
+import { 
+  generateStandardCSV, 
+  generateConsolidatedCSV, 
+  generateLegacyCSV, 
+  generateExportStats,
+  type ExportOptions 
+} from '@/utils/exportFormats';
 
 interface CsvExportToolProps {
   isOpen: boolean;
@@ -29,6 +37,12 @@ const CsvExportTool: React.FC<CsvExportToolProps> = ({ isOpen, onClose }) => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>([]);
   const [isExporting, setIsExporting] = useState(false);
+  const [exportOptions, setExportOptions] = useState<ExportOptions>({
+    exportFormat: 'standard',
+    groupByCptFamily: false,
+    includeCptSuffixes: true,
+    includeBaseCptCode: true
+  });
   const { toast } = useToast();
 
   // Fetch all tests
@@ -43,6 +57,12 @@ const CsvExportTool: React.FC<CsvExportToolProps> = ({ isOpen, onClose }) => {
       setSelectedCategories([]);
       setSelectedSubcategories([]);
       setIsExporting(false);
+      setExportOptions({
+        exportFormat: 'standard',
+        groupByCptFamily: false,
+        includeCptSuffixes: true,
+        includeBaseCptCode: true
+      });
     }
   }, [isOpen]);
 
@@ -135,6 +155,19 @@ const CsvExportTool: React.FC<CsvExportToolProps> = ({ isOpen, onClose }) => {
     });
   }, [testsData, selectedCategories, selectedSubcategories]);
 
+  // Calculate export statistics
+  const exportStats = useMemo(() => {
+    return generateExportStats(filteredTests, exportOptions);
+  }, [filteredTests, exportOptions]);
+
+  // Generate filename based on export options
+  const generateFilename = () => {
+    const timestamp = new Date().toISOString().split('T')[0];
+    const formatSuffix = exportOptions.exportFormat === 'consolidated' ? '_consolidated' : 
+                        exportOptions.exportFormat === 'legacy' ? '_legacy' : '_standard';
+    return `medirefs_tests_${timestamp}${formatSuffix}.csv`;
+  };
+
   // Export to CSV
   const handleExport = () => {
     if (!filteredTests.length) {
@@ -149,45 +182,38 @@ const CsvExportTool: React.FC<CsvExportToolProps> = ({ isOpen, onClose }) => {
     setIsExporting(true);
 
     try {
-      // Generate CSV content
-      const header = "id,name,category,subCategory,cptCode,loincCode,snomedCode,description,notes";
-      const rows = filteredTests.map((test: Test) => {
-        return [
-          test.id,
-          test.name,
-          test.category,
-          test.subCategory || '',
-          test.cptCode || '',
-          test.loincCode || '',
-          test.snomedCode || '',
-          test.description ? `"${test.description.replace(/"/g, '""')}"` : '',
-          test.notes ? `"${test.notes.replace(/"/g, '""')}"` : ''
-        ].join(',');
-      }).join('\n');
+      // Generate CSV content based on selected format
+      let csvContent: string;
+      switch (exportOptions.exportFormat) {
+        case 'consolidated':
+          csvContent = generateConsolidatedCSV(filteredTests);
+          break;
+        case 'legacy':
+          csvContent = generateLegacyCSV(filteredTests);
+          break;
+        case 'standard':
+        default:
+          csvContent = generateStandardCSV(filteredTests, exportOptions);
+          break;
+      }
       
-      const csvContent = `${header}\n${rows}`;
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      
-      // Create filename based on selected categories
-      let filename = 'medirefs_tests';
-      if (selectedCategories.length === 1) {
-        filename = `medirefs_${selectedCategories[0].toLowerCase().replace(/\s+/g, '_')}`;
-      } else if (selectedCategories.length > 1) {
-        filename = 'medirefs_filtered_tests';
-      }
-      
-      link.setAttribute('download', `${filename}.csv`);
+      link.setAttribute('download', generateFilename());
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
       
+      const exportMessage = exportOptions.exportFormat === 'consolidated' 
+        ? `Successfully exported ${exportStats.cptFamilies} CPT families containing ${filteredTests.length} tests.`
+        : `Successfully exported ${filteredTests.length} tests to CSV.`;
+      
       toast({
         title: "CSV Exported",
-        description: `Successfully exported ${filteredTests.length} tests to CSV.`,
+        description: exportMessage,
       });
 
       // Close the modal after export
@@ -213,6 +239,92 @@ const CsvExportTool: React.FC<CsvExportToolProps> = ({ isOpen, onClose }) => {
             Select categories and subcategories to filter tests for export to CSV format.
           </DialogDescription>
         </DialogHeader>
+
+        {/* Export Format Selection */}
+        <Card className="mb-6">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg flex items-center gap-2">
+              <FileText className="h-5 w-5" />
+              Export Format
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <RadioGroup 
+              value={exportOptions.exportFormat} 
+              onValueChange={(value: 'standard' | 'consolidated' | 'legacy') => 
+                setExportOptions(prev => ({ ...prev, exportFormat: value }))
+              }
+              className="grid md:grid-cols-3 gap-4"
+            >
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="standard" id="standard" />
+                  <Label htmlFor="standard" className="font-medium">Standard Format</Label>
+                </div>
+                <p className="text-sm text-muted-foreground ml-6">
+                  Individual tests with separate CPT base code and suffix columns
+                </p>
+              </div>
+              
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="consolidated" id="consolidated" />
+                  <Label htmlFor="consolidated" className="font-medium">Consolidated Format</Label>
+                </div>
+                <p className="text-sm text-muted-foreground ml-6">
+                  Grouped by CPT families with all variations listed together
+                </p>
+              </div>
+              
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="legacy" id="legacy" />
+                  <Label htmlFor="legacy" className="font-medium">Legacy Format</Label>
+                </div>
+                <p className="text-sm text-muted-foreground ml-6">
+                  Original format for backward compatibility
+                </p>
+              </div>
+            </RadioGroup>
+
+            {/* Export Options */}
+            {exportOptions.exportFormat === 'standard' && (
+              <div className="mt-4 pt-4 border-t">
+                <h4 className="font-medium mb-3 flex items-center gap-2">
+                  <Layers className="h-4 w-4" />
+                  Export Options
+                </h4>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox 
+                      id="includeBaseCptCode"
+                      checked={exportOptions.includeBaseCptCode}
+                      onCheckedChange={(checked) => 
+                        setExportOptions(prev => ({ ...prev, includeBaseCptCode: checked as boolean }))
+                      }
+                    />
+                    <Label htmlFor="includeBaseCptCode" className="text-sm">
+                      Include Base CPT Code column
+                    </Label>
+                  </div>
+                  
+                  <div className="flex items-center space-x-2">
+                    <Checkbox 
+                      id="includeCptSuffixes"
+                      checked={exportOptions.includeCptSuffixes}
+                      onCheckedChange={(checked) => 
+                        setExportOptions(prev => ({ ...prev, includeCptSuffixes: checked as boolean }))
+                      }
+                    />
+                    <Label htmlFor="includeCptSuffixes" className="text-sm">
+                      Include CPT Suffix column
+                    </Label>
+                  </div>
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
         <div className="grid md:grid-cols-2 gap-6 my-6">
           {/* Categories */}
@@ -296,16 +408,48 @@ const CsvExportTool: React.FC<CsvExportToolProps> = ({ isOpen, onClose }) => {
           </Card>
         </div>
 
-        {/* Preview of filtered tests */}
-        <div className="mb-4">
-          <div className="flex justify-between items-center mb-2">
-            <h3 className="font-medium">Export Preview</h3>
-            <Badge variant="outline" className="px-2 py-0.5">
-              {isLoading ? "Loading..." : `${filteredTests.length} tests`}
-            </Badge>
-          </div>
-          
-          <Card className="p-4 bg-muted/50">
+        {/* Enhanced Export Preview */}
+        <Card className="mb-4">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg flex items-center gap-2">
+              <BarChart3 className="h-5 w-5" />
+              Export Preview
+              <Badge variant="outline" className="ml-auto">
+                {isLoading ? "Loading..." : `${filteredTests.length} tests`}
+              </Badge>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {/* Export Statistics */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4 p-3 bg-muted/50 rounded-lg">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-blue-600">{exportStats.totalTests}</div>
+                <div className="text-xs text-muted-foreground">Total Tests</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-green-600">{exportStats.uniqueBaseCptCodes}</div>
+                <div className="text-xs text-muted-foreground">Unique CPT Codes</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-purple-600">{exportStats.testsWithSuffixes}</div>
+                <div className="text-xs text-muted-foreground">With Suffixes</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-orange-600">{exportStats.cptFamilies}</div>
+                <div className="text-xs text-muted-foreground">CPT Families</div>
+              </div>
+            </div>
+
+            {/* Format-specific preview info */}
+            {exportOptions.exportFormat === 'consolidated' && (
+              <div className="p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg mb-3">
+                <p className="text-sm text-blue-700 dark:text-blue-300">
+                  <strong>Consolidated Format:</strong> Will export {exportStats.cptFamilies} CPT family groups 
+                  containing {exportStats.totalTests} individual test variations.
+                </p>
+              </div>
+            )}
+
             {selectedCategories.length === 0 && selectedSubcategories.length === 0 ? (
               <p className="text-sm text-muted-foreground">All tests will be exported. Select categories or subcategories to filter.</p>
             ) : (
@@ -336,8 +480,8 @@ const CsvExportTool: React.FC<CsvExportToolProps> = ({ isOpen, onClose }) => {
                 </p>
               </>
             )}
-          </Card>
-        </div>
+          </CardContent>
+        </Card>
 
         <DialogFooter className="flex sm:justify-between">
           <Button variant="secondary" onClick={onClose}>

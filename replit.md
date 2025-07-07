@@ -128,6 +128,19 @@ The core of the application is a comprehensive test catalog with:
 - **Start Command**: `npm run start`
 
 ## Recent Changes
+- **July 7, 2025**: Implemented Phase 1 & 2 of CPT Code Suffix Enhancement Roadmap
+  - **Phase 1 - Data Analysis & Schema Enhancement**: Enhanced database schema with baseCptCode and cptSuffix fields
+  - All 277 existing tests automatically parsed and populated with base codes and suffixes
+  - Identified 216 unique CPT families with proper suffix grouping (e.g., 20610a-d, 84100a-b, 81001a-b)
+  - Updated storage layer to auto-parse CPT codes on insert/update operations
+  - Added API endpoints for CPT families analysis (/api/cpt-families)
+  - **Phase 2 - Enhanced Export Options**: Completely redesigned CSV export with three format options:
+    - Standard Format: Individual tests with separate base CPT code and suffix columns
+    - Consolidated Format: Grouped by CPT families with all variations listed together
+    - Legacy Format: Original format for backward compatibility
+  - Added advanced export UI with format selection, export options toggles, and detailed statistics
+  - Export preview shows total tests, unique CPT codes, tests with suffixes, and CPT families count
+  - Dynamic filename generation based on export format and timestamp
 - **July 7, 2025**: Enhanced search functionality with CPT code prioritization
   - Implemented intelligent ranking system for search results in DatabaseStorage.searchTests()
   - CPT code exact matches now appear first in search results
