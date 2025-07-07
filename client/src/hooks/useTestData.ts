@@ -51,14 +51,23 @@ export function useTestData(
   
   // Search tests
   const searchTestsQuery = useQuery<{ tests: Test[] }>({
-    queryKey: [`/api/tests/search?q=${encodeURIComponent(searchQuery)}`],
+    queryKey: ["/api/tests/search", { q: searchQuery }],
+    queryFn: async () => {
+      const response = await fetch(`/api/tests/search?q=${encodeURIComponent(searchQuery)}`, {
+        credentials: "include",
+      });
+      if (!response.ok) {
+        throw new Error(`${response.status}: ${response.statusText}`);
+      }
+      return response.json();
+    },
     enabled: !!searchQuery,
   });
   
   // Determine which tests to display based on active filters
   // Priority: Search > Subcategory > Category > All Tests
   let tests: Test[] | undefined;
-  if (searchQuery.length > 0 && searchTestsQuery.data && searchTestsQuery.fetchStatus !== "idle") {
+  if (searchQuery.length > 0 && searchTestsQuery.data) {
     tests = searchTestsQuery.data.tests;
   } else if (selectedSubCategory && subcategoryQuery.data) {
     // Subcategory has higher priority than category
