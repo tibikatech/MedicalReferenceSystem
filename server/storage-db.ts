@@ -56,6 +56,9 @@ export class DatabaseStorage implements IStorage {
 
   async searchTests(query: string): Promise<Test[]> {
     const lowerQuery = `%${query.toLowerCase()}%`;
+    const exactQuery = query.toLowerCase();
+    const startsWithQuery = `${query.toLowerCase()}%`;
+    
     return await db
       .select()
       .from(tests)
@@ -67,6 +70,34 @@ export class DatabaseStorage implements IStorage {
           like(tests.loincCode, lowerQuery),
           like(tests.snomedCode, lowerQuery)
         )
+      )
+      .orderBy(
+        // Priority ranking for search results
+        sql`
+          CASE 
+            -- Exact CPT code match (highest priority)
+            WHEN LOWER(${tests.cptCode}) = ${exactQuery} THEN 1
+            -- CPT code starts with search term
+            WHEN LOWER(${tests.cptCode}) LIKE ${startsWithQuery} THEN 2
+            -- CPT code contains search term
+            WHEN LOWER(${tests.cptCode}) LIKE ${lowerQuery} THEN 3
+            -- Exact name match
+            WHEN LOWER(${tests.name}) = ${exactQuery} THEN 4
+            -- Name starts with search term
+            WHEN LOWER(${tests.name}) LIKE ${startsWithQuery} THEN 5
+            -- Name contains search term
+            WHEN LOWER(${tests.name}) LIKE ${lowerQuery} THEN 6
+            -- LOINC code matches
+            WHEN LOWER(${tests.loincCode}) LIKE ${lowerQuery} THEN 7
+            -- SNOMED code matches
+            WHEN LOWER(${tests.snomedCode}) LIKE ${lowerQuery} THEN 8
+            -- Description matches (lowest priority)
+            WHEN LOWER(${tests.description}) LIKE ${lowerQuery} THEN 9
+            ELSE 10
+          END
+        `,
+        // Secondary sort by name for consistent ordering within same priority
+        tests.name
       );
   }
 

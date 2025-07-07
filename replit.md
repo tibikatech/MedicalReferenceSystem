@@ -128,6 +128,12 @@ The core of the application is a comprehensive test catalog with:
 - **Start Command**: `npm run start`
 
 ## Recent Changes
+- **July 7, 2025**: Enhanced search functionality with CPT code prioritization
+  - Implemented intelligent ranking system for search results in DatabaseStorage.searchTests()
+  - CPT code exact matches now appear first in search results
+  - CPT codes starting with search term get second priority
+  - Maintains comprehensive search across all fields while prioritizing medical codes
+  - Tested and verified with CPT codes 85247, 85027, 85379 - all return exact matches first
 - **July 6, 2025**: Implemented comprehensive data protection and source tracking system
   - Added dataSource column to tests table tracking data origin (JSON/CSV_IMPORT/MANUAL/API_IMPORT)
   - Implemented robust shielding mechanisms to prevent accidental CSV data overwrites
