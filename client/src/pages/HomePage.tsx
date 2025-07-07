@@ -6,9 +6,30 @@ import TestsGrid from "@/components/TestsGrid";
 import Footer from "@/components/Footer";
 import TestDetailModal from "@/components/TestDetailModal";
 import FhirExportTool from "@/components/FhirExportTool";
+import CptFamilyFilter from "@/components/CptFamilyFilter";
+import BulkOperationsPanel from "@/components/BulkOperationsPanel";
+import CptFamilyTestsDisplay from "@/components/CptFamilyTestsDisplay";
 import { useTestData } from "@/hooks/useTestData";
 import { Test } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
+import { 
+  Tabs, 
+  TabsContent, 
+  TabsList, 
+  TabsTrigger 
+} from "@/components/ui/tabs";
+import { 
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { 
+  List, 
+  Users, 
+  Grid 
+} from 'lucide-react';
 
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -17,6 +38,12 @@ export default function HomePage() {
   const [selectedTest, setSelectedTest] = useState<Test | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showFhirExportTool, setShowFhirExportTool] = useState(false);
+  const [viewMode, setViewMode] = useState<'standard' | 'cpt-families'>('standard');
+  
+  // CPT Family filtering state
+  const [selectedFamilies, setSelectedFamilies] = useState<string[]>([]);
+  const [selectedTestIds, setSelectedTestIds] = useState<string[]>([]);
+  
   const { toast } = useToast();
 
   const { 
@@ -84,6 +111,24 @@ export default function HomePage() {
     setShowFhirExportTool(true);
   };
 
+  // Handle clearing selections
+  const handleClearSelections = () => {
+    setSelectedFamilies([]);
+    setSelectedTestIds([]);
+  };
+
+  // Handle view mode change - clear selections when switching
+  const handleViewModeChange = (mode: 'standard' | 'cpt-families') => {
+    setViewMode(mode);
+    handleClearSelections();
+    // Also reset traditional filters when switching to CPT families view
+    if (mode === 'cpt-families') {
+      setSelectedCategory(null);
+      setSelectedSubCategory(null);
+      setSearchQuery("");
+    }
+  };
+
   return (
     <>
       <Header onSearch={setSearchQuery} />
@@ -137,24 +182,87 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Content with sidebar */}
-          <div className="flex flex-col md:flex-row">
-            <CategorySidebar 
-              categories={categories}
-              subcategories={subcategories}
-              selectedCategory={selectedCategory}
-              selectedSubCategory={selectedSubCategory}
-              onCategorySelect={handleCategorySelect}
-              onSubCategorySelect={handleSubCategorySelect}
-            />
+          {/* View Mode Tabs */}
+          <Tabs 
+            value={viewMode} 
+            onValueChange={handleViewModeChange}
+            className="w-full mb-6"
+          >
+            <TabsList className="grid w-full grid-cols-2 bg-gray-800 mb-6">
+              <TabsTrigger 
+                value="standard" 
+                className="flex items-center gap-2 data-[state=active]:bg-gray-700 data-[state=active]:text-white"
+              >
+                <Grid className="h-4 w-4" />
+                Standard View
+              </TabsTrigger>
+              <TabsTrigger 
+                value="cpt-families" 
+                className="flex items-center gap-2 data-[state=active]:bg-gray-700 data-[state=active]:text-white"
+              >
+                <Users className="h-4 w-4" />
+                CPT Families View
+              </TabsTrigger>
+            </TabsList>
 
-            <TestsGrid 
-              tests={tests}
-              isLoading={isLoading}
-              isError={isError}
-              onTestSelect={handleTestSelect}
-            />
-          </div>
+            {/* Standard View */}
+            <TabsContent value="standard" className="mt-0">
+              <div className="flex flex-col md:flex-row">
+                <CategorySidebar 
+                  categories={categories}
+                  subcategories={subcategories}
+                  selectedCategory={selectedCategory}
+                  selectedSubCategory={selectedSubCategory}
+                  onCategorySelect={handleCategorySelect}
+                  onSubCategorySelect={handleSubCategorySelect}
+                />
+
+                <TestsGrid 
+                  tests={tests}
+                  isLoading={isLoading}
+                  isError={isError}
+                  onTestSelect={handleTestSelect}
+                />
+              </div>
+            </TabsContent>
+
+            {/* CPT Families View */}
+            <TabsContent value="cpt-families" className="mt-0">
+              <div className="space-y-6">
+                {/* Bulk Operations Panel */}
+                <BulkOperationsPanel
+                  selectedFamilies={selectedFamilies}
+                  selectedTests={selectedTestIds}
+                  allTests={tests || []}
+                  onClearSelection={handleClearSelections}
+                />
+
+                <div className="grid lg:grid-cols-3 gap-6">
+                  {/* CPT Family Filter - Left Side */}
+                  <div className="lg:col-span-1">
+                    <CptFamilyFilter
+                      tests={tests || []}
+                      selectedFamilies={selectedFamilies}
+                      onFamilySelectionChange={setSelectedFamilies}
+                      selectedTests={selectedTestIds}
+                      onTestSelectionChange={setSelectedTestIds}
+                    />
+                  </div>
+
+                  {/* Test Results - Right Side */}
+                  <div className="lg:col-span-2">
+                    <CptFamilyTestsDisplay
+                      tests={tests || []}
+                      selectedFamilies={selectedFamilies}
+                      selectedTests={selectedTestIds}
+                      onTestSelect={handleTestSelect}
+                      isLoading={isLoading}
+                    />
+                  </div>
+                </div>
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
       </main>
 
