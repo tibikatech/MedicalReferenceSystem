@@ -44,6 +44,18 @@ export interface IStorage {
     testNames: string[];
   }>>;
   
+  // CPT families analysis
+  getCptFamilies(): Promise<Array<{
+    baseCptCode: string;
+    variations: Array<{
+      cptCode: string;
+      suffix: string | null;
+      testName: string;
+      testId: string;
+    }>;
+    totalCount: number;
+  }>>;
+  
   // Session store for authentication
   sessionStore: session.Store;
 }

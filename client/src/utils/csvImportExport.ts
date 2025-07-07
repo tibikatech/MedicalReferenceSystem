@@ -129,6 +129,8 @@ export function testsToCSV(tests: Test[]): string {
     category: test.category,
     subCategory: test.subCategory,
     cptCode: test.cptCode,
+    baseCptCode: test.baseCptCode,
+    cptSuffix: test.cptSuffix,
     loincCode: test.loincCode,
     snomedCode: test.snomedCode,
     description: test.description,

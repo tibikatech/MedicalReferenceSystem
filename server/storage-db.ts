@@ -11,7 +11,8 @@ import {
   type InsertImportSession,
   importAuditLogs,
   type ImportAuditLog,
-  type InsertImportAuditLog
+  type InsertImportAuditLog,
+  parseCptCode
 } from "@shared/schema";
 import { db } from "./db";
 import { IStorage } from './storage';
@@ -102,18 +103,34 @@ export class DatabaseStorage implements IStorage {
   }
 
   async insertTest(test: InsertTest): Promise<Test> {
+    // Parse CPT code to extract base code and suffix
+    const { baseCptCode, cptSuffix } = parseCptCode(test.cptCode);
+    
     // Ensure dataSource is set if not provided
     const testWithSource = {
       ...test,
-      dataSource: test.dataSource || "MANUAL"
+      dataSource: test.dataSource || "MANUAL",
+      baseCptCode,
+      cptSuffix
     };
     const result = await db.insert(tests).values(testWithSource).returning();
     return result[0];
   }
 
   async updateTest(id: string, testUpdate: Partial<Test>): Promise<Test | undefined> {
+    // If CPT code is being updated, parse it to extract base code and suffix
+    let updatedTestData = { ...testUpdate };
+    if (testUpdate.cptCode !== undefined) {
+      const { baseCptCode, cptSuffix } = parseCptCode(testUpdate.cptCode);
+      updatedTestData = {
+        ...updatedTestData,
+        baseCptCode,
+        cptSuffix
+      };
+    }
+    
     // Check if we're updating the id (primary key)
-    if (testUpdate.id && testUpdate.id !== id) {
+    if (updatedTestData.id && updatedTestData.id !== id) {
       // If changing the ID, we need to:
       // 1. Get the existing test's full data
       const existingTest = await this.getTestById(id);
@@ -124,7 +141,7 @@ export class DatabaseStorage implements IStorage {
       // 2. Create a new record with the new ID and merged data
       const newTest: InsertTest = {
         ...existingTest,
-        ...testUpdate,
+        ...updatedTestData,
         updatedAt: new Date(),
       };
 
@@ -139,7 +156,7 @@ export class DatabaseStorage implements IStorage {
       // Regular update without changing ID
       const result = await db
         .update(tests)
-        .set({ ...testUpdate, updatedAt: new Date() })
+        .set({ ...updatedTestData, updatedAt: new Date() })
         .where(eq(tests.id, id))
         .returning();
       
@@ -405,6 +422,61 @@ export class DatabaseStorage implements IStorage {
       }));
     } catch (error) {
       console.error('Error fetching data source statistics:', error);
+      return [];
+    }
+  }
+
+  async getCptFamilies(): Promise<Array<{
+    baseCptCode: string;
+    variations: Array<{
+      cptCode: string;
+      suffix: string | null;
+      testName: string;
+      testId: string;
+    }>;
+    totalCount: number;
+  }>> {
+    try {
+      const allTests = await this.getAllTests();
+      
+      // Group tests by base CPT code
+      const cptFamilies = new Map<string, Array<{
+        cptCode: string;
+        suffix: string | null;
+        testName: string;
+        testId: string;
+      }>>();
+      
+      allTests.forEach(test => {
+        if (test.baseCptCode) {
+          if (!cptFamilies.has(test.baseCptCode)) {
+            cptFamilies.set(test.baseCptCode, []);
+          }
+          cptFamilies.get(test.baseCptCode)!.push({
+            cptCode: test.cptCode || test.baseCptCode,
+            suffix: test.cptSuffix,
+            testName: test.name,
+            testId: test.id
+          });
+        }
+      });
+      
+      // Convert to array and sort by base CPT code
+      return Array.from(cptFamilies.entries())
+        .map(([baseCptCode, variations]) => ({
+          baseCptCode,
+          variations: variations.sort((a, b) => {
+            // Sort by suffix (null first, then alphabetically)
+            if (a.suffix === null && b.suffix !== null) return -1;
+            if (a.suffix !== null && b.suffix === null) return 1;
+            if (a.suffix === null && b.suffix === null) return 0;
+            return a.suffix!.localeCompare(b.suffix!);
+          }),
+          totalCount: variations.length
+        }))
+        .sort((a, b) => a.baseCptCode.localeCompare(b.baseCptCode));
+    } catch (error) {
+      console.error('Error getting CPT families:', error);
       return [];
     }
   }

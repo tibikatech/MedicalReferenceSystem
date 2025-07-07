@@ -13,6 +13,8 @@ export function testsToCSV(tests: TestWithNotes[]): string {
     'category',
     'subCategory',
     'cptCode',
+    'baseCptCode',
+    'cptSuffix',
     'loincCode',
     'snomedCode',
     'description',

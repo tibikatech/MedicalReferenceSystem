@@ -9,6 +9,8 @@ export const tests = pgTable("tests", {
   category: varchar("category").notNull(),
   subCategory: varchar("subCategory").notNull(),
   cptCode: varchar("cptCode"),
+  baseCptCode: varchar("baseCptCode"), // Base CPT code without suffix (e.g., "84100" from "84100a")
+  cptSuffix: varchar("cptSuffix"), // CPT suffix (e.g., "a" from "84100a")
   loincCode: varchar("loincCode"),
   snomedCode: varchar("snomedCode"),
   description: text("description"),
@@ -181,3 +183,25 @@ export const importAuditLogs = pgTable("import_audit_logs", {
 export const insertImportAuditLogSchema = createInsertSchema(importAuditLogs).omit({ id: true });
 export type InsertImportAuditLog = z.infer<typeof insertImportAuditLogSchema>;
 export type ImportAuditLog = typeof importAuditLogs.$inferSelect;
+
+// Utility function to parse CPT codes with suffixes
+export function parseCptCode(cptCode: string | null): { baseCptCode: string | null; cptSuffix: string | null } {
+  if (!cptCode || cptCode.trim() === '') {
+    return { baseCptCode: null, cptSuffix: null };
+  }
+  
+  // Match pattern: numeric digits followed by optional letters
+  const match = cptCode.match(/^(\d+)([a-zA-Z]*)$/);
+  
+  if (!match) {
+    // If no match, return the original code as base with no suffix
+    return { baseCptCode: cptCode, cptSuffix: null };
+  }
+  
+  const [, baseCode, suffix] = match;
+  
+  return {
+    baseCptCode: baseCode,
+    cptSuffix: suffix || null
+  };
+}

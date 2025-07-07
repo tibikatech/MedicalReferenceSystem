@@ -520,6 +520,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // CPT families analysis endpoint
+  app.get("/api/cpt-families", async (req, res, next) => {
+    try {
+      const families = await storage.getCptFamilies();
+      res.json({ families });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // Data source statistics endpoint
+  app.get("/api/data-source-stats", async (req, res, next) => {
+    try {
+      const statistics = await storage.getDataSourceStatistics();
+      res.json({ statistics });
+    } catch (error) {
+      next(error);
+    }
+  });
+
   app.get("/api/import-sessions/user/:userId", async (req, res, next) => {
     try {
       const userId = parseInt(req.params.userId);
