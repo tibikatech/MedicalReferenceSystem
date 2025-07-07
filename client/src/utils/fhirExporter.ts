@@ -34,6 +34,9 @@ interface FhirServiceRequest {
       display: string;
     }>;
   }>;
+  subcategory?: Array<{
+    text: string;
+  }>;
   subject?: {
     reference: string;
   };
@@ -100,6 +103,15 @@ export function testToFhirServiceRequest(test: Test): FhirServiceRequest {
       code: test.snomedCode,
       display: test.name
     });
+  }
+  
+  // Add subcategory if present
+  if (test.subCategory) {
+    serviceRequest.subcategory = [
+      {
+        text: test.subCategory
+      }
+    ];
   }
   
   // Add notes if present
