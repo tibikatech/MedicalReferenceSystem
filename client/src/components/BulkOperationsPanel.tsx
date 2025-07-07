@@ -34,6 +34,7 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CptFamily } from './CptFamilyFilter';
+import CptFamilyExportModal from './CptFamilyExportModal';
 
 interface BulkOperationsPanelProps {
   selectedFamilies: string[];
@@ -49,6 +50,7 @@ export function BulkOperationsPanel({
   onClearSelection
 }: BulkOperationsPanelProps) {
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showExportModal, setShowExportModal] = useState(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -135,13 +137,7 @@ export function BulkOperationsPanel({
   };
 
   const handleBulkExport = () => {
-    const csvContent = generateCSV(selectedTestsData);
-    downloadCSV(csvContent, `bulk_export_${new Date().toISOString().split('T')[0]}.csv`);
-    
-    toast({
-      title: "Export Successful",
-      description: `Exported ${selectedTestsData.length} tests to CSV.`,
-    });
+    setShowExportModal(true);
   };
 
   const handleCopyIds = () => {
@@ -336,6 +332,14 @@ export function BulkOperationsPanel({
           </AlertDialog>
         </div>
       </CardContent>
+
+      {/* Enhanced Export Modal */}
+      <CptFamilyExportModal
+        isOpen={showExportModal}
+        onClose={() => setShowExportModal(false)}
+        selectedTests={selectedTestsData}
+        selectedFamilies={selectedFamilies}
+      />
     </Card>
   );
 }
