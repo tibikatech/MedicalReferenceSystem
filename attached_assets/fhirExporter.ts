@@ -100,12 +100,26 @@ export function testToFhirServiceRequest(test: Test | TestWithNotes): FhirServic
     }];
   }
   
-  // Add notes if available
-  const hasNotes = (test as TestWithNotes).notes || test.description;
-  if (hasNotes) {
-    serviceRequest.note = [{
-      text: (test as TestWithNotes).notes || test.description || ''
-    }];
+  // Add description and notes as separate note entries
+  const notes: Array<{ text: string }> = [];
+  
+  // Add description if present
+  if (test.description) {
+    notes.push({
+      text: `Description: ${test.description}`
+    });
+  }
+  
+  // Add notes if present (for TestWithNotes type)
+  if ((test as TestWithNotes).notes) {
+    notes.push({
+      text: `Notes: ${(test as TestWithNotes).notes}`
+    });
+  }
+  
+  // Only add note array if we have entries
+  if (notes.length > 0) {
+    serviceRequest.note = notes;
   }
   
   return serviceRequest;

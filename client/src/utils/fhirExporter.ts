@@ -114,13 +114,26 @@ export function testToFhirServiceRequest(test: Test): FhirServiceRequest {
     ];
   }
   
+  // Add description and notes as separate note entries
+  const notes: Array<{ text: string }> = [];
+  
+  // Add description if present
+  if (test.description) {
+    notes.push({
+      text: `Description: ${test.description}`
+    });
+  }
+  
   // Add notes if present
   if (test.notes) {
-    serviceRequest.note = [
-      {
-        text: test.notes
-      }
-    ];
+    notes.push({
+      text: `Notes: ${test.notes}`
+    });
+  }
+  
+  // Only add note array if we have entries
+  if (notes.length > 0) {
+    serviceRequest.note = notes;
   }
   
   return serviceRequest;
