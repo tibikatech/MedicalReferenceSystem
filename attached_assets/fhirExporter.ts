@@ -42,6 +42,9 @@ interface FhirServiceRequest {
   subcategory?: Array<{
     text: string;
   }>;
+  description?: Array<{
+    text: string;
+  }>;
   note?: Array<{
     text: string;
   }>;

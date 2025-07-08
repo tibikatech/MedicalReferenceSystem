@@ -37,6 +37,9 @@ interface FhirServiceRequest {
   subcategory?: Array<{
     text: string;
   }>;
+  description?: Array<{
+    text: string;
+  }>;
   subject?: {
     reference: string;
   };
@@ -114,26 +117,22 @@ export function testToFhirServiceRequest(test: Test): FhirServiceRequest {
     ];
   }
   
-  // Add description and notes as separate note entries
-  const notes: Array<{ text: string }> = [];
-  
-  // Add description if present
+  // Add description as separate field if present
   if (test.description) {
-    notes.push({
-      text: `Description: ${test.description}`
-    });
+    serviceRequest.description = [
+      {
+        text: test.description
+      }
+    ];
   }
   
-  // Add notes if present
+  // Add notes as separate field if present
   if (test.notes) {
-    notes.push({
-      text: `Notes: ${test.notes}`
-    });
-  }
-  
-  // Only add note array if we have entries
-  if (notes.length > 0) {
-    serviceRequest.note = notes;
+    serviceRequest.note = [
+      {
+        text: test.notes
+      }
+    ];
   }
   
   return serviceRequest;
