@@ -944,8 +944,8 @@ export default function EnhancedFhirExportTool({
                           <li>• <strong>CPT Code</strong> → code.coding (system: CPT)</li>
                           <li>• <strong>LOINC Code</strong> → code.coding (system: LOINC)</li>
                           <li>• <strong>SNOMED Code</strong> → code.coding (system: SNOMED CT)</li>
-                          <li>• <strong>Description</strong> → note[].text (authorString: "DESCRIPTION")</li>
-                          <li>• <strong>Notes</strong> → note[].text (authorString: "NOTES")</li>
+                          <li>• <strong>Description</strong> → note[].text (authorString: "Description")</li>
+                          <li>• <strong>Notes</strong> → note[].text (authorString: "Notes")</li>
                         </ul>
                         <div className={`mt-3 p-2 rounded-md ${isDarkMode ? 'bg-blue-900/30' : 'bg-blue-50'}`}>
                           <p className="text-xs">

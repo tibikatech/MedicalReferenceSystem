@@ -108,7 +108,7 @@ export function testToFhirServiceRequest(test: Test | TestWithNotes): FhirServic
   if (test.description) {
     notes.push({
       text: test.description,
-      authorString: "DESCRIPTION"
+      authorString: "Description"
     });
   }
   
@@ -116,7 +116,7 @@ export function testToFhirServiceRequest(test: Test | TestWithNotes): FhirServic
   if ((test as TestWithNotes).notes) {
     notes.push({
       text: (test as TestWithNotes).notes,
-      authorString: "NOTES"
+      authorString: "Notes"
     });
   }
   

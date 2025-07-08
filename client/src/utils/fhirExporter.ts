@@ -122,7 +122,7 @@ export function testToFhirServiceRequest(test: Test): FhirServiceRequest {
   if (test.description) {
     notes.push({
       text: test.description,
-      authorString: "DESCRIPTION"
+      authorString: "Description"
     });
   }
   
@@ -130,7 +130,7 @@ export function testToFhirServiceRequest(test: Test): FhirServiceRequest {
   if (test.notes) {
     notes.push({
       text: test.notes,
-      authorString: "NOTES"
+      authorString: "Notes"
     });
   }
   
