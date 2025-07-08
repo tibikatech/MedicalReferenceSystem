@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Test } from '@shared/schema';
+import { testToFhirServiceRequest, createFhirBundle } from '@/utils/fhirExporter';
 import {
   Dialog,
   DialogContent,
@@ -202,69 +203,13 @@ export default function EnhancedFhirExportTool({
       
       // Use the actual FHIR export utility to ensure consistency
       if (exportFormat === ExportFormat.BUNDLE) {
-        // Create a FHIR Bundle using the tests
-        previewContent = JSON.stringify({
-          resourceType: "Bundle",
-          type: "collection",
-          entry: testsToPreview.map(test => ({
-            resource: {
-              resourceType: "ServiceRequest",
-              id: test.id,
-              status: "active",
-              intent: "order",
-              code: {
-                coding: [
-                  {
-                    system: "http://www.ama-assn.org/go/cpt",
-                    code: test.cptCode || "",
-                    display: test.name
-                  }
-                ],
-                text: test.name
-              },
-              category: [
-                {
-                  coding: [
-                    {
-                      system: "http://terminology.hl7.org/CodeSystem/service-category",
-                      code: test.category === "Laboratory Tests" ? "LAB" : "RAD",
-                      display: test.category
-                    }
-                  ]
-                }
-              ]
-            }
-          }))
-        }, null, 2);
+        // Create a FHIR Bundle using the actual exporter
+        const bundle = createFhirBundle(testsToPreview);
+        previewContent = JSON.stringify(bundle, null, 2);
       } else {
-        // Individual resources format
-        previewContent = JSON.stringify(testsToPreview.map(test => ({
-          resourceType: "ServiceRequest",
-          id: test.id,
-          status: "active",
-          intent: "order",
-          code: {
-            coding: [
-              {
-                system: "http://www.ama-assn.org/go/cpt",
-                code: test.cptCode || "",
-                display: test.name
-              }
-            ],
-            text: test.name
-          },
-          category: [
-            {
-              coding: [
-                {
-                  system: "http://terminology.hl7.org/CodeSystem/service-category",
-                  code: test.category === "Laboratory Tests" ? "LAB" : "RAD",
-                  display: test.category
-                }
-              ]
-            }
-          ]
-        })), null, 2);
+        // Individual resources format using actual exporter
+        const resources = testsToPreview.map(test => testToFhirServiceRequest(test));
+        previewContent = JSON.stringify(resources, null, 2);
       }
       
       // Update the UI state
@@ -999,8 +944,14 @@ export default function EnhancedFhirExportTool({
                           <li>• <strong>CPT Code</strong> → code.coding (system: CPT)</li>
                           <li>• <strong>LOINC Code</strong> → code.coding (system: LOINC)</li>
                           <li>• <strong>SNOMED Code</strong> → code.coding (system: SNOMED CT)</li>
-                          <li>• <strong>Notes</strong> → note[0].text</li>
+                          <li>• <strong>Description</strong> → note[].text (authorString: "DESCRIPTION")</li>
+                          <li>• <strong>Notes</strong> → note[].text (authorString: "NOTES")</li>
                         </ul>
+                        <div className={`mt-3 p-2 rounded-md ${isDarkMode ? 'bg-blue-900/30' : 'bg-blue-50'}`}>
+                          <p className="text-xs">
+                            <strong>Note:</strong> Description and Notes are stored as separate entries in the FHIR note array with authorString identifiers for easy parsing.
+                          </p>
+                        </div>
                       </AccordionContent>
                     </AccordionItem>
                   </Accordion>
