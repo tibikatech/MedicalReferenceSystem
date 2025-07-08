@@ -42,11 +42,9 @@ interface FhirServiceRequest {
   subcategory?: Array<{
     text: string;
   }>;
-  description?: Array<{
-    text: string;
-  }>;
   note?: Array<{
     text: string;
+    authorString?: string;
   }>;
 }
 
@@ -103,22 +101,28 @@ export function testToFhirServiceRequest(test: Test | TestWithNotes): FhirServic
     }];
   }
   
-  // Add description as separate field if present
+  // Add description and notes as separate entries in standard FHIR note field
+  const notes: Array<{ text: string; authorString?: string }> = [];
+  
+  // Add description with identifier for parsing
   if (test.description) {
-    serviceRequest.description = [
-      {
-        text: test.description
-      }
-    ];
+    notes.push({
+      text: test.description,
+      authorString: "DESCRIPTION"
+    });
   }
   
-  // Add notes as separate field if present (for TestWithNotes type)
+  // Add notes with identifier for parsing (for TestWithNotes type)
   if ((test as TestWithNotes).notes) {
-    serviceRequest.note = [
-      {
-        text: (test as TestWithNotes).notes
-      }
-    ];
+    notes.push({
+      text: (test as TestWithNotes).notes,
+      authorString: "NOTES"
+    });
+  }
+  
+  // Only add note array if we have entries
+  if (notes.length > 0) {
+    serviceRequest.note = notes;
   }
   
   return serviceRequest;

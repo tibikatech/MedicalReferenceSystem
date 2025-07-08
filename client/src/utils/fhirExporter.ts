@@ -37,14 +37,12 @@ interface FhirServiceRequest {
   subcategory?: Array<{
     text: string;
   }>;
-  description?: Array<{
-    text: string;
-  }>;
   subject?: {
     reference: string;
   };
   note?: Array<{
     text: string;
+    authorString?: string;
   }>;
 }
 
@@ -117,22 +115,28 @@ export function testToFhirServiceRequest(test: Test): FhirServiceRequest {
     ];
   }
   
-  // Add description as separate field if present
+  // Add description and notes as separate entries in standard FHIR note field
+  const notes: Array<{ text: string; authorString?: string }> = [];
+  
+  // Add description with identifier for parsing
   if (test.description) {
-    serviceRequest.description = [
-      {
-        text: test.description
-      }
-    ];
+    notes.push({
+      text: test.description,
+      authorString: "DESCRIPTION"
+    });
   }
   
-  // Add notes as separate field if present
+  // Add notes with identifier for parsing
   if (test.notes) {
-    serviceRequest.note = [
-      {
-        text: test.notes
-      }
-    ];
+    notes.push({
+      text: test.notes,
+      authorString: "NOTES"
+    });
+  }
+  
+  // Only add note array if we have entries
+  if (notes.length > 0) {
+    serviceRequest.note = notes;
   }
   
   return serviceRequest;
