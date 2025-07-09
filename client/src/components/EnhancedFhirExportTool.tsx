@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Test } from '@shared/schema';
-import { testToFhirServiceRequest, createFhirBundle } from '@/utils/fhirExporter';
+import { 
+  testToFhirServiceRequest, 
+  createFhirBundle, 
+  exportTestsToFhir, 
+  getExportStatistics, 
+  downloadFhirExport, 
+  filterTestsByCategory, 
+  filterTestsBySubcategory 
+} from '@/utils/fhirExporter';
 import {
   Dialog,
   DialogContent,
@@ -34,7 +42,7 @@ import {
   Layers,
   BarChart4
 } from 'lucide-react';
-import { downloadFhirExport, filterTestsByCategory, filterTestsBySubcategory } from '@/utils/fhirExporter';
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Progress } from "@/components/ui/progress";
@@ -84,6 +92,7 @@ export default function EnhancedFhirExportTool({
   // Export configuration state
   const [exportFormat, setExportFormat] = useState<ExportFormat>(ExportFormat.BUNDLE);
   const [prettyPrint, setPrettyPrint] = useState<boolean>(true);
+  const [useDualResourceExport, setUseDualResourceExport] = useState<boolean>(true);
   const [fileName, setFileName] = useState(`medirefs-fhir-export-${new Date().toISOString().split('T')[0]}`);
   
   // Preview state
@@ -201,16 +210,8 @@ export default function EnhancedFhirExportTool({
       // Create a preview of the FHIR data
       let previewContent = '';
       
-      // Use the actual FHIR export utility to ensure consistency
-      if (exportFormat === ExportFormat.BUNDLE) {
-        // Create a FHIR Bundle using the actual exporter
-        const bundle = createFhirBundle(testsToPreview);
-        previewContent = JSON.stringify(bundle, null, 2);
-      } else {
-        // Individual resources format using actual exporter
-        const resources = testsToPreview.map(test => testToFhirServiceRequest(test));
-        previewContent = JSON.stringify(resources, null, 2);
-      }
+      // Use the enhanced FHIR export utility with dual resource support
+      previewContent = exportTestsToFhir(testsToPreview, true, useDualResourceExport);
       
       // Update the UI state
       setPreviewJson(previewContent);
@@ -243,8 +244,8 @@ export default function EnhancedFhirExportTool({
       const testsToExport = filteredTests.filter(test => selectedTests.has(test.id));
       setExportProgress(50);
       
-      // Use the downloadFhirExport utility to generate and download the file
-      downloadFhirExport(testsToExport, fileName);
+      // Use the enhanced downloadFhirExport utility with dual resource support
+      downloadFhirExport(testsToExport, fileName, useDualResourceExport);
       
       // Update UI state to complete
       setExportProgress(100);
@@ -371,11 +372,11 @@ export default function EnhancedFhirExportTool({
         {/* STEP 1: SELECT */}
         {activeStep === "select" && (
           <div className="space-y-6 py-2">
-            {/* Test selection summary */}
+            {/* Test selection summary with enhanced FHIR statistics */}
             <div className={`p-4 rounded-lg border ${borderClass}`}>
               <div className="flex justify-between items-center">
                 <div>
-                  <h3 className="font-medium">Test Selection</h3>
+                  <h3 className="font-medium">Test Selection & FHIR Resource Preview</h3>
                   <p className={`text-sm ${mutedTextClass}`}>
                     Select which tests to include in your FHIR export
                   </p>
@@ -383,14 +384,62 @@ export default function EnhancedFhirExportTool({
                 <div className="flex items-center space-x-4">
                   <div className="text-center">
                     <span className="text-xl font-semibold">{tests.length}</span>
-                    <p className={`text-xs ${mutedTextClass}`}>Total</p>
+                    <p className={`text-xs ${mutedTextClass}`}>Total Tests</p>
                   </div>
                   <div className="text-center">
                     <span className="text-xl font-semibold text-blue-600 dark:text-blue-400">{selectedCount}</span>
                     <p className={`text-xs ${mutedTextClass}`}>Selected</p>
                   </div>
+                  {selectedCount > 0 && (() => {
+                    const selectedTestsData = filteredTests.filter(test => selectedTests.has(test.id));
+                    const stats = getExportStatistics(selectedTestsData);
+                    return (
+                      <>
+                        <div className="text-center">
+                          <span className="text-xl font-semibold text-green-600 dark:text-green-400">
+                            {useDualResourceExport ? stats.totalResources : stats.serviceRequests}
+                          </span>
+                          <p className={`text-xs ${mutedTextClass}`}>FHIR Resources</p>
+                        </div>
+                        {useDualResourceExport && stats.imagingStudyResources > 0 && (
+                          <div className="text-center">
+                            <span className="text-lg font-medium text-purple-600 dark:text-purple-400">
+                              {stats.imagingStudyResources}
+                            </span>
+                            <p className={`text-xs ${mutedTextClass}`}>ImagingStudy</p>
+                          </div>
+                        )}
+                      </>
+                    );
+                  })()}
                 </div>
               </div>
+              {selectedCount > 0 && useDualResourceExport && (() => {
+                const selectedTestsData = filteredTests.filter(test => selectedTests.has(test.id));
+                const stats = getExportStatistics(selectedTestsData);
+                return (
+                  <div className={`mt-3 pt-3 border-t ${borderClass}`}>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-center">
+                      <div>
+                        <span className="text-sm font-medium">{stats.serviceRequests}</span>
+                        <p className={`text-xs ${mutedTextClass}`}>ServiceRequest</p>
+                      </div>
+                      <div>
+                        <span className="text-sm font-medium text-purple-600 dark:text-purple-400">{stats.imagingStudyResources}</span>
+                        <p className={`text-xs ${mutedTextClass}`}>ImagingStudy</p>
+                      </div>
+                      <div>
+                        <span className="text-sm font-medium text-blue-600 dark:text-blue-400">{stats.labTests}</span>
+                        <p className={`text-xs ${mutedTextClass}`}>Lab Tests</p>
+                      </div>
+                      <div>
+                        <span className="text-sm font-medium text-orange-600 dark:text-orange-400">{stats.imagingStudies}</span>
+                        <p className={`text-xs ${mutedTextClass}`}>Imaging Studies</p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
             
             <Tabs defaultValue="all" onValueChange={setSelectedTab}>
@@ -611,6 +660,31 @@ export default function EnhancedFhirExportTool({
                         <Label htmlFor="pretty-print" className="font-medium">Pretty-print JSON</Label>
                         <p className={`text-xs ${mutedTextClass}`}>More readable but larger file size</p>
                       </div>
+                    </div>
+                    
+                    <div className="flex items-center space-x-2">
+                      <Checkbox 
+                        id="dual-resource-export" 
+                        checked={useDualResourceExport} 
+                        onCheckedChange={(checked) => setUseDualResourceExport(!!checked)}
+                        className={isDarkMode ? 'border-gray-600' : ''}
+                      />
+                      <div>
+                        <Label htmlFor="dual-resource-export" className="font-medium">Enhanced FHIR Export</Label>
+                        <p className={`text-xs ${mutedTextClass}`}>For imaging studies: export both ServiceRequest and ImagingStudy resources</p>
+                      </div>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Info className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p className="max-w-xs">
+                              When enabled, imaging studies are exported as both ServiceRequest (order) and ImagingStudy (results) resources for complete FHIR R4 compliance. Lab tests remain as ServiceRequest only.
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
                     </div>
                     
                     <div>

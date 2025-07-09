@@ -128,6 +128,15 @@ The core of the application is a comprehensive test catalog with:
 - **Start Command**: `npm run start`
 
 ## Recent Changes
+- **July 9, 2025**: Implemented FHIR R4-compliant dual resource export for imaging studies
+  - **Enhanced FHIR Exporter**: Imaging studies now export as both ServiceRequest (order) and ImagingStudy (results) resources
+  - Added DICOM modality mapping for imaging subcategories (X-ray→DX, MRI→MR, CT→CT, etc.)
+  - Implemented intelligent body site extraction from test names using SNOMED CT codes
+  - Created proper cross-references between ServiceRequest and ImagingStudy resources
+  - **Enhanced Export UI**: Added dual resource export toggle with enhanced FHIR statistics
+  - Real-time resource count display showing ServiceRequest, ImagingStudy, lab tests, and imaging studies breakdown
+  - Maintained backward compatibility with legacy ServiceRequest-only export mode
+  - **FHIR Compliance**: Full FHIR R4 compliance for imaging workflows representing complete order-to-result lifecycle
 - **July 7, 2025**: Completed Phases 1-3 of CPT Code Suffix Enhancement Roadmap
   - **Phase 1 - Data Analysis & Schema Enhancement**: Enhanced database schema with baseCptCode and cptSuffix fields
   - All 277 existing tests automatically parsed and populated with base codes and suffixes
