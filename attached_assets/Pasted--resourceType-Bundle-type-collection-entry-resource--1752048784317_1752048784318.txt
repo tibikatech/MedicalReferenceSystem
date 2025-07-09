@@ -1,0 +1,375 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-FLU-76080a",
+        "status": "completed",
+        "intent": "original-order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "76080a",
+              "display": "Fluoroscopy Joint Shoulder Left With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18853-4",
+              "display": "Fluoroscopy Joint Shoulder Left With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363709006",
+              "display": "Fluoroscopy Joint Shoulder Left With Contrast"
+            }
+          ],
+          "text": "Fluoroscopy Joint Shoulder Left With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Fluoroscopy"
+          }
+        ],
+        "supportingInfo": [
+          {
+            "reference": "ImagingStudy/TTES-IMG-FLU-76080a-study"
+          }
+        ],
+        "note": [
+          {
+            "text": "Real-time imaging for guided joint procedures",
+            "authorString": "Description"
+          },
+          {
+            "text": "imaging",
+            "authorString": "Notes"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ImagingStudy",
+        "id": "TTES-IMG-FLU-76080a-study",
+        "status": "available",
+        "modality": [
+          {
+            "system": "http://dicom.nema.org/resources/ontology/DCM",
+            "code": "XA",
+            "display": "X-Ray Angiography"
+          }
+        ],
+        "basedOn": [
+          {
+            "reference": "ServiceRequest/TTES-IMG-FLU-76080a"
+          }
+        ],
+        "procedureCode": [
+          {
+            "coding": [
+              {
+                "system": "http://www.ama-assn.org/go/cpt",
+                "code": "76080a",
+                "display": "Fluoroscopy Joint Shoulder Left With Contrast"
+              },
+              {
+                "system": "http://loinc.org",
+                "code": "18853-4",
+                "display": "Fluoroscopy Joint Shoulder Left With Contrast"
+              },
+              {
+                "system": "http://snomed.info/sct",
+                "code": "363709006",
+                "display": "Fluoroscopy Joint Shoulder Left With Contrast"
+              }
+            ],
+            "text": "Fluoroscopy Joint Shoulder Left With Contrast"
+          }
+        ],
+        "bodySite": [
+          {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "16982005",
+                "display": "Shoulder region structure"
+              }
+            ],
+            "text": "Shoulder region structure"
+          }
+        ],
+        "description": "Real-time imaging for guided joint procedures",
+        "note": [
+          {
+            "text": "Real-time imaging for guided joint procedures",
+            "authorString": "Description"
+          },
+          {
+            "text": "imaging",
+            "authorString": "Notes"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-XRAY-70250",
+        "status": "completed",
+        "intent": "original-order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "70250",
+              "display": "X-RAY Brain Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24696-8",
+              "display": "X-RAY Brain Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363725005",
+              "display": "X-RAY Brain Without Contrast"
+            }
+          ],
+          "text": "X-RAY Brain Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Radiography"
+          }
+        ],
+        "supportingInfo": [
+          {
+            "reference": "ImagingStudy/TTES-IMG-XRAY-70250-study"
+          }
+        ],
+        "note": [
+          {
+            "text": "Skull X-ray to assess facial bones or head injury",
+            "authorString": "Description"
+          },
+          {
+            "text": "imaging",
+            "authorString": "Notes"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ImagingStudy",
+        "id": "TTES-IMG-XRAY-70250-study",
+        "status": "available",
+        "modality": [
+          {
+            "system": "http://dicom.nema.org/resources/ontology/DCM",
+            "code": "DX",
+            "display": "Digital Radiography"
+          }
+        ],
+        "basedOn": [
+          {
+            "reference": "ServiceRequest/TTES-IMG-XRAY-70250"
+          }
+        ],
+        "procedureCode": [
+          {
+            "coding": [
+              {
+                "system": "http://www.ama-assn.org/go/cpt",
+                "code": "70250",
+                "display": "X-RAY Brain Without Contrast"
+              },
+              {
+                "system": "http://loinc.org",
+                "code": "24696-8",
+                "display": "X-RAY Brain Without Contrast"
+              },
+              {
+                "system": "http://snomed.info/sct",
+                "code": "363725005",
+                "display": "X-RAY Brain Without Contrast"
+              }
+            ],
+            "text": "X-RAY Brain Without Contrast"
+          }
+        ],
+        "bodySite": [
+          {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "12738006",
+                "display": "Brain structure"
+              }
+            ],
+            "text": "Brain structure"
+          }
+        ],
+        "description": "Skull X-ray to assess facial bones or head injury",
+        "note": [
+          {
+            "text": "Skull X-ray to assess facial bones or head injury",
+            "authorString": "Description"
+          },
+          {
+            "text": "imaging",
+            "authorString": "Notes"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-XRAY-72010a",
+        "status": "completed",
+        "intent": "original-order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "72010a",
+              "display": "X-RAY Cervical Spine Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24725-1",
+              "display": "X-RAY Cervical Spine Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363706005",
+              "display": "X-RAY Cervical Spine Without Contrast"
+            }
+          ],
+          "text": "X-RAY Cervical Spine Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Radiography"
+          }
+        ],
+        "supportingInfo": [
+          {
+            "reference": "ImagingStudy/TTES-IMG-XRAY-72010a-study"
+          }
+        ],
+        "note": [
+          {
+            "text": "X-ray of cervical spine to detect alignment issues or degeneration",
+            "authorString": "Description"
+          },
+          {
+            "text": "imaging",
+            "authorString": "Notes"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ImagingStudy",
+        "id": "TTES-IMG-XRAY-72010a-study",
+        "status": "available",
+        "modality": [
+          {
+            "system": "http://dicom.nema.org/resources/ontology/DCM",
+            "code": "DX",
+            "display": "Digital Radiography"
+          }
+        ],
+        "basedOn": [
+          {
+            "reference": "ServiceRequest/TTES-IMG-XRAY-72010a"
+          }
+        ],
+        "procedureCode": [
+          {
+            "coding": [
+              {
+                "system": "http://www.ama-assn.org/go/cpt",
+                "code": "72010a",
+                "display": "X-RAY Cervical Spine Without Contrast"
+              },
+              {
+                "system": "http://loinc.org",
+                "code": "24725-1",
+                "display": "X-RAY Cervical Spine Without Contrast"
+              },
+              {
+                "system": "http://snomed.info/sct",
+                "code": "363706005",
+                "display": "X-RAY Cervical Spine Without Contrast"
+              }
+            ],
+            "text": "X-RAY Cervical Spine Without Contrast"
+          }
+        ],
+        "bodySite": [
+          {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "122494005",
+                "display": "Cervical spine structure"
+              }
+            ],
+            "text": "Cervical spine structure"
+          }
+        ],
+        "description": "X-ray of cervical spine to detect alignment issues or degeneration",
+        "note": [
+          {
+            "text": "X-ray of cervical spine to detect alignment issues or degeneration",
+            "authorString": "Description"
+          },
+          {
+            "text": "imaging",
+            "authorString": "Notes"
+          }
+        ]
+      }
+    }
+  ]
+}

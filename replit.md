@@ -135,6 +135,9 @@ The core of the application is a comprehensive test catalog with:
   - Created proper cross-references between ServiceRequest and ImagingStudy resources
   - **Enhanced Export UI**: Added dual resource export toggle with enhanced FHIR statistics
   - Real-time resource count display showing ServiceRequest, ImagingStudy, lab tests, and imaging studies breakdown
+  - **Resource Type Planning**: Added comprehensive preview section showing exactly what FHIR resources will be generated
+  - Detailed breakdown of laboratory tests vs imaging studies with resource type explanations
+  - FHIR R4 compliance notices and resource generation transparency
   - Maintained backward compatibility with legacy ServiceRequest-only export mode
   - **FHIR Compliance**: Full FHIR R4 compliance for imaging workflows representing complete order-to-result lifecycle
 - **July 7, 2025**: Completed Phases 1-3 of CPT Code Suffix Enhancement Roadmap

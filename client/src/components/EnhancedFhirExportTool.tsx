@@ -40,7 +40,9 @@ import {
   PlusCircle,
   Package,
   Layers,
-  BarChart4
+  BarChart4,
+  Microscope,
+  Monitor
 } from 'lucide-react';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -900,12 +902,13 @@ export default function EnhancedFhirExportTool({
         {/* STEP 2: PREVIEW */}
         {activeStep === "preview" && (
           <div className="space-y-6 py-2">
+            {/* Resource Type Planning Section */}
             <div className={`p-4 rounded-lg border ${borderClass}`}>
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center mb-4">
                 <div>
-                  <h3 className="font-medium">FHIR Preview</h3>
+                  <h3 className="font-medium">FHIR Resource Planning</h3>
                   <p className={`text-sm ${mutedTextClass}`}>
-                    Preview how your tests will look in FHIR format
+                    Review what FHIR resources will be generated for your selected tests
                   </p>
                 </div>
                 <div className="flex items-center space-x-2">
@@ -917,6 +920,134 @@ export default function EnhancedFhirExportTool({
                   </Badge>
                 </div>
               </div>
+              
+              {selectedCount > 0 && (() => {
+                const selectedTestsData = filteredTests.filter(test => selectedTests.has(test.id));
+                const stats = getExportStatistics(selectedTestsData);
+                const imagingTests = selectedTestsData.filter(test => test.category === "Imaging Studies");
+                const labTests = selectedTestsData.filter(test => test.category !== "Imaging Studies");
+                
+                return (
+                  <div className="space-y-4">
+                    {/* Resource Generation Summary */}
+                    <div className={`p-3 rounded-md ${isDarkMode ? 'bg-blue-900/20' : 'bg-blue-50'}`}>
+                      <h4 className="font-medium mb-2 flex items-center">
+                        <Layers className="mr-2 h-4 w-4" />
+                        Resource Generation Plan
+                      </h4>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <div className="text-center">
+                          <div className="text-lg font-semibold text-blue-600 dark:text-blue-400">
+                            {stats.serviceRequests}
+                          </div>
+                          <div className="text-xs text-gray-600 dark:text-gray-400">ServiceRequest</div>
+                          <div className="text-xs text-gray-500">All tests get this</div>
+                        </div>
+                        
+                        {useDualResourceExport && (
+                          <div className="text-center">
+                            <div className="text-lg font-semibold text-purple-600 dark:text-purple-400">
+                              {stats.imagingStudyResources}
+                            </div>
+                            <div className="text-xs text-gray-600 dark:text-gray-400">ImagingStudy</div>
+                            <div className="text-xs text-gray-500">Imaging studies only</div>
+                          </div>
+                        )}
+                        
+                        <div className="text-center">
+                          <div className="text-lg font-semibold text-green-600 dark:text-green-400">
+                            {useDualResourceExport ? stats.totalResources : stats.serviceRequests}
+                          </div>
+                          <div className="text-xs text-gray-600 dark:text-gray-400">Total Resources</div>
+                          <div className="text-xs text-gray-500">Final export count</div>
+                        </div>
+                        
+                        <div className="text-center">
+                          <div className="text-lg font-semibold text-orange-600 dark:text-orange-400">
+                            {exportFormat === ExportFormat.BUNDLE ? '1' : (useDualResourceExport ? stats.totalResources : stats.serviceRequests)}
+                          </div>
+                          <div className="text-xs text-gray-600 dark:text-gray-400">
+                            {exportFormat === ExportFormat.BUNDLE ? 'Bundle' : 'Files'}
+                          </div>
+                          <div className="text-xs text-gray-500">Output structure</div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Test Type Breakdown */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {/* Laboratory Tests */}
+                      {labTests.length > 0 && (
+                        <div className={`p-3 rounded-md border ${borderClass}`}>
+                          <h5 className="font-medium mb-2 flex items-center">
+                            <Microscope className="mr-2 h-4 w-4 text-green-600 dark:text-green-400" />
+                            Laboratory Tests ({labTests.length})
+                          </h5>
+                          <div className="space-y-1">
+                            <div className="flex justify-between text-sm">
+                              <span>Resource Type:</span>
+                              <Badge variant="outline" className="text-xs">ServiceRequest only</Badge>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span>Total Resources:</span>
+                              <span className="font-medium">{labTests.length}</span>
+                            </div>
+                            <p className="text-xs text-gray-500">
+                              Each lab test becomes one ServiceRequest resource representing the test order.
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* Imaging Studies */}
+                      {imagingTests.length > 0 && (
+                        <div className={`p-3 rounded-md border ${borderClass}`}>
+                          <h5 className="font-medium mb-2 flex items-center">
+                            <Monitor className="mr-2 h-4 w-4 text-purple-600 dark:text-purple-400" />
+                            Imaging Studies ({imagingTests.length})
+                          </h5>
+                          <div className="space-y-1">
+                            <div className="flex justify-between text-sm">
+                              <span>Resource Type:</span>
+                              <Badge variant="outline" className="text-xs">
+                                {useDualResourceExport ? 'ServiceRequest + ImagingStudy' : 'ServiceRequest only'}
+                              </Badge>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span>Total Resources:</span>
+                              <span className="font-medium">
+                                {useDualResourceExport ? imagingTests.length * 2 : imagingTests.length}
+                              </span>
+                            </div>
+                            <p className="text-xs text-gray-500">
+                              {useDualResourceExport 
+                                ? 'Each imaging study becomes both a ServiceRequest (order) and ImagingStudy (results) resource.'
+                                : 'Each imaging study becomes one ServiceRequest resource (legacy mode).'}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* FHIR Compliance Notice */}
+                    {imagingTests.length > 0 && (
+                      <div className={`p-3 rounded-md ${isDarkMode ? 'bg-green-900/20' : 'bg-green-50'} border border-green-200 dark:border-green-800`}>
+                        <div className="flex items-start">
+                          <Info className="h-4 w-4 mr-2 mt-0.5 text-green-600 dark:text-green-400" />
+                          <div>
+                            <h6 className="font-medium text-green-800 dark:text-green-300">FHIR R4 Compliance</h6>
+                            <p className="text-xs text-green-700 dark:text-green-400 mt-1">
+                              {useDualResourceExport 
+                                ? 'Enhanced export mode creates both ServiceRequest (order) and ImagingStudy (results) resources for imaging studies, providing complete FHIR R4-compliant workflow representation.'
+                                : 'Legacy export mode creates only ServiceRequest resources. Enable Enhanced FHIR Export for full R4 compliance with imaging workflows.'}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
