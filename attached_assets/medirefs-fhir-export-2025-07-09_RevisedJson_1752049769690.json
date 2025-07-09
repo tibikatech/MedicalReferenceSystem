@@ -1,0 +1,498 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-FLU-76080a",
+        "status": "completed",
+        "intent": "original-order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "76080a",
+              "display": "Fluoroscopy Joint Shoulder Left With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18853-4",
+              "display": "Fluoroscopy Joint Shoulder Left With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363709006",
+              "display": "Fluoroscopy Joint Shoulder Left With Contrast"
+            }
+          ],
+          "text": "Fluoroscopy Joint Shoulder Left With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Fluoroscopy"
+          }
+        ],
+        "supportingInfo": [
+          {
+            "reference": "ImagingStudy/TTES-IMG-FLU-76080a-study"
+          }
+        ],
+        "note": [
+          {
+            "text": "Real-time imaging for guided joint procedures",
+            "authorString": "Description"
+          },
+          {
+            "text": "imaging",
+            "authorString": "Notes"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ImagingStudy",
+        "id": "TTES-IMG-FLU-76080a-study",
+        "status": "available",
+        "modality": [
+          {
+            "system": "http://dicom.nema.org/resources/ontology/DCM",
+            "code": "XA",
+            "display": "X-Ray Angiography"
+          }
+        ],
+        "basedOn": [
+          {
+            "reference": "ServiceRequest/TTES-IMG-FLU-76080a"
+          }
+        ],
+        "procedureCode": [
+          {
+            "coding": [
+              {
+                "system": "http://www.ama-assn.org/go/cpt",
+                "code": "76080a",
+                "display": "Fluoroscopy Joint Shoulder Left With Contrast"
+              },
+              {
+                "system": "http://loinc.org",
+                "code": "18853-4",
+                "display": "Fluoroscopy Joint Shoulder Left With Contrast"
+              },
+              {
+                "system": "http://snomed.info/sct",
+                "code": "363709006",
+                "display": "Fluoroscopy Joint Shoulder Left With Contrast"
+              }
+            ],
+            "text": "Fluoroscopy Joint Shoulder Left With Contrast"
+          }
+        ],
+        "bodySite": [
+          {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "16982005",
+                "display": "Shoulder region structure"
+              }
+            ],
+            "text": "Shoulder region structure"
+          }
+        ],
+        "description": "Real-time imaging for guided joint procedures",
+        "note": [
+          {
+            "text": "Real-time imaging for guided joint procedures",
+            "authorString": "Description"
+          },
+          {
+            "text": "imaging",
+            "authorString": "Notes"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-FLU-76080b",
+        "status": "completed",
+        "intent": "original-order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "76080b",
+              "display": "Fluoroscopy Joint Shoulder Right With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18853-4",
+              "display": "Fluoroscopy Joint Shoulder Right With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363709006",
+              "display": "Fluoroscopy Joint Shoulder Right With Contrast"
+            }
+          ],
+          "text": "Fluoroscopy Joint Shoulder Right With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Fluoroscopy"
+          }
+        ],
+        "supportingInfo": [
+          {
+            "reference": "ImagingStudy/TTES-IMG-FLU-76080b-study"
+          }
+        ],
+        "note": [
+          {
+            "text": "Real-time imaging for guided joint procedures",
+            "authorString": "Description"
+          },
+          {
+            "text": "imaging",
+            "authorString": "Notes"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ImagingStudy",
+        "id": "TTES-IMG-FLU-76080b-study",
+        "status": "available",
+        "modality": [
+          {
+            "system": "http://dicom.nema.org/resources/ontology/DCM",
+            "code": "XA",
+            "display": "X-Ray Angiography"
+          }
+        ],
+        "basedOn": [
+          {
+            "reference": "ServiceRequest/TTES-IMG-FLU-76080b"
+          }
+        ],
+        "procedureCode": [
+          {
+            "coding": [
+              {
+                "system": "http://www.ama-assn.org/go/cpt",
+                "code": "76080b",
+                "display": "Fluoroscopy Joint Shoulder Right With Contrast"
+              },
+              {
+                "system": "http://loinc.org",
+                "code": "18853-4",
+                "display": "Fluoroscopy Joint Shoulder Right With Contrast"
+              },
+              {
+                "system": "http://snomed.info/sct",
+                "code": "363709006",
+                "display": "Fluoroscopy Joint Shoulder Right With Contrast"
+              }
+            ],
+            "text": "Fluoroscopy Joint Shoulder Right With Contrast"
+          }
+        ],
+        "bodySite": [
+          {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "16982005",
+                "display": "Shoulder region structure"
+              }
+            ],
+            "text": "Shoulder region structure"
+          }
+        ],
+        "description": "Real-time imaging for guided joint procedures",
+        "note": [
+          {
+            "text": "Real-time imaging for guided joint procedures",
+            "authorString": "Description"
+          },
+          {
+            "text": "imaging",
+            "authorString": "Notes"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-FLU-76080c",
+        "status": "completed",
+        "intent": "original-order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "76080c",
+              "display": "Fluoroscopy Joint Shoulder Left Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18853-4",
+              "display": "Fluoroscopy Joint Shoulder Left Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363709006",
+              "display": "Fluoroscopy Joint Shoulder Left Without Contrast"
+            }
+          ],
+          "text": "Fluoroscopy Joint Shoulder Left Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Fluoroscopy"
+          }
+        ],
+        "supportingInfo": [
+          {
+            "reference": "ImagingStudy/TTES-IMG-FLU-76080c-study"
+          }
+        ],
+        "note": [
+          {
+            "text": "Real-time imaging for guided joint procedures",
+            "authorString": "Description"
+          },
+          {
+            "text": "imaging",
+            "authorString": "Notes"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ImagingStudy",
+        "id": "TTES-IMG-FLU-76080c-study",
+        "status": "available",
+        "modality": [
+          {
+            "system": "http://dicom.nema.org/resources/ontology/DCM",
+            "code": "XA",
+            "display": "X-Ray Angiography"
+          }
+        ],
+        "basedOn": [
+          {
+            "reference": "ServiceRequest/TTES-IMG-FLU-76080c"
+          }
+        ],
+        "procedureCode": [
+          {
+            "coding": [
+              {
+                "system": "http://www.ama-assn.org/go/cpt",
+                "code": "76080c",
+                "display": "Fluoroscopy Joint Shoulder Left Without Contrast"
+              },
+              {
+                "system": "http://loinc.org",
+                "code": "18853-4",
+                "display": "Fluoroscopy Joint Shoulder Left Without Contrast"
+              },
+              {
+                "system": "http://snomed.info/sct",
+                "code": "363709006",
+                "display": "Fluoroscopy Joint Shoulder Left Without Contrast"
+              }
+            ],
+            "text": "Fluoroscopy Joint Shoulder Left Without Contrast"
+          }
+        ],
+        "bodySite": [
+          {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "16982005",
+                "display": "Shoulder region structure"
+              }
+            ],
+            "text": "Shoulder region structure"
+          }
+        ],
+        "description": "Real-time imaging for guided joint procedures",
+        "note": [
+          {
+            "text": "Real-time imaging for guided joint procedures",
+            "authorString": "Description"
+          },
+          {
+            "text": "imaging",
+            "authorString": "Notes"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-FLU-76080d",
+        "status": "completed",
+        "intent": "original-order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "76080d",
+              "display": "Fluoroscopy Joint Shoulder Right Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18853-4",
+              "display": "Fluoroscopy Joint Shoulder Right Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363709006",
+              "display": "Fluoroscopy Joint Shoulder Right Without Contrast"
+            }
+          ],
+          "text": "Fluoroscopy Joint Shoulder Right Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Fluoroscopy"
+          }
+        ],
+        "supportingInfo": [
+          {
+            "reference": "ImagingStudy/TTES-IMG-FLU-76080d-study"
+          }
+        ],
+        "note": [
+          {
+            "text": "Real-time imaging for guided joint procedures",
+            "authorString": "Description"
+          },
+          {
+            "text": "imaging",
+            "authorString": "Notes"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ImagingStudy",
+        "id": "TTES-IMG-FLU-76080d-study",
+        "status": "available",
+        "modality": [
+          {
+            "system": "http://dicom.nema.org/resources/ontology/DCM",
+            "code": "XA",
+            "display": "X-Ray Angiography"
+          }
+        ],
+        "basedOn": [
+          {
+            "reference": "ServiceRequest/TTES-IMG-FLU-76080d"
+          }
+        ],
+        "procedureCode": [
+          {
+            "coding": [
+              {
+                "system": "http://www.ama-assn.org/go/cpt",
+                "code": "76080d",
+                "display": "Fluoroscopy Joint Shoulder Right Without Contrast"
+              },
+              {
+                "system": "http://loinc.org",
+                "code": "18853-4",
+                "display": "Fluoroscopy Joint Shoulder Right Without Contrast"
+              },
+              {
+                "system": "http://snomed.info/sct",
+                "code": "363709006",
+                "display": "Fluoroscopy Joint Shoulder Right Without Contrast"
+              }
+            ],
+            "text": "Fluoroscopy Joint Shoulder Right Without Contrast"
+          }
+        ],
+        "bodySite": [
+          {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "16982005",
+                "display": "Shoulder region structure"
+              }
+            ],
+            "text": "Shoulder region structure"
+          }
+        ],
+        "description": "Real-time imaging for guided joint procedures",
+        "note": [
+          {
+            "text": "Real-time imaging for guided joint procedures",
+            "authorString": "Description"
+          },
+          {
+            "text": "imaging",
+            "authorString": "Notes"
+          }
+        ]
+      }
+    }
+  ]
+}
