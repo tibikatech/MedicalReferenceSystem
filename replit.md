@@ -128,6 +128,28 @@ The core of the application is a comprehensive test catalog with:
 - **Start Command**: `npm run start`
 
 ## Recent Changes
+- **July 9, 2025**: Completed comprehensive 4-phase dual resource confusion resolution roadmap
+  - **Phase 1 - Enhanced Documentation & Clarity**: Improved resource naming with ServiceRequest IDs now using "-order" suffix for clarity (e.g., "TTES-IMG-FLU-76080a-order" vs "TTES-IMG-FLU-76080a-study")
+    - Enhanced workflow documentation with detailed explanations of Order → Execution → Results healthcare workflow
+    - Added interactive workflow diagrams showing resource relationships and cross-references
+    - Updated Resource Guide with comprehensive dual resource explanations and status meanings
+    - Improved resource relationship documentation showing supportingInfo and basedOn connections
+  - **Phase 2 - Export Mode Options**: Implemented comprehensive export mode selection system
+    - Added Clinical Workflow Mode (recommended) - Full FHIR R4 compliance with dual resources for imaging
+    - Added Simplified Mode (legacy) - ServiceRequest resources only for simpler use cases
+    - Added Consolidated Mode (coming soon) - Single combined resource for basic analytics
+    - Synchronized export modes with existing dual resource toggle for backward compatibility
+  - **Phase 3 - Visual Enhancements**: Dynamic workflow visualization based on selected export mode
+    - Color-coded workflow diagrams that change based on export mode selection
+    - Real-time resource planning updates showing exactly what will be generated
+    - Enhanced Resource Guide with export mode comparison and use case recommendations
+    - Mode-specific workflow explanations (order-only vs order+execution vs consolidated)
+  - **Phase 4 - Smart Defaults**: Context-aware export mode recommendations
+    - Intelligent analysis of dataset composition (imaging vs lab test ratios) 
+    - Smart recommendations with explanations for optimal export mode selection
+    - One-click "Use Recommended Mode" button for quick mode switching
+    - Contextual tooltips explaining why specific modes are recommended for different use cases
+  - **Complete Solution**: Addressed user confusion about dual resources while maintaining FHIR R4 compliance and providing clear educational content about healthcare workflow representation
 - **July 9, 2025**: Implemented FHIR R4-compliant dual resource export for imaging studies
   - **Enhanced FHIR Exporter**: Imaging studies now export as both ServiceRequest (order) and ImagingStudy (results) resources
   - Added DICOM modality mapping for imaging subcategories (X-ray→DX, MRI→MR, CT→CT, etc.)

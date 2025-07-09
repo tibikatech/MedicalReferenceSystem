@@ -74,6 +74,12 @@ enum ExportFormat {
   BUNDLE = 'bundle'
 }
 
+enum ExportMode {
+  CLINICAL_WORKFLOW = 'clinical_workflow',  // ServiceRequest + ImagingStudy (enhanced)
+  SIMPLIFIED = 'simplified',                // ServiceRequest only (legacy)
+  CONSOLIDATED = 'consolidated'             // Single combined resource (new)
+}
+
 export default function EnhancedFhirExportTool({
   isOpen,
   onClose,
@@ -95,6 +101,41 @@ export default function EnhancedFhirExportTool({
   const [exportFormat, setExportFormat] = useState<ExportFormat>(ExportFormat.BUNDLE);
   const [prettyPrint, setPrettyPrint] = useState<boolean>(true);
   const [useDualResourceExport, setUseDualResourceExport] = useState<boolean>(true);
+  const [exportMode, setExportMode] = useState<ExportMode>(ExportMode.CLINICAL_WORKFLOW);
+  
+  // Phase 4: Smart Defaults - Context-aware recommendations
+  const getRecommendedExportMode = (): ExportMode => {
+    const imagingCount = tests.filter(test => test.category === "Imaging Studies").length;
+    const labCount = tests.filter(test => test.category === "Laboratory Tests").length;
+    
+    // If mostly imaging studies, recommend clinical workflow
+    if (imagingCount > labCount) {
+      return ExportMode.CLINICAL_WORKFLOW;
+    }
+    
+    // If mostly lab tests, simplified mode is fine
+    if (labCount > imagingCount * 2) {
+      return ExportMode.SIMPLIFIED;
+    }
+    
+    // Default to clinical workflow for mixed or balanced datasets
+    return ExportMode.CLINICAL_WORKFLOW;
+  };
+  
+  const getExportModeRecommendation = (): string => {
+    const imagingCount = tests.filter(test => test.category === "Imaging Studies").length;
+    const labCount = tests.filter(test => test.category === "Laboratory Tests").length;
+    
+    if (imagingCount > labCount) {
+      return "Clinical Workflow Mode recommended for imaging-heavy datasets to maintain FHIR R4 compliance.";
+    }
+    
+    if (labCount > imagingCount * 2) {
+      return "Simplified Mode suitable for lab-focused datasets where execution tracking isn't critical.";
+    }
+    
+    return "Clinical Workflow Mode recommended for balanced datasets to ensure full interoperability.";
+  };
   const [fileName, setFileName] = useState(`medirefs-fhir-export-${new Date().toISOString().split('T')[0]}`);
   
   // Preview state
@@ -152,6 +193,15 @@ export default function EnhancedFhirExportTool({
     return true;
   });
   
+  // Sync export mode with dual resource toggle 
+  useEffect(() => {
+    if (exportMode === ExportMode.CLINICAL_WORKFLOW && !useDualResourceExport) {
+      setUseDualResourceExport(true);
+    } else if (exportMode !== ExportMode.CLINICAL_WORKFLOW && useDualResourceExport) {
+      setUseDualResourceExport(false);
+    }
+  }, [exportMode, useDualResourceExport]);
+
   // Check if a test matches the search query
   const testMatchesSearchQuery = (test: Test, query: string): boolean => {
     const lowerQuery = query.toLowerCase();
@@ -664,29 +714,93 @@ export default function EnhancedFhirExportTool({
                       </div>
                     </div>
                     
-                    <div className="flex items-center space-x-2">
-                      <Checkbox 
-                        id="dual-resource-export" 
-                        checked={useDualResourceExport} 
-                        onCheckedChange={(checked) => setUseDualResourceExport(!!checked)}
-                        className={isDarkMode ? 'border-gray-600' : ''}
-                      />
-                      <div>
-                        <Label htmlFor="dual-resource-export" className="font-medium">Enhanced FHIR Export</Label>
-                        <p className={`text-xs ${mutedTextClass}`}>For imaging studies: export both ServiceRequest and ImagingStudy resources</p>
+                    {/* Export Mode Selection - Phase 2 & 4 Implementation */}
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <Label className="font-medium text-sm">Export Mode</Label>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Info className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                            </TooltipTrigger>
+                            <TooltipContent className="max-w-xs">
+                              <p className="text-xs">{getExportModeRecommendation()}</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
                       </div>
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Info className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p className="max-w-xs">
-                              When enabled, imaging studies are exported as both ServiceRequest (order) and ImagingStudy (results) resources for complete FHIR R4 compliance. Lab tests remain as ServiceRequest only.
+                      
+                      {/* Smart Recommendations - Phase 4 */}
+                      {getRecommendedExportMode() !== exportMode && (
+                        <div className={`p-3 rounded-md border ${isDarkMode ? 'bg-amber-900/20 border-amber-800' : 'bg-amber-50 border-amber-200'}`}>
+                          <div className="flex items-start space-x-2">
+                            <Info className="h-4 w-4 mt-0.5 text-amber-600 dark:text-amber-400" />
+                            <div className="flex-1">
+                              <p className="text-xs text-amber-800 dark:text-amber-300 font-medium">Smart Recommendation</p>
+                              <p className="text-xs text-amber-700 dark:text-amber-400 mt-1">
+                                {getExportModeRecommendation()}
+                              </p>
+                              <Button 
+                                size="sm" 
+                                variant="outline" 
+                                className="mt-2 h-6 text-xs border-amber-300 text-amber-700 hover:bg-amber-100 dark:border-amber-700 dark:text-amber-300 dark:hover:bg-amber-900/50"
+                                onClick={() => setExportMode(getRecommendedExportMode())}
+                              >
+                                Use Recommended Mode
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      <RadioGroup 
+                        value={exportMode} 
+                        onValueChange={(value) => {
+                          setExportMode(value as ExportMode);
+                          // Sync with dual resource export toggle
+                          setUseDualResourceExport(value === ExportMode.CLINICAL_WORKFLOW);
+                        }}
+                        className="space-y-3"
+                      >
+                        <div className="flex items-start space-x-3 p-3 rounded-md border border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20">
+                          <RadioGroupItem value={ExportMode.CLINICAL_WORKFLOW} id="mode-clinical" className="mt-1" />
+                          <div className="flex-1">
+                            <Label htmlFor="mode-clinical" className="font-medium text-green-800 dark:text-green-300">
+                              Clinical Workflow Mode
+                              <Badge variant="outline" className="ml-2 text-xs bg-green-100 dark:bg-green-800">Recommended</Badge>
+                            </Label>
+                            <p className="text-xs text-green-700 dark:text-green-400 mt-1">
+                              Full FHIR R4 compliance: ServiceRequest (order) + ImagingStudy (results) for imaging studies. 
+                              Represents complete healthcare workflow from order to execution.
                             </p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start space-x-3 p-3 rounded-md border border-orange-200 dark:border-orange-800 bg-orange-50 dark:bg-orange-900/20">
+                          <RadioGroupItem value={ExportMode.SIMPLIFIED} id="mode-simplified" className="mt-1" />
+                          <div className="flex-1">
+                            <Label htmlFor="mode-simplified" className="font-medium text-orange-800 dark:text-orange-300">
+                              Simplified Mode
+                              <Badge variant="outline" className="ml-2 text-xs">Legacy</Badge>
+                            </Label>
+                            <p className="text-xs text-orange-700 dark:text-orange-400 mt-1">
+                              ServiceRequest resources only. Simpler structure but not fully FHIR R4 compliant for imaging workflows.
+                            </p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start space-x-3 p-3 rounded-md border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20">
+                          <RadioGroupItem value={ExportMode.CONSOLIDATED} id="mode-consolidated" className="mt-1" />
+                          <div className="flex-1">
+                            <Label htmlFor="mode-consolidated" className="font-medium text-blue-800 dark:text-blue-300">
+                              Consolidated Mode
+                              <Badge variant="outline" className="ml-2 text-xs">Coming Soon</Badge>
+                            </Label>
+                            <p className="text-xs text-blue-700 dark:text-blue-400 mt-1">
+                              Single resource combining order and execution details. Less compliant but simpler for basic analytics.
+                            </p>
+                          </div>
+                        </div>
+                      </RadioGroup>
                     </div>
                     
                     <div>
@@ -1020,14 +1134,108 @@ export default function EnhancedFhirExportTool({
                               </span>
                             </div>
                             <p className="text-xs text-gray-500">
-                              {useDualResourceExport 
-                                ? 'Each imaging study becomes both a ServiceRequest (order) and ImagingStudy (results) resource.'
-                                : 'Each imaging study becomes one ServiceRequest resource (legacy mode).'}
+                              {exportMode === ExportMode.CLINICAL_WORKFLOW 
+                                ? 'Each imaging study creates two linked resources: ServiceRequest (doctor\'s order) + ImagingStudy (execution results).'
+                                : exportMode === ExportMode.SIMPLIFIED
+                                ? 'Each imaging study creates one ServiceRequest resource only (legacy mode - not fully FHIR R4 compliant).'
+                                : 'Each imaging study creates one combined resource (coming soon).'}
                             </p>
                           </div>
                         </div>
                       )}
                     </div>
+                    
+                    {/* Healthcare Workflow Diagram - Enhanced for Phase 3 */}
+                    {imagingTests.length > 0 && (
+                      <div className={`p-4 rounded-md border ${
+                        exportMode === ExportMode.CLINICAL_WORKFLOW 
+                          ? 'bg-indigo-900/20 border-indigo-200 dark:border-indigo-800' 
+                          : exportMode === ExportMode.SIMPLIFIED 
+                          ? 'bg-orange-900/20 border-orange-200 dark:border-orange-800'
+                          : 'bg-blue-900/20 border-blue-200 dark:border-blue-800'
+                      }`}>
+                        <h6 className={`font-medium mb-3 flex items-center ${
+                          exportMode === ExportMode.CLINICAL_WORKFLOW 
+                            ? 'text-indigo-800 dark:text-indigo-300' 
+                            : exportMode === ExportMode.SIMPLIFIED 
+                            ? 'text-orange-800 dark:text-orange-300'
+                            : 'text-blue-800 dark:text-blue-300'
+                        }`}>
+                          <ArrowDown className="h-4 w-4 mr-2" />
+                          {exportMode === ExportMode.CLINICAL_WORKFLOW 
+                            ? 'Clinical Workflow: Order → Execution → Results'
+                            : exportMode === ExportMode.SIMPLIFIED
+                            ? 'Simplified Export: Order Only'
+                            : 'Consolidated Export: Combined Resource (Coming Soon)'}
+                        </h6>
+                        
+                        {exportMode === ExportMode.CLINICAL_WORKFLOW && (
+                          <div className="space-y-2">
+                            <div className="flex items-center space-x-3">
+                              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                              <div className="text-sm">
+                                <span className="font-medium text-blue-700 dark:text-blue-300">ServiceRequest</span>
+                                <span className={`ml-2 ${mutedTextClass}`}>(status: "completed")</span>
+                              </div>
+                              <ChevronRight className="h-4 w-4 text-gray-400" />
+                              <span className="text-xs text-gray-600 dark:text-gray-400">Doctor orders imaging study</span>
+                            </div>
+                            <div className="flex items-center space-x-3">
+                              <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                              <div className="text-sm">
+                                <span className="font-medium text-purple-700 dark:text-purple-300">ImagingStudy</span>
+                                <span className={`ml-2 ${mutedTextClass}`}>(status: "available")</span>
+                              </div>
+                              <ChevronRight className="h-4 w-4 text-gray-400" />
+                              <span className="text-xs text-gray-600 dark:text-gray-400">Study performed, results ready</span>
+                            </div>
+                            <div className={`mt-3 p-2 rounded ${isDarkMode ? 'bg-indigo-800/30' : 'bg-indigo-100'}`}>
+                              <p className="text-xs text-indigo-700 dark:text-indigo-300">
+                                <strong>Resource Naming:</strong> ServiceRequest IDs end with "-order", ImagingStudy IDs end with "-study"
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                        
+                        {exportMode === ExportMode.SIMPLIFIED && (
+                          <div className="space-y-2">
+                            <div className="flex items-center space-x-3">
+                              <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                              <div className="text-sm">
+                                <span className="font-medium text-orange-700 dark:text-orange-300">ServiceRequest</span>
+                                <span className={`ml-2 ${mutedTextClass}`}>(status: "active")</span>
+                              </div>
+                              <ChevronRight className="h-4 w-4 text-gray-400" />
+                              <span className="text-xs text-gray-600 dark:text-gray-400">Order only (no execution tracking)</span>
+                            </div>
+                            <div className={`mt-3 p-2 rounded ${isDarkMode ? 'bg-orange-800/30' : 'bg-orange-100'}`}>
+                              <p className="text-xs text-orange-700 dark:text-orange-300">
+                                <strong>Legacy Mode:</strong> Uses original test ID without suffixes
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                        
+                        {exportMode === ExportMode.CONSOLIDATED && (
+                          <div className="space-y-2">
+                            <div className="flex items-center space-x-3">
+                              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                              <div className="text-sm">
+                                <span className="font-medium text-blue-700 dark:text-blue-300">CombinedRequest</span>
+                                <span className={`ml-2 ${mutedTextClass}`}>(custom format)</span>
+                              </div>
+                              <ChevronRight className="h-4 w-4 text-gray-400" />
+                              <span className="text-xs text-gray-600 dark:text-gray-400">Order + execution in single resource</span>
+                            </div>
+                            <div className={`mt-3 p-2 rounded ${isDarkMode ? 'bg-blue-800/30' : 'bg-blue-100'}`}>
+                              <p className="text-xs text-blue-700 dark:text-blue-300">
+                                <strong>Coming Soon:</strong> Combined resource for simplified analytics
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
                     
                     {/* FHIR Compliance Notice */}
                     {imagingTests.length > 0 && (
@@ -1038,7 +1246,7 @@ export default function EnhancedFhirExportTool({
                             <h6 className="font-medium text-green-800 dark:text-green-300">FHIR R4 Compliance</h6>
                             <p className="text-xs text-green-700 dark:text-green-400 mt-1">
                               {useDualResourceExport 
-                                ? 'Enhanced export mode creates both ServiceRequest (order) and ImagingStudy (results) resources for imaging studies, providing complete FHIR R4-compliant workflow representation.'
+                                ? 'Enhanced export mode creates both ServiceRequest (order) and ImagingStudy (results) resources for imaging studies, representing the complete healthcare workflow from order placement to result availability.'
                                 : 'Legacy export mode creates only ServiceRequest resources. Enable Enhanced FHIR Export for full R4 compliance with imaging workflows.'}
                             </p>
                           </div>
@@ -1085,16 +1293,100 @@ export default function EnhancedFhirExportTool({
                   <Accordion type="single" collapsible>
                     <AccordionItem value="resource-explanation">
                       <AccordionTrigger className="text-sm">
-                        About ServiceRequest
+                        Understanding Dual Resources
                       </AccordionTrigger>
                       <AccordionContent className={`text-sm ${mutedTextClass}`}>
-                        <p className="mb-2">
-                          In FHIR, a <strong>ServiceRequest</strong> represents a request for a procedure, 
-                          diagnostic test, or other healthcare service to be performed.
-                        </p>
-                        <p>
-                          MediRefs exports each test as a ServiceRequest resource with standard medical coding.
-                        </p>
+                        <div className="space-y-3">
+                          <div>
+                            <p className="font-medium text-blue-700 dark:text-blue-300 mb-1">ServiceRequest (The Order)</p>
+                            <ul className="text-xs space-y-1 ml-3">
+                              <li>• Represents the doctor's order for a test/procedure</li>
+                              <li>• Status "completed" = the order was fulfilled</li>
+                              <li>• Intent "original-order" = initial physician request</li>
+                              <li>• All tests get this resource</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <p className="font-medium text-purple-700 dark:text-purple-300 mb-1">ImagingStudy (The Results)</p>
+                            <ul className="text-xs space-y-1 ml-3">
+                              <li>• Represents the execution and results of imaging</li>
+                              <li>• Status "available" = study results are ready</li>
+                              <li>• Contains technical details (modality, body site)</li>
+                              <li>• Only imaging studies get this resource</li>
+                            </ul>
+                          </div>
+                          <div className={`p-2 rounded-md ${isDarkMode ? 'bg-blue-900/30' : 'bg-blue-50'}`}>
+                            <p className="text-xs font-medium">Why two resources for imaging?</p>
+                            <p className="text-xs mt-1">Healthcare workflows require tracking both the order (what was requested) and the execution (what was performed). Lab tests typically only need the order since the result is the lab value itself.</p>
+                          </div>
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                    
+                    <AccordionItem value="resource-relationships">
+                      <AccordionTrigger className="text-sm">
+                        Resource Relationships
+                      </AccordionTrigger>
+                      <AccordionContent className={`text-sm ${mutedTextClass}`}>
+                        <div className="space-y-2">
+                          <div>
+                            <p className="font-medium mb-1">Cross-References</p>
+                            <ul className="text-xs space-y-1 ml-3">
+                              <li>• ServiceRequest → <code className="bg-gray-200 dark:bg-gray-700 px-1 rounded">supportingInfo</code> → points to ImagingStudy</li>
+                              <li>• ImagingStudy → <code className="bg-gray-200 dark:bg-gray-700 px-1 rounded">basedOn</code> → points back to ServiceRequest</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <p className="font-medium mb-1">Naming Convention</p>
+                            <ul className="text-xs space-y-1 ml-3">
+                              <li>• ServiceRequest: <code className="bg-gray-200 dark:bg-gray-700 px-1 rounded">TTES-IMG-FLU-76080a-order</code></li>
+                              <li>• ImagingStudy: <code className="bg-gray-200 dark:bg-gray-700 px-1 rounded">TTES-IMG-FLU-76080a-study</code></li>
+                            </ul>
+                          </div>
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                    
+                    <AccordionItem value="export-modes">
+                      <AccordionTrigger className="text-sm">
+                        Export Mode Guide
+                      </AccordionTrigger>
+                      <AccordionContent className={`text-sm ${mutedTextClass}`}>
+                        <div className="space-y-3">
+                          <div>
+                            <p className="font-medium text-green-700 dark:text-green-300 mb-1">
+                              🏥 Clinical Workflow Mode (Recommended)
+                            </p>
+                            <ul className="text-xs space-y-1 ml-3">
+                              <li>• Full FHIR R4 compliance for healthcare systems</li>
+                              <li>• Imaging studies get dual resources (ServiceRequest + ImagingStudy)</li>
+                              <li>• Represents complete order-to-results workflow</li>
+                              <li>• Ideal for EHR integration and healthcare interoperability</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <p className="font-medium text-orange-700 dark:text-orange-300 mb-1">
+                              🔧 Simplified Mode (Legacy)
+                            </p>
+                            <ul className="text-xs space-y-1 ml-3">
+                              <li>• ServiceRequest resources only</li>
+                              <li>• Smaller file sizes and simpler structure</li>
+                              <li>• Good for data analysis and research</li>
+                              <li>• Missing imaging execution details</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <p className="font-medium text-blue-700 dark:text-blue-300 mb-1">
+                              🔄 Consolidated Mode (Coming Soon)
+                            </p>
+                            <ul className="text-xs space-y-1 ml-3">
+                              <li>• Single resource combining order + execution</li>
+                              <li>• Simplified for basic analytics use cases</li>
+                              <li>• Custom format (not standard FHIR)</li>
+                              <li>• Best for internal reporting systems</li>
+                            </ul>
+                          </div>
+                        </div>
                       </AccordionContent>
                     </AccordionItem>
                     

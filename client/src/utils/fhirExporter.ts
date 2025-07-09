@@ -211,7 +211,7 @@ function isImagingStudy(test: Test): boolean {
 export function testToFhirServiceRequest(test: Test): FhirServiceRequest {
   const serviceRequest: FhirServiceRequest = {
     resourceType: ResourceType.ServiceRequest,
-    id: test.id,
+    id: isImagingStudy(test) ? `${test.id}-order` : test.id,
     status: isImagingStudy(test) ? FhirStatus.Completed : FhirStatus.Active,
     intent: FhirIntent.OriginalOrder,
     category: [
@@ -317,7 +317,7 @@ export function testToFhirImagingStudy(test: Test): FhirImagingStudy {
     modality: test.subCategory ? [getModalityCode(test.subCategory)] : [],
     basedOn: [
       {
-        reference: `ServiceRequest/${test.id}`
+        reference: `ServiceRequest/${test.id}-order`
       }
     ]
   };
