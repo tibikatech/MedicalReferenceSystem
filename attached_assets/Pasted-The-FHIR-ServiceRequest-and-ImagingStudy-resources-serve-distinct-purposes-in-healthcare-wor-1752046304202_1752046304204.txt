@@ -1,0 +1,82 @@
+The **FHIR ServiceRequest** and **ImagingStudy** resources serve distinct purposes in healthcare workflows, though they are often related. Here's a structured comparison:
+
+---
+
+### **1. Purpose & Scope**
+- **ServiceRequest**  
+  - Represents a **request for a service** to be performed (e.g., an order or plan).  
+  - General-purpose resource for any type of service, including imaging, lab tests, procedures, or therapies.  
+  - Captures the **intent** to perform an action (e.g., "Order an MRI scan").  
+
+- **ImagingStudy**  
+  - Documents the **results** of an imaging procedure (e.g., X-ray, MRI, CT scan).  
+  - Specifically tracks **imaging study metadata**, such as technical details, images, and interpretation.  
+  - Represents the **outcome** of a completed imaging service.
+
+---
+
+### **2. Workflow Phase**
+- **ServiceRequest**  
+  - Used in the **planning/ordering phase** (e.g., when a clinician orders an imaging study).  
+  - Tracks status like "active," "completed," or "suspended."  
+
+- **ImagingStudy**  
+  - Created during the **execution/completion phase** (e.g., after the imaging procedure is performed).  
+  - Captures details about the study’s execution, such as the date/time it was performed and the images generated.
+
+---
+
+### **3. Key Data Elements**
+- **ServiceRequest**  
+  - **Request Details**:  
+    - `code`: Type of service (e.g., "MRI of the knee").  
+    - `subject`: Patient for whom the service is requested.  
+    - `requester`: Who ordered the service (e.g., a physician).  
+    - `reasonCode`: Clinical justification (e.g., "suspected fracture").  
+    - `status`: Current status (e.g., "active," "completed").  
+  - Tracks the **intent** and logistical details of the request.
+
+- **ImagingStudy**  
+  - **Study Metadata**:  
+    - `identifier`: Unique study identifier (e.g., accession number).  
+    - `modality`: Imaging technique (e.g., "X-ray," "MRI").  
+    - `bodySite`: Body part examined (e.g., "Lumbar Spine").  
+    - `performedDateTime`: Date/time the study was performed.  
+    - `series`: Collection of image series (each with technical details like equipment settings).  
+    - `instance`: References to DICOM image instances or URIs.  
+    - `interpreter`: Radiologist who interpreted the images.  
+  - Captures **technical and clinical details of the imaging results**.
+
+---
+
+### **4. Relationship Between the Two**
+- A **ServiceRequest** for an imaging study (e.g., "Order MRI") can be linked to an **ImagingStudy** once the procedure is completed.  
+- The `ImagingStudy` may reference the original `ServiceRequest` via an identifier or direct reference (e.g., using `ServiceRequest.identifier` in `ImagingStudy`).  
+- The lifecycle progression is:  
+  **ServiceRequest (order) → ImagingStudy (result)**.  
+
+---
+
+### **5. Example Workflow**
+1. A physician creates a **ServiceRequest** for an MRI scan of the knee.  
+2. The imaging department performs the scan, generating an **ImagingStudy** with the images and metadata.  
+3. The **ImagingStudy** is linked back to the original **ServiceRequest** for audit or review.  
+
+---
+
+### **6. Key Differences Summary**
+| **Aspect**               | **ServiceRequest**                          | **ImagingStudy**                              |
+|--------------------------|---------------------------------------------|-----------------------------------------------|
+| **Purpose**              | Request/order for a service                 | Document results of an imaging procedure      |
+| **Scope**                | Any service (imaging, lab, procedure, etc.) | Specific to imaging studies                   |
+| **Lifecycle Phase**      | Planning/ordering                           | Execution/completion                          |
+| **Core Data**            | Intent, requester, reason, status           | Images, technical details, interpreter notes  |
+| **Result Orientation**   | N/A (intent only)                           | Contains outcome (images, findings)           |
+
+---
+
+### **7. Related Resources**
+- **DiagnosticReport**: May reference an **ImagingStudy** to include imaging findings in a broader diagnostic report.  
+- **Observation**: Used for non-imaging test results (e.g., lab values).  
+
+In summary, **ServiceRequest** is about **ordering a service**, while **ImagingStudy** is about **recording the results of an imaging procedure**. They work together to document the full workflow from order to outcome.

@@ -1,0 +1,4514 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-FLU-76080a",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "76080a",
+              "display": "Fluoroscopy Joint Shoulder Left With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18853-4",
+              "display": "Fluoroscopy Joint Shoulder Left With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363709006",
+              "display": "Fluoroscopy Joint Shoulder Left With Contrast"
+            }
+          ],
+          "text": "Fluoroscopy Joint Shoulder Left With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Fluoroscopy"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-XRAY-70250",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "70250",
+              "display": "X-RAY Brain Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24696-8",
+              "display": "X-RAY Brain Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363725005",
+              "display": "X-RAY Brain Without Contrast"
+            }
+          ],
+          "text": "X-RAY Brain Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Radiography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-XRAY-72010a",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "72010a",
+              "display": "X-RAY Cervical Spine Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24725-1",
+              "display": "X-RAY Cervical Spine Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363706005",
+              "display": "X-RAY Cervical Spine Without Contrast"
+            }
+          ],
+          "text": "X-RAY Cervical Spine Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Radiography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-XRAY-72030",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "72030",
+              "display": "X-RAY Thoracic Spine Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24726-9",
+              "display": "X-RAY Thoracic Spine Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363707001",
+              "display": "X-RAY Thoracic Spine Without Contrast"
+            }
+          ],
+          "text": "X-RAY Thoracic Spine Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Radiography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-XRAY-72080",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "72080",
+              "display": "X-RAY Lumbar Spine Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24725-1",
+              "display": "X-RAY Lumbar Spine Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363706005",
+              "display": "X-RAY Lumbar Spine Without Contrast"
+            }
+          ],
+          "text": "X-RAY Lumbar Spine Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Radiography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-XRAY-72100a",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "72100a",
+              "display": "X-RAY Sacrococcygeal Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24732-2",
+              "display": "X-RAY Sacrococcygeal Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363717005",
+              "display": "X-RAY Sacrococcygeal Without Contrast"
+            }
+          ],
+          "text": "X-RAY Sacrococcygeal Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Radiography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-XRAY-71010b",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "71010b",
+              "display": "X-RAY Chest Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24698-4",
+              "display": "X-RAY Chest Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "16905004",
+              "display": "X-RAY Chest Without Contrast"
+            }
+          ],
+          "text": "X-RAY Chest Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Radiography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-XRAY-74022",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "74022",
+              "display": "X-RAY Abdomen Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24713-1",
+              "display": "X-RAY Abdomen Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "428600005",
+              "display": "X-RAY Abdomen Without Contrast"
+            }
+          ],
+          "text": "X-RAY Abdomen Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Radiography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-XRAY-72100b",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "72100b",
+              "display": "X-RAY Pelvis Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24732-2",
+              "display": "X-RAY Pelvis Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363717005",
+              "display": "X-RAY Pelvis Without Contrast"
+            }
+          ],
+          "text": "X-RAY Pelvis Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Radiography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-XRAY-73020a",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "73020a",
+              "display": "X-RAY Shoulder Left With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24727-2",
+              "display": "X-RAY Shoulder Left With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363717005",
+              "display": "X-RAY Shoulder Left With Contrast"
+            }
+          ],
+          "text": "X-RAY Shoulder Left With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Radiography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-XRAY-73020b",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "73020b",
+              "display": "X-RAY Shoulder Right With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24727-2",
+              "display": "X-RAY Shoulder Right With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363717005",
+              "display": "X-RAY Shoulder Right With Contrast"
+            }
+          ],
+          "text": "X-RAY Shoulder Right With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Radiography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-XRAY-73020c",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "73020c",
+              "display": "X-RAY Shoulder Left Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24727-2",
+              "display": "X-RAY Shoulder Left Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363717005",
+              "display": "X-RAY Shoulder Left Without Contrast"
+            }
+          ],
+          "text": "X-RAY Shoulder Left Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Radiography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-XRAY-73020d",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "73020d",
+              "display": "X-RAY Shoulder Right Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24727-2",
+              "display": "X-RAY Shoulder Right Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363717005",
+              "display": "X-RAY Shoulder Right Without Contrast"
+            }
+          ],
+          "text": "X-RAY Shoulder Right Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Radiography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-MAM-77057",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "77057",
+              "display": "Mammogram Screening"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "26083-1",
+              "display": "Mammogram Screening"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363686007",
+              "display": "Mammogram Screening"
+            }
+          ],
+          "text": "Mammogram Screening"
+        },
+        "subcategory": [
+          {
+            "text": "Mammography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-MAM-77059",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "77059",
+              "display": "Mammogram Diagnostic"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "26084-9",
+              "display": "Mammogram Diagnostic"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363687003",
+              "display": "Mammogram Diagnostic"
+            }
+          ],
+          "text": "Mammogram Diagnostic"
+        },
+        "subcategory": [
+          {
+            "text": "Mammography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-US-76810",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "76810",
+              "display": "Ultrasound Brain"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18855-8",
+              "display": "Ultrasound Brain"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363681002",
+              "display": "Ultrasound Brain"
+            }
+          ],
+          "text": "Ultrasound Brain"
+        },
+        "subcategory": [
+          {
+            "text": "Ultrasound"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-US-76410",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "76410",
+              "display": "Ultrasound Cervical Spine Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "11940-1",
+              "display": "Ultrasound Cervical Spine Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363681002",
+              "display": "Ultrasound Cervical Spine Without Contrast"
+            }
+          ],
+          "text": "Ultrasound Cervical Spine Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Ultrasound"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-US-76415",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "76415",
+              "display": "Ultrasound Thoracic Spine Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "11939-3",
+              "display": "Ultrasound Thoracic Spine Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363681002",
+              "display": "Ultrasound Thoracic Spine Without Contrast"
+            }
+          ],
+          "text": "Ultrasound Thoracic Spine Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Ultrasound"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-US-76420",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "76420",
+              "display": "Ultrasound Lumbar Spine Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "11941-9",
+              "display": "Ultrasound Lumbar Spine Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363681002",
+              "display": "Ultrasound Lumbar Spine Without Contrast"
+            }
+          ],
+          "text": "Ultrasound Lumbar Spine Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Ultrasound"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-US-76425",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "76425",
+              "display": "Ultrasound Sacrococcygeal Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "11942-7",
+              "display": "Ultrasound Sacrococcygeal Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363681002",
+              "display": "Ultrasound Sacrococcygeal Without Contrast"
+            }
+          ],
+          "text": "Ultrasound Sacrococcygeal Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Ultrasound"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-US-76310",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "76310",
+              "display": "Ultrasound Chest Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18855-8",
+              "display": "Ultrasound Chest Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363681002",
+              "display": "Ultrasound Chest Without Contrast"
+            }
+          ],
+          "text": "Ultrasound Chest Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Ultrasound"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-US-76700",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "76700",
+              "display": "Ultrasound Abdomen Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18842-5",
+              "display": "Ultrasound Abdomen Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363679005",
+              "display": "Ultrasound Abdomen Without Contrast"
+            }
+          ],
+          "text": "Ultrasound Abdomen Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Ultrasound"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-US-76856e",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "76856e",
+              "display": "Ultrasound Pelvis Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18843-3",
+              "display": "Ultrasound Pelvis Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363680001",
+              "display": "Ultrasound Pelvis Without Contrast"
+            }
+          ],
+          "text": "Ultrasound Pelvis Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Ultrasound"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-US-76886f",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "76886f",
+              "display": "Ultrasound Shoulder Left With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18853-4",
+              "display": "Ultrasound Shoulder Left With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363709006",
+              "display": "Ultrasound Shoulder Left With Contrast"
+            }
+          ],
+          "text": "Ultrasound Shoulder Left With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Ultrasound"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-US-76886g",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "76886g",
+              "display": "Ultrasound Shoulder Right With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18853-4",
+              "display": "Ultrasound Shoulder Right With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363709006",
+              "display": "Ultrasound Shoulder Right With Contrast"
+            }
+          ],
+          "text": "Ultrasound Shoulder Right With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Ultrasound"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-US-76886h",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "76886h",
+              "display": "Ultrasound Shoulder Left Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18853-4",
+              "display": "Ultrasound Shoulder Left Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363709006",
+              "display": "Ultrasound Shoulder Left Without Contrast"
+            }
+          ],
+          "text": "Ultrasound Shoulder Left Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Ultrasound"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-DOP-76811",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "76811",
+              "display": "Doppler Ultrasound Brain"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18855-8",
+              "display": "Doppler Ultrasound Brain"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363681002",
+              "display": "Doppler Ultrasound Brain"
+            }
+          ],
+          "text": "Doppler Ultrasound Brain"
+        },
+        "subcategory": [
+          {
+            "text": "Doppler Ultrasound"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-DOP-93971",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "93971",
+              "display": "Doppler Ultrasound Cervical Spine Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18849-1",
+              "display": "Doppler Ultrasound Cervical Spine Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363689000",
+              "display": "Doppler Ultrasound Cervical Spine Without Contrast"
+            }
+          ],
+          "text": "Doppler Ultrasound Cervical Spine Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Doppler Ultrasound"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-DOP-93972",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "93972",
+              "display": "Doppler Ultrasound Thoracic Spine Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18850-9",
+              "display": "Doppler Ultrasound Thoracic Spine Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363689000",
+              "display": "Doppler Ultrasound Thoracic Spine Without Contrast"
+            }
+          ],
+          "text": "Doppler Ultrasound Thoracic Spine Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Doppler Ultrasound"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-DOP-93970",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "93970",
+              "display": "Doppler Ultrasound Lumbar Spine Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18848-3",
+              "display": "Doppler Ultrasound Lumbar Spine Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363689000",
+              "display": "Doppler Ultrasound Lumbar Spine Without Contrast"
+            }
+          ],
+          "text": "Doppler Ultrasound Lumbar Spine Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Doppler Ultrasound"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-DOP-93974",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "93974",
+              "display": "Doppler Ultrasound Sacrococcygeal Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18851-7",
+              "display": "Doppler Ultrasound Sacrococcygeal Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363689000",
+              "display": "Doppler Ultrasound Sacrococcygeal Without Contrast"
+            }
+          ],
+          "text": "Doppler Ultrasound Sacrococcygeal Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Doppler Ultrasound"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-DOP-93973",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "93973",
+              "display": "Doppler Ultrasound Chest Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18852-5",
+              "display": "Doppler Ultrasound Chest Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363689000",
+              "display": "Doppler Ultrasound Chest Without Contrast"
+            }
+          ],
+          "text": "Doppler Ultrasound Chest Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Doppler Ultrasound"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-DOP-76700",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "76700",
+              "display": "Doppler Ultrasound Abdomen Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18842-5",
+              "display": "Doppler Ultrasound Abdomen Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363679005",
+              "display": "Doppler Ultrasound Abdomen Without Contrast"
+            }
+          ],
+          "text": "Doppler Ultrasound Abdomen Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Doppler Ultrasound"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-DOP-76856",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "76856",
+              "display": "Doppler Ultrasound Pelvis Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18843-3",
+              "display": "Doppler Ultrasound Pelvis Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363680001",
+              "display": "Doppler Ultrasound Pelvis Without Contrast"
+            }
+          ],
+          "text": "Doppler Ultrasound Pelvis Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Doppler Ultrasound"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-DOP-76886a",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "76886a",
+              "display": "Doppler Ultrasound Shoulder Left With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18853-4",
+              "display": "Doppler Ultrasound Shoulder Left With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363709006",
+              "display": "Doppler Ultrasound Shoulder Left With Contrast"
+            }
+          ],
+          "text": "Doppler Ultrasound Shoulder Left With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Doppler Ultrasound"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-DOP-76886b",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "76886b",
+              "display": "Doppler Ultrasound Shoulder Right With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18853-4",
+              "display": "Doppler Ultrasound Shoulder Right With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363709006",
+              "display": "Doppler Ultrasound Shoulder Right With Contrast"
+            }
+          ],
+          "text": "Doppler Ultrasound Shoulder Right With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Doppler Ultrasound"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-DOP-76886c",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "76886c",
+              "display": "Doppler Ultrasound Shoulder Left Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18853-4",
+              "display": "Doppler Ultrasound Shoulder Left Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363709006",
+              "display": "Doppler Ultrasound Shoulder Left Without Contrast"
+            }
+          ],
+          "text": "Doppler Ultrasound Shoulder Left Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Doppler Ultrasound"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-DOP-76886d",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "76886d",
+              "display": "Doppler Ultrasound Shoulder Right Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18853-4",
+              "display": "Doppler Ultrasound Shoulder Right Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363709006",
+              "display": "Doppler Ultrasound Shoulder Right Without Contrast"
+            }
+          ],
+          "text": "Doppler Ultrasound Shoulder Right Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Doppler Ultrasound"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-CT-70450",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "70450",
+              "display": "CT Scan Brain Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24676-6",
+              "display": "CT Scan Brain Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363682009",
+              "display": "CT Scan Brain Without Contrast"
+            }
+          ],
+          "text": "CT Scan Brain Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Computed Tomography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-CT-70490",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "70490",
+              "display": "CT Scan Brain With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24677-4",
+              "display": "CT Scan Brain With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363727008",
+              "display": "CT Scan Brain With Contrast"
+            }
+          ],
+          "text": "CT Scan Brain With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Computed Tomography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-CT-72126",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "72126",
+              "display": "CT Scan Cervical Spine Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24714-9",
+              "display": "CT Scan Cervical Spine Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363686007",
+              "display": "CT Scan Cervical Spine Without Contrast"
+            }
+          ],
+          "text": "CT Scan Cervical Spine Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Computed Tomography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-CT-72127",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "72127",
+              "display": "CT Scan Cervical Spine With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24715-6",
+              "display": "CT Scan Cervical Spine With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363687003",
+              "display": "CT Scan Cervical Spine With Contrast"
+            }
+          ],
+          "text": "CT Scan Cervical Spine With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Computed Tomography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-CT-72132",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "72132",
+              "display": "CT Scan Thoracic Spine Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24716-4",
+              "display": "CT Scan Thoracic Spine Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363688008",
+              "display": "CT Scan Thoracic Spine Without Contrast"
+            }
+          ],
+          "text": "CT Scan Thoracic Spine Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Computed Tomography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-CT-72133",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "72133",
+              "display": "CT Scan Thoracic Spine With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24717-2",
+              "display": "CT Scan Thoracic Spine With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363689000",
+              "display": "CT Scan Thoracic Spine With Contrast"
+            }
+          ],
+          "text": "CT Scan Thoracic Spine With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Computed Tomography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-CT-72138",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "72138",
+              "display": "CT Scan Lumbar Spine Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24718-0",
+              "display": "CT Scan Lumbar Spine Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363690007",
+              "display": "CT Scan Lumbar Spine Without Contrast"
+            }
+          ],
+          "text": "CT Scan Lumbar Spine Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Computed Tomography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-CT-72139",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "72139",
+              "display": "CT Scan Lumbar Spine With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24719-8",
+              "display": "CT Scan Lumbar Spine With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363691009",
+              "display": "CT Scan Lumbar Spine With Contrast"
+            }
+          ],
+          "text": "CT Scan Lumbar Spine With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Computed Tomography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-CT-72140",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "72140",
+              "display": "CT Scan Sacrococcygeal Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24720-6",
+              "display": "CT Scan Sacrococcygeal Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363692003",
+              "display": "CT Scan Sacrococcygeal Without Contrast"
+            }
+          ],
+          "text": "CT Scan Sacrococcygeal Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Computed Tomography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-CT-72141",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "72141",
+              "display": "CT Scan Sacrococcygeal With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24721-4",
+              "display": "CT Scan Sacrococcygeal With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363693008",
+              "display": "CT Scan Sacrococcygeal With Contrast"
+            }
+          ],
+          "text": "CT Scan Sacrococcygeal With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Computed Tomography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-CT-71250",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "71250",
+              "display": "CT Scan Chest Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24699-2",
+              "display": "CT Scan Chest Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363703009",
+              "display": "CT Scan Chest Without Contrast"
+            }
+          ],
+          "text": "CT Scan Chest Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Computed Tomography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-CT-71260a",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "71260a",
+              "display": "CT Scan Chest With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24700-8",
+              "display": "CT Scan Chest With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363683004",
+              "display": "CT Scan Chest With Contrast"
+            }
+          ],
+          "text": "CT Scan Chest With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Computed Tomography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-CT-74150",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "74150",
+              "display": "CT Scan Abdomen Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24703-2",
+              "display": "CT Scan Abdomen Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363702004",
+              "display": "CT Scan Abdomen Without Contrast"
+            }
+          ],
+          "text": "CT Scan Abdomen Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Computed Tomography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-CT-74160b",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "74160b",
+              "display": "CT Scan Abdomen With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24702-4",
+              "display": "CT Scan Abdomen With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363694003",
+              "display": "CT Scan Abdomen With Contrast"
+            }
+          ],
+          "text": "CT Scan Abdomen With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Computed Tomography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-CT-72191",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "72191",
+              "display": "CT Scan Pelvis Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24709-9",
+              "display": "CT Scan Pelvis Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "448851000000105",
+              "display": "CT Scan Pelvis Without Contrast"
+            }
+          ],
+          "text": "CT Scan Pelvis Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Computed Tomography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-CT-72192",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "72192",
+              "display": "CT Scan Pelvis With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24710-7",
+              "display": "CT Scan Pelvis With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "448861000000108",
+              "display": "CT Scan Pelvis With Contrast"
+            }
+          ],
+          "text": "CT Scan Pelvis With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Computed Tomography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-CTA-70491",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "70491",
+              "display": "CT Angiography Brain"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24678-2",
+              "display": "CT Angiography Brain"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363728003",
+              "display": "CT Angiography Brain"
+            }
+          ],
+          "text": "CT Angiography Brain"
+        },
+        "subcategory": [
+          {
+            "text": "Angiography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-CTA-72128",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "72128",
+              "display": "CT Angiography Cervical Spine"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24715-6",
+              "display": "CT Angiography Cervical Spine"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363712008",
+              "display": "CT Angiography Cervical Spine"
+            }
+          ],
+          "text": "CT Angiography Cervical Spine"
+        },
+        "subcategory": [
+          {
+            "text": "Angiography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-CTA-72134",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "72134",
+              "display": "CT Angiography Thoracic Spine"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24717-2",
+              "display": "CT Angiography Thoracic Spine"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363689000",
+              "display": "CT Angiography Thoracic Spine"
+            }
+          ],
+          "text": "CT Angiography Thoracic Spine"
+        },
+        "subcategory": [
+          {
+            "text": "Angiography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-CTA-72140",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "72140",
+              "display": "CT Angiography Lumbar Spine"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24719-8",
+              "display": "CT Angiography Lumbar Spine"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363693007",
+              "display": "CT Angiography Lumbar Spine"
+            }
+          ],
+          "text": "CT Angiography Lumbar Spine"
+        },
+        "subcategory": [
+          {
+            "text": "Angiography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-CTA-73402",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "73402",
+              "display": "CT Angiography Sacrococcygeal"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "78404-1",
+              "display": "CT Angiography Sacrococcygeal"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "448871000000105",
+              "display": "CT Angiography Sacrococcygeal"
+            }
+          ],
+          "text": "CT Angiography Sacrococcygeal"
+        },
+        "subcategory": [
+          {
+            "text": "Angiography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-CTA-71275",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "71275",
+              "display": "CT Angiography Chest"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24701-6",
+              "display": "CT Angiography Chest"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363693007",
+              "display": "CT Angiography Chest"
+            }
+          ],
+          "text": "CT Angiography Chest"
+        },
+        "subcategory": [
+          {
+            "text": "Angiography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-CTA-74150",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "74150",
+              "display": "CT Angiography Abdomen"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24703-2",
+              "display": "CT Angiography Abdomen"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363702004",
+              "display": "CT Angiography Abdomen"
+            }
+          ],
+          "text": "CT Angiography Abdomen"
+        },
+        "subcategory": [
+          {
+            "text": "Angiography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-CTA-73401",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "73401",
+              "display": "CT Angiography Pelvis"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "78404-2",
+              "display": "CT Angiography Pelvis"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363723001",
+              "display": "CT Angiography Pelvis"
+            }
+          ],
+          "text": "CT Angiography Pelvis"
+        },
+        "subcategory": [
+          {
+            "text": "Angiography"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-MRI-70551",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "70551",
+              "display": "MRI Brain Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24681-6",
+              "display": "MRI Brain Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363685006",
+              "display": "MRI Brain Without Contrast"
+            }
+          ],
+          "text": "MRI Brain Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Magnetic Resonance Imaging"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-MRI-70553",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "70553",
+              "display": "MRI Brain With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24682-4",
+              "display": "MRI Brain With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363712008",
+              "display": "MRI Brain With Contrast"
+            }
+          ],
+          "text": "MRI Brain With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Magnetic Resonance Imaging"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-MRI-72146",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "72146",
+              "display": "MRI Cervical Spine Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24718-1",
+              "display": "MRI Cervical Spine Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363684005",
+              "display": "MRI Cervical Spine Without Contrast"
+            }
+          ],
+          "text": "MRI Cervical Spine Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Magnetic Resonance Imaging"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-MRI-72147",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "72147",
+              "display": "MRI Cervical Spine With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24719-0",
+              "display": "MRI Cervical Spine With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363701006",
+              "display": "MRI Cervical Spine With Contrast"
+            }
+          ],
+          "text": "MRI Cervical Spine With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Magnetic Resonance Imaging"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-MRI-72156",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "72156",
+              "display": "MRI Thoracic Spine Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24720-7",
+              "display": "MRI Thoracic Spine Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363696001",
+              "display": "MRI Thoracic Spine Without Contrast"
+            }
+          ],
+          "text": "MRI Thoracic Spine Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Magnetic Resonance Imaging"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-MRI-72157",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "72157",
+              "display": "MRI Thoracic Spine With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24721-5",
+              "display": "MRI Thoracic Spine With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363707001",
+              "display": "MRI Thoracic Spine With Contrast"
+            }
+          ],
+          "text": "MRI Thoracic Spine With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Magnetic Resonance Imaging"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-MRI-72194",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "72194",
+              "display": "MRI Lumbar Spine Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24720-7",
+              "display": "MRI Lumbar Spine Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363696001",
+              "display": "MRI Lumbar Spine Without Contrast"
+            }
+          ],
+          "text": "MRI Lumbar Spine Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Magnetic Resonance Imaging"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-MRI-72195",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "72195",
+              "display": "MRI Lumbar Spine With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24721-5",
+              "display": "MRI Lumbar Spine With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363707001",
+              "display": "MRI Lumbar Spine With Contrast"
+            }
+          ],
+          "text": "MRI Lumbar Spine With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Magnetic Resonance Imaging"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-MRI-72198",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "72198",
+              "display": "MRI Sacrococcygeal Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24722-3",
+              "display": "MRI Sacrococcygeal Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363695002",
+              "display": "MRI Sacrococcygeal Without Contrast"
+            }
+          ],
+          "text": "MRI Sacrococcygeal Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Magnetic Resonance Imaging"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-MRI-72199",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "72199",
+              "display": "MRI Sacrococcygeal With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24723-1",
+              "display": "MRI Sacrococcygeal With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363695002",
+              "display": "MRI Sacrococcygeal With Contrast"
+            }
+          ],
+          "text": "MRI Sacrococcygeal With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Magnetic Resonance Imaging"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-MRI-71550",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "71550",
+              "display": "MRI Chest Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24699-2",
+              "display": "MRI Chest Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363703009",
+              "display": "MRI Chest Without Contrast"
+            }
+          ],
+          "text": "MRI Chest Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Magnetic Resonance Imaging"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-MRI-71551",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "71551",
+              "display": "MRI Chest With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24699-2",
+              "display": "MRI Chest With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363703009",
+              "display": "MRI Chest With Contrast"
+            }
+          ],
+          "text": "MRI Chest With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Magnetic Resonance Imaging"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-MRI-74180",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "74180",
+              "display": "MRI Abdomen Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24702-4",
+              "display": "MRI Abdomen Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363694003",
+              "display": "MRI Abdomen Without Contrast"
+            }
+          ],
+          "text": "MRI Abdomen Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Magnetic Resonance Imaging"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-MRI-74181",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "74181",
+              "display": "MRI Abdomen With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24702-4",
+              "display": "MRI Abdomen With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363694003",
+              "display": "MRI Abdomen With Contrast"
+            }
+          ],
+          "text": "MRI Abdomen With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Magnetic Resonance Imaging"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-MRI-72193a",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "72193a",
+              "display": "MRI Pelvis Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24719-0",
+              "display": "MRI Pelvis Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363701006",
+              "display": "MRI Pelvis Without Contrast"
+            }
+          ],
+          "text": "MRI Pelvis Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Magnetic Resonance Imaging"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-MRI-72193b",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "72193b",
+              "display": "MRI Pelvis With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24719-0",
+              "display": "MRI Pelvis With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363701006",
+              "display": "MRI Pelvis With Contrast"
+            }
+          ],
+          "text": "MRI Pelvis With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Magnetic Resonance Imaging"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-MRI-73221",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "73221",
+              "display": "MRI Shoulder Left With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24724-9",
+              "display": "MRI Shoulder Left With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363711003",
+              "display": "MRI Shoulder Left With Contrast"
+            }
+          ],
+          "text": "MRI Shoulder Left With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Magnetic Resonance Imaging"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-MRI-73222",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "73222",
+              "display": "MRI Shoulder Right With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24725-6",
+              "display": "MRI Shoulder Right With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363712008",
+              "display": "MRI Shoulder Right With Contrast"
+            }
+          ],
+          "text": "MRI Shoulder Right With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Magnetic Resonance Imaging"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-BMD-77080a",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "77080a",
+              "display": "Bone Densitometry Whole Body"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24706-5",
+              "display": "Bone Densitometry Whole Body"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363688001",
+              "display": "Bone Densitometry Whole Body"
+            }
+          ],
+          "text": "Bone Densitometry Whole Body"
+        },
+        "subcategory": [
+          {
+            "text": "DEXA Scan"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-BMD-77080b",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "77080b",
+              "display": "Bone Densitometry Spine"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24706-5",
+              "display": "Bone Densitometry Spine"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363688001",
+              "display": "Bone Densitometry Spine"
+            }
+          ],
+          "text": "Bone Densitometry Spine"
+        },
+        "subcategory": [
+          {
+            "text": "DEXA Scan"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-INT-75853a",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "75853a",
+              "display": "Interventional Radiology Chest"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24701-6",
+              "display": "Interventional Radiology Chest"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363693007",
+              "display": "Interventional Radiology Chest"
+            }
+          ],
+          "text": "Interventional Radiology Chest"
+        },
+        "subcategory": [
+          {
+            "text": "Interventional Radiology"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-INT-75853b",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "75853b",
+              "display": "Interventional Radiology Abdomen"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24702-4",
+              "display": "Interventional Radiology Abdomen"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363694003",
+              "display": "Interventional Radiology Abdomen"
+            }
+          ],
+          "text": "Interventional Radiology Abdomen"
+        },
+        "subcategory": [
+          {
+            "text": "Interventional Radiology"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-INT-75853c",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "75853c",
+              "display": "Interventional Radiology Pelvis"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "24709-9",
+              "display": "Interventional Radiology Pelvis"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363723001",
+              "display": "Interventional Radiology Pelvis"
+            }
+          ],
+          "text": "Interventional Radiology Pelvis"
+        },
+        "subcategory": [
+          {
+            "text": "Interventional Radiology"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-INT-20610a",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "20610a",
+              "display": "Interventional Radiology Shoulder Left With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18853-4",
+              "display": "Interventional Radiology Shoulder Left With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363709006",
+              "display": "Interventional Radiology Shoulder Left With Contrast"
+            }
+          ],
+          "text": "Interventional Radiology Shoulder Left With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Interventional Radiology"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-INT-20610b",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "20610b",
+              "display": "Interventional Radiology Shoulder Right With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18853-4",
+              "display": "Interventional Radiology Shoulder Right With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363709006",
+              "display": "Interventional Radiology Shoulder Right With Contrast"
+            }
+          ],
+          "text": "Interventional Radiology Shoulder Right With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Interventional Radiology"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-INT-20610c",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "20610c",
+              "display": "Interventional Radiology Shoulder Left Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18853-4",
+              "display": "Interventional Radiology Shoulder Left Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363709006",
+              "display": "Interventional Radiology Shoulder Left Without Contrast"
+            }
+          ],
+          "text": "Interventional Radiology Shoulder Left Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Interventional Radiology"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-INT-20610d",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "20610d",
+              "display": "Interventional Radiology Shoulder Right Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18853-4",
+              "display": "Interventional Radiology Shoulder Right Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363709006",
+              "display": "Interventional Radiology Shoulder Right Without Contrast"
+            }
+          ],
+          "text": "Interventional Radiology Shoulder Right Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Interventional Radiology"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-FLU-76080b",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "76080b",
+              "display": "Fluoroscopy Joint Shoulder Right With Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18853-4",
+              "display": "Fluoroscopy Joint Shoulder Right With Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363709006",
+              "display": "Fluoroscopy Joint Shoulder Right With Contrast"
+            }
+          ],
+          "text": "Fluoroscopy Joint Shoulder Right With Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Fluoroscopy"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-FLU-76080c",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "76080c",
+              "display": "Fluoroscopy Joint Shoulder Left Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18853-4",
+              "display": "Fluoroscopy Joint Shoulder Left Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363709006",
+              "display": "Fluoroscopy Joint Shoulder Left Without Contrast"
+            }
+          ],
+          "text": "Fluoroscopy Joint Shoulder Left Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Fluoroscopy"
+          }
+        ],
+        "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "TTES-IMG-FLU-76080d",
+        "status": "active",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/service-category",
+                "code": "RAD",
+                "display": "Imaging Studies"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://www.ama-assn.org/go/cpt",
+              "code": "76080d",
+              "display": "Fluoroscopy Joint Shoulder Right Without Contrast"
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "18853-4",
+              "display": "Fluoroscopy Joint Shoulder Right Without Contrast"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "363709006",
+              "display": "Fluoroscopy Joint Shoulder Right Without Contrast"
+            }
+          ],
+          "text": "Fluoroscopy Joint Shoulder Right Without Contrast"
+        },
+        "subcategory": [
+          {
+            "text": "Fluoroscopy"
+          }
+        ],
+         "note": [
+          {
+            "text": "imaging"
+          }
+        ]
+      }
+    }
+  ]
+}
